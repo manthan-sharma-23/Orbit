@@ -1,5 +1,5 @@
 {
-  "name": "@repo/ui",
+  "name": "components",
   "version": "0.0.0",
   "private": true,
   "exports": {
@@ -13,7 +13,7 @@
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
-    "@repo/typescript-config": "workspace:*",
+    "tsconfig": "workspace:*",
     "@turbo/gen": "^1.11.3",
     "@types/node": "^20.10.6",
     "@types/eslint": "^8.56.1",
