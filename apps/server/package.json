@@ -1,25 +1,37 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "type": "module",
-  "description": "",
-  "main": "./src/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npx tsc-watch --onSuccess \"node dist/index.js\""
+    "build": "npx tsc -b",
+    "dev": "pnpm run build && npx tsc-watch --onSuccess \"node dist/index.js\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^5.8.1",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "cookie": "^0.6.0",
     "cors": "^2.8.5",
+    "dotenv": "^16.4.1",
     "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
     "types": "workspace:*",
+    "ws": "^8.16.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/body-parser": "^1.19.5",
+    "@types/cookie": "^0.6.0",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.5",
+    "@types/morgan": "^1.9.9",
+    "@types/ws": "^8.5.10",
     "typescript": "^5.3.3"
   }
 }
