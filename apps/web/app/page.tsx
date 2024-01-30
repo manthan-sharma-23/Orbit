@@ -1,27 +1,14 @@
-"use client";
-import React, { useState } from "react";
-import { getServerAuthSession } from "auth";
+import React from "react";
+import { getServerSession } from "next-auth";
 
-export default async function DefaultPage() {
-  const session = await getServerAuthSession();
-
-  const register = () => {};
-
-  if (session) {
-
-    return (
-      <div>
-        Sessioned
-        <br />
-        {JSON.stringify(session.user)}
-      </div>
-    );
-  }
+async function page() {
+  const session = await getServerSession();
   return (
     <div>
-      <button onClick={register}> Fetch</button>
-      <br />
       Hello
+      <br />
+      <div>{JSON.stringify(session)}</div>
     </div>
   );
 }
+export default page;
