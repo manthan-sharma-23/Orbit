@@ -39,11 +39,6 @@ export const options: AuthOptions = {
       };
     },
   },
-  session: {
-    strategy: "jwt",
-    maxAge: 1 * 24 * 60 * 60,
-    updateAge: 24 * 60 * 60,
-  },
   providers: [
     GithubProvider({
       name: "github",
