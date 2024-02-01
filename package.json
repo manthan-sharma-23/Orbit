@@ -9,9 +9,9 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
-    "@prisma/client": "^5.8.1",
     "@repo/eslint-config": "workspace:*",
-    "prettier": "^3.1.1",
+    "prettier": "^3.2.4",
+    "prisma": "5.9.0",
     "tsconfig": "workspace:*",
     "turbo": "latest"
   },
