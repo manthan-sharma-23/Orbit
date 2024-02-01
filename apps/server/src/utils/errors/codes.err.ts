@@ -17,3 +17,13 @@ export const INVALID_INPUTS = {
   code: 400,
   action: { message: "BAD REQUEST --- Invalid Inputs found" },
 };
+
+export const DONT_EXISTS = {
+  code: 404,
+  action: { message: "NOT FOUND --- Data not found in store" },
+};
+
+export const USER_LOGGED_IN_SUCCESSFULLY = {
+  code: 200,
+  action: { message: "SUCCESS -- LogIn Success" },
+};

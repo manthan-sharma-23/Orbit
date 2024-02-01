@@ -53,7 +53,7 @@ export default async function RegisterUser(req: Request, res: Response) {
 
     return res
       .status(USER_CREATED_SUCCESSFULLY.code)
-      .json({ ...USER_CREATED_SUCCESSFULLY.action, cookie: token });
+      .json({ ...USER_CREATED_SUCCESSFULLY.action, token });
   } catch (error) {
     console.log(error);
     return res
