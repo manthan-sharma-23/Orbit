@@ -3,15 +3,21 @@ import { FaGithub } from "react-icons/fa";
 import { useState } from "react";
 import { SERVER_URL } from "../../lib/constants/config";
 import { FormType, InitialFormState } from "../../utils/typings/types";
+interface AuthProps {
+  page: string;
+}
+import { useLoginUserMutation } from "../../lib/store/reducers/slice/user.slice";
 
-const Auth = ({ page }: { page: string }) => {
+const Auth: React.FC<AuthProps> = ({ page }) => {
   const [form, setForm] = useState<FormType | null>(InitialFormState);
   const navigate = useNavigate();
+
+  const [loginUser] = useLoginUserMutation();
   const [loading, setLoading] = useState<boolean>(false);
   const isRegister = page === "/register";
 
-  const submit = () => {
-    if (!form?.email || !form.password) {
+  const submit = async () => {
+    if (!form || !form?.email || !form.password) {
       alert("Please Enter Complete Credentials");
     }
     setLoading(true);
@@ -37,22 +43,12 @@ const Auth = ({ page }: { page: string }) => {
           setLoading(false);
         });
     } else {
-      fetch(`${SERVER_URL}/api/user/login`, {
-        method: "POST",
-        body: JSON.stringify({
-          ...form,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((res) => res.json())
-        .then((data: { message: string; token: string }) => {
-          console.log(data);
+      loginUser({ email: form!.email, password: form!.password })
+        .then((res) => {
+          if (res) {
+            console.log(res);
+          }
           setLoading(false);
-          setForm(InitialFormState);
-          window.localStorage.setItem("token", data.token);
-          navigate("/");
         })
         .catch((err) => {
           console.log(err);

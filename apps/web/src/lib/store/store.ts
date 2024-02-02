@@ -1,8 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { reducers } from "./reducers";
+import { userApi } from "./reducers/slice/user.slice";
 
 export const store = configureStore({
-  reducer: reducers,
+  reducer: {
+    [userApi.reducerPath]: userApi.reducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(userApi.middleware),
 });
 
 export type GlobalState = ReturnType<typeof store.getState>;
