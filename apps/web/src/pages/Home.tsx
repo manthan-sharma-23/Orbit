@@ -1,5 +1,5 @@
 import Sidebar from "../components/containers/Sidebar";
-import { useGetUserQuery } from "../lib/store/reducers/slice/user.slice";
+import { useGetUserQuery } from "../lib/store/reducers/user/user.slice";
 
 const Home = () => {
   const { data, isLoading, isError } = useGetUserQuery();

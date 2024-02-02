@@ -21,6 +21,7 @@
     "ioredis": "^5.3.2",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
+    "typings": "workspace:^",
     "ws": "^8.16.0",
     "zod": "^3.22.4"
   },

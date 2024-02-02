@@ -6,7 +6,7 @@ import { FormType, InitialFormState } from "../../utils/typings/types";
 interface AuthProps {
   page: string;
 }
-import { useLoginUserMutation } from "../../lib/store/reducers/slice/user.slice";
+import { useLoginUserMutation } from "../../lib/store/reducers/user/user.slice";
 
 const Auth: React.FC<AuthProps> = ({ page }) => {
   const [form, setForm] = useState<FormType | null>(InitialFormState);

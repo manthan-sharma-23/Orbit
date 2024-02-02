@@ -56,6 +56,9 @@ importers:
       morgan:
         specifier: ^1.10.0
         version: 1.10.0
+      typings:
+        specifier: workspace:^
+        version: link:../../shared/typings
       ws:
         specifier: ^8.16.0
         version: 8.16.0
@@ -194,6 +197,15 @@ importers:
   configurations/tailwind-config: {}
 
   configurations/tsconfig: {}
+
+  shared/typings:
+    dependencies:
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+      zod:
+        specifier: ^3.22.4
+        version: 3.22.4
 
 packages:
 
@@ -5155,7 +5167,6 @@ packages:
   /typescript@5.3.3:
     resolution: {integrity: sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==}
     engines: {node: '>=14.17'}
-    dev: true
 
   /unbox-primitive@1.0.2:
     resolution: {integrity: sha512-61pPlCD9h51VoreyJ0BReideM3MDKMKnh6+V9L08331ipq6Q8OFXZYiqP6n/tbHx4s5I9uRhcye6BrbkizkBDw==}
