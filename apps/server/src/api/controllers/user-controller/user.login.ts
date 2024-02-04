@@ -14,7 +14,7 @@ export default async function LoginUser(req: Request, res: Response) {
   try {
     const { email, password } = req.body;
 
-    INPUT_LOGIN_FORM.parse({ email, password });
+    INPUT_LOGIN_FORM.parse({ name: "", email, password });
 
     if (!email || !password)
       return res.status(INVALID_INPUTS.code).json(INVALID_INPUTS.action);

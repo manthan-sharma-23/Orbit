@@ -1,7 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { FaGithub } from "react-icons/fa";
 import { useState } from "react";
-import { SERVER_URL } from "../../lib/constants/config";
 import { FormType, InitialFormState } from "../../utils/typings/types";
 interface AuthProps {
   page: string;
@@ -24,6 +23,8 @@ const AuthLayout: React.FC<AuthProps> = ({ page }) => {
       alert("Please Enter Complete Credentials");
       return;
     }
+
+    window.localStorage.removeItem("token");
     setLoading(true);
     if (isRegister) {
       await registerUser({ ...form });

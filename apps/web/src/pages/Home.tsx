@@ -3,7 +3,7 @@ import { useGetUserQuery } from "../lib/store/reducers/user/user.slice";
 import { useGetWebSocketMessagesQuery } from "../lib/store/reducers/websocket/ws.slice";
 
 const Home = () => {
-  const { data, isLoading, isError } = useGetWebSocketMessagesQuery({});
+  const { isLoading } = useGetWebSocketMessagesQuery({});
   const user = useGetUserQuery();
 
   // console.log(data);
