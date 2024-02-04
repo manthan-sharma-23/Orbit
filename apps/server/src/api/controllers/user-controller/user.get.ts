@@ -6,10 +6,11 @@ import {
 } from "../../../utils/errors/codes.err";
 import { ProtectedRequest } from "../../../utils/types";
 import { db } from "../../../utils/db";
+import { OUTPUT_GET_USER, USER } from "typings";
 
 const getUser = async (req: ProtectedRequest, res: Response) => {
   try {
-    const user = await db.user.findFirst({
+    const user: USER = await db.user.findFirst({
       where: {
         id: req.user,
       },
@@ -23,9 +24,12 @@ const getUser = async (req: ProtectedRequest, res: Response) => {
 
     if (!user) return res.status(DONT_EXISTS.code).json(DONT_EXISTS.action);
 
-    return res
-      .status(USER_LOGGED_IN_SUCCESSFULLY.code)
-      .json({ ...USER_LOGGED_IN_SUCCESSFULLY.action, user });
+    const output: OUTPUT_GET_USER = {
+      ...USER_LOGGED_IN_SUCCESSFULLY.action,
+      user,
+    };
+
+    return res.status(USER_LOGGED_IN_SUCCESSFULLY.code).json(output);
   } catch (err) {
     return res
       .status(INTERNAL_SERVER_ERROR.code)

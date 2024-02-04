@@ -6,54 +6,33 @@ import { FormType, InitialFormState } from "../../utils/typings/types";
 interface AuthProps {
   page: string;
 }
-import { useLoginUserMutation } from "../../lib/store/reducers/user/user.slice";
+import {
+  useLoginUserMutation,
+  useRegisterUserMutation,
+} from "../../lib/store/reducers/user/user.slice";
 
-const Auth: React.FC<AuthProps> = ({ page }) => {
+const AuthLayout: React.FC<AuthProps> = ({ page }) => {
   const [form, setForm] = useState<FormType | null>(InitialFormState);
   const navigate = useNavigate();
-
   const [loginUser] = useLoginUserMutation();
+  const [registerUser] = useRegisterUserMutation();
   const [loading, setLoading] = useState<boolean>(false);
   const isRegister = page === "/register";
 
   const submit = async () => {
     if (!form || !form?.email || !form.password) {
       alert("Please Enter Complete Credentials");
+      return;
     }
     setLoading(true);
     if (isRegister) {
-      fetch(`${SERVER_URL}/api/user/register`, {
-        method: "POST",
-        body: JSON.stringify({
-          ...form,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((res) => res.json())
-        .then((data: { message: string; token: string }) => {
-          setForm(InitialFormState);
-          setLoading(false);
-          window.localStorage.setItem("token", data.token);
-          navigate("/");
-        })
-        .catch((err) => {
-          console.log(err);
-          setLoading(false);
-        });
+      await registerUser({ ...form });
+      setLoading(false);
+      navigate("/");
     } else {
-      loginUser({ email: form!.email, password: form!.password })
-        .then((res) => {
-          if (res) {
-            console.log(res);
-          }
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.log(err);
-          setLoading(false);
-        });
+      await loginUser({ ...form });
+      setLoading(false);
+      navigate("/");
     }
   };
 
@@ -191,4 +170,4 @@ const Auth: React.FC<AuthProps> = ({ page }) => {
   );
 };
 
-export default Auth;
+export default AuthLayout;

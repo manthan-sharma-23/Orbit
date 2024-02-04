@@ -8,13 +8,16 @@ import {
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import cookie from "cookie";
+import { INPUT_LOGIN_FORM, OUTPUT_LOGIN_FORM } from "typings";
 import { db } from "../../../utils/db";
 import { SECRET_KEY } from "../../../utils/constants/config";
+import { z } from "zod";
 
 export default async function RegisterUser(req: Request, res: Response) {
   try {
-    console.log(req.body);
-    const { name, email, password } = req.body;
+    const { name, email, password } = req.body as INPUT_LOGIN_FORM;
+
+    await INPUT_LOGIN_FORM.parse(req.body);
 
     if (!email || !password)
       return res.status(INVALID_INPUTS.code).json(INVALID_INPUTS.action);
@@ -51,11 +54,13 @@ export default async function RegisterUser(req: Request, res: Response) {
       maxAge: 3600,
     });
 
-    return res
-      .status(USER_CREATED_SUCCESSFULLY.code)
-      .json({ ...USER_CREATED_SUCCESSFULLY.action, token });
+    const output: OUTPUT_LOGIN_FORM = {
+      ...USER_CREATED_SUCCESSFULLY.action,
+      token,
+    };
+
+    return res.status(USER_CREATED_SUCCESSFULLY.code).json(output);
   } catch (error) {
-    console.log(error);
     return res
       .status(INTERNAL_SERVER_ERROR.code)
       .json(INTERNAL_SERVER_ERROR.action);

@@ -1,11 +1,11 @@
-import Auth from "../components/containers/Auth";
+import AuthLayout from "../components/layouts/AuthLayout";
 import { useLocation } from "react-router-dom";
 
 const Signinup = () => {
   const path = useLocation().pathname;
   return (
     <div>
-      <Auth page={path} />
+      <AuthLayout page={path} />
     </div>
   );
 };
