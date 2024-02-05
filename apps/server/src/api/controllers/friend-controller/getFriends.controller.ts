@@ -5,9 +5,9 @@ import {
   RESOURCE_CONFLICT,
   RESOURCE_FOUND_SUCCESSFULLY,
 } from "../../../utils/static/codes.err";
-import {  ProtectedRequest } from "../../../utils/types";
+import { ProtectedRequest } from "../../../utils/types";
 import { db } from "../../../utils/db";
-import { FRIEND_REQUEST_STATUS } from "typings";
+import { FRIEND, FRIEND_REQUEST, FRIEND_REQUEST_STATUS } from "typings";
 
 const getFriends = async (req: ProtectedRequest, res: Response) => {
   try {
@@ -18,7 +18,7 @@ const getFriends = async (req: ProtectedRequest, res: Response) => {
         .status(INVALID_CREDENTIALS.code)
         .json(INVALID_CREDENTIALS.action);
 
-    const friends = await db.friend.findMany({
+    const friendsAccepted: FRIEND_REQUEST[] = await db.friend.findMany({
       where: {
         OR: [
           {
@@ -32,12 +32,35 @@ const getFriends = async (req: ProtectedRequest, res: Response) => {
       },
     });
 
+    const friendIDs: string[] = friendsAccepted.map((friend) => {
+      if (friend.receiverId !== userId) {
+        return friend.receiverId;
+      }
+      return friend.senderId;
+    });
+
+    const friends: Partial<FRIEND>[] = await Promise.all(
+      friendIDs.map(async (id) => {
+        const friend: FRIEND = await db.user.findFirst({
+          where: {
+            id,
+          },
+          select: {
+            name: true,
+            email: true,
+            image: true,
+          },
+        });
+        return friend;
+      })
+    );
+
     if (!friends)
       return res.status(RESOURCE_CONFLICT.code).json(RESOURCE_CONFLICT.action);
 
     return res
       .status(RESOURCE_FOUND_SUCCESSFULLY.code)
-      .json(RESOURCE_FOUND_SUCCESSFULLY.action);
+      .json({ ...RESOURCE_FOUND_SUCCESSFULLY.action, friends });
   } catch (error) {
     return res
       .status(INTERNAL_SERVER_ERROR.code)

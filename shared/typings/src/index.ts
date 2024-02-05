@@ -21,6 +21,12 @@ export type USER = {
   emailVerified?: Date;
 };
 
+export type FRIEND = {
+  name?: string;
+  email?: string;
+  image?: string;
+};
+
 export type OUTPUT_GET_USER = {
   message?: string;
   user: USER;
@@ -39,6 +45,7 @@ export const ROOM_TYPE = {
 };
 
 export type FRIEND_REQUEST = {
+  id: string;
   status: string;
   senderId: string;
   receiverId: string;

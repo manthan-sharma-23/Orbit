@@ -3,11 +3,11 @@ import { SERVER_URL } from "../../constants/config";
 import { INPUT_LOGIN_FORM, OUTPUT_GET_USER, OUTPUT_LOGIN_FORM } from "typings";
 
 export const userApi = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: SERVER_URL }),
+  baseQuery: fetchBaseQuery({ baseUrl: SERVER_URL + "/api/user" }),
   endpoints: (build) => ({
     getUser: build.query<OUTPUT_GET_USER, void>({
       query: () => ({
-        url: "/api/user",
+        url: "/",
         method: "GET",
         headers: {
           Authorization: "Bearer " + window.localStorage.getItem("token"),
@@ -17,7 +17,7 @@ export const userApi = createApi({
     }),
     loginUser: build.mutation<OUTPUT_LOGIN_FORM, INPUT_LOGIN_FORM>({
       query: (input) => ({
-        url: "/api/user/login",
+        url: "/login",
         method: "POST",
         body: input,
         headers: {
@@ -32,7 +32,7 @@ export const userApi = createApi({
     }),
     registerUser: build.mutation<OUTPUT_LOGIN_FORM, INPUT_LOGIN_FORM>({
       query: (input) => ({
-        url: "/api/user/register",
+        url: "/register",
         method: "POST",
         body: input,
         headers: {
