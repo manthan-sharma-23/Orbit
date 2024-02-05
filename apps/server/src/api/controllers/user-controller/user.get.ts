@@ -3,27 +3,24 @@ import {
   DONT_EXISTS,
   INTERNAL_SERVER_ERROR,
   USER_LOGGED_IN_SUCCESSFULLY,
-} from "../../../utils/errors/codes.err";
+} from "../../../utils/static/codes.err";
 import { ProtectedRequest } from "../../../utils/types";
 import { db } from "../../../utils/db";
 import { OUTPUT_GET_USER, USER } from "typings";
 
 const getUser = async (req: ProtectedRequest, res: Response) => {
   try {
-    const user: USER = await db.user.findFirst({
+    const id = req.user;
+
+    if (!id) return;
+
+    const user = await db.user.findFirst({
       where: {
-        id: req.user,
-      },
-      select: {
-        name: true,
-        email: true,
-        image: true,
-        emailVerified: true,
+        id,
       },
     });
 
     if (!user) return res.status(DONT_EXISTS.code).json(DONT_EXISTS.action);
-
     const output: OUTPUT_GET_USER = {
       ...USER_LOGGED_IN_SUCCESSFULLY.action,
       user,

@@ -5,7 +5,7 @@ export interface ProtectedRequest extends Request {
   user?: string;
 }
 
-
-export interface UserJwtPayload extends JwtPayload{
-    userId?:string
+export interface UserJwtPayload extends JwtPayload {
+  userId?: string;
 }
+

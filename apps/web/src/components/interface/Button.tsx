@@ -22,7 +22,7 @@ const Button = ({
   return (
     <div className={`w-${width} h-${height}`}>
       <button
-        className={`flex h-${height} w-${width} font-semibold transition hover:bg-white hover:text-black flex justify-center items-center rounded-md border-2 text-${textColor} border-${borderColor} bg-${backgroundColor} px-1 py-2 text-lg mx-2 `}
+        className={`flex h-${height} w-${width} font-semibold transition hover:bg-white hover:text-black flex justify-center items-center rounded-xl border-2 text-${textColor} border-${borderColor} bg-${backgroundColor} px-1 py-1 text-lg mx-1 `}
         onClick={onClick}
         type={type}
       >

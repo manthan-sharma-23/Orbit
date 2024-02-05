@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -17,4 +14,36 @@ model User {
   password      String?
   emailVerified DateTime?
   image         String?
+  rooms         Room[] // A user can be part of multiple rooms
+  messages      Message[] // A user can send multiple messages
+  friends       Friend[]
+}
+
+model Room {
+  id       String    @id @default(cuid())
+  name     String?
+  createAt DateTime  @default(now())
+  type     String    @default("person")
+  users    User[] // A room can have multiple users
+  messages Message[] // A room can have multiple messages
+}
+
+model Message {
+  id     String   @id @default(cuid())
+  text   String?
+  sendAt DateTime @default(now())
+  sender User?    @relation(fields: [userId], references: [id]) // A message is sent by a user
+  room   Room?    @relation(fields: [roomId], references: [id]) // A message is sent to a room
+  userId String?
+  roomId String?
+}
+
+model Friend {
+  id         String   @id @default(cuid())
+  status     String   @default("pending")
+  sender     User     @relation(fields: [senderId], references: [id])
+  senderId   String
+  receiverId String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }

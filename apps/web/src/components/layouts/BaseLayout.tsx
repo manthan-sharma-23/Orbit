@@ -16,14 +16,14 @@ const BaseLayout = ({ children }: { children?: React.ReactNode }) => {
           <Link to="/">
             <Ci.CiCalendar className="cursor-pointer" />
           </Link>
-          <Link to="/">
+          <Link to="/"> 
             <Md.MdOutlineGroups className="cursor-pointer" />
           </Link>
           <Link to="/chat">
             <Io5.IoChatbubbleOutline className="cursor-pointer" />
           </Link>
           <Link to="/">
-            <Md.MdAdd className="cursor-pointer" />
+            <Io5.IoVideocamOutline className="cursor-pointer" />
           </Link>
         </div>
         <div className="h-[40%] w-full flex justify-end flex-col items-center gap-8">

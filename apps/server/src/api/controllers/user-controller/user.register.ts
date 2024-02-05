@@ -4,7 +4,7 @@ import {
   INVALID_INPUTS,
   USER_ALREADY_EXISTS,
   USER_CREATED_SUCCESSFULLY,
-} from "../../../utils/errors/codes.err";
+} from "../../../utils/static/codes.err";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import cookie from "cookie";

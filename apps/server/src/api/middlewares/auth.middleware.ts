@@ -2,7 +2,7 @@ import { NextFunction, Response } from "express";
 import {
   DONT_EXISTS,
   INTERNAL_SERVER_ERROR,
-} from "../../utils/errors/codes.err";
+} from "../../utils/static/codes.err";
 import jwt from "jsonwebtoken";
 import { SECRET_KEY } from "../../utils/constants/config";
 import { ProtectedRequest, UserJwtPayload } from "../../utils/types";

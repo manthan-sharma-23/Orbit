@@ -4,7 +4,7 @@ import {
   INTERNAL_SERVER_ERROR,
   INVALID_INPUTS,
   USER_LOGGED_IN_SUCCESSFULLY,
-} from "../../../utils/errors/codes.err";
+} from "../../../utils/static/codes.err";
 import jwt from "jsonwebtoken";
 import { db } from "../../../utils/db";
 import { SECRET_KEY } from "../../../utils/constants/config";
