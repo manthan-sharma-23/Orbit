@@ -36,7 +36,7 @@
     "postcss": "^8.4.33",
     "tailwindcss": "^3.4.1",
     "toolkit": "link:@types/@reduxjs/toolkit",
-    "typescript": "^5.2.2",
+    "typescript": "^5.3.3",
     "vite": "^5.0.8"
   }
 }
