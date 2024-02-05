@@ -1,5 +1,5 @@
 import { fetchBaseQuery, createApi } from "@reduxjs/toolkit/query/react";
-import { SERVER_URL } from "../../../constants/config";
+import { SERVER_URL } from "../../constants/config";
 import { INPUT_LOGIN_FORM, OUTPUT_GET_USER, OUTPUT_LOGIN_FORM } from "typings";
 
 export const userApi = createApi({

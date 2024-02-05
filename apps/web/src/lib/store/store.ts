@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { userApi } from "./reducers/user/user.slice";
-import { chatApi } from "./reducers/websocket/ws.slice";
+import { userApi } from "./rtk-query/user.api";
+import { chatApi } from "./rtk-query/websocket/ws.slice";
 
 export const store = configureStore({
   reducer: {
