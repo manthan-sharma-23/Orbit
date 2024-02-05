@@ -1,4 +1,4 @@
-import { Response } from "express";
+import { Response, request } from "express";
 import { ProtectedRequest } from "../../../utils/types";
 import {
   INTERNAL_SERVER_ERROR,
@@ -7,9 +7,9 @@ import {
   RESOURCE_UPDATED_SUCCESSFULLY,
 } from "../../../utils/static/codes.err";
 import { db } from "../../../utils/db";
-import { FRIEND_REQUEST_STATUS } from "../../../utils/static/enums";
+import { FRIEND_REQUEST, FRIEND_REQUEST_STATUS } from "typings";
 
-const rejectFriend = async (req: ProtectedRequest, res: Response) => {
+const acceptFriend = async (req: ProtectedRequest, res: Response) => {
   try {
     const userId = req.user;
     const { requestId } = req.params;
@@ -19,17 +19,27 @@ const rejectFriend = async (req: ProtectedRequest, res: Response) => {
         .status(RESOURCE_NOT_FOUND.code)
         .json(RESOURCE_NOT_FOUND.action);
 
-    const response = await db.friend.update({
+    const response: FRIEND_REQUEST = await db.friend.update({
       where: {
         id: requestId,
       },
       data: {
-        status: FRIEND_REQUEST_STATUS.rejected,
+        status: FRIEND_REQUEST_STATUS.accepted,
       },
     });
 
+    const users = [response.senderId, response.receiverId];
+
     if (!response)
       return res.status(RESOURCE_CONFLICT.code).json(RESOURCE_CONFLICT.action);
+
+    const room = await db.room.create({
+      data: {
+        users: { connect: users.map((id) => ({ id })) },
+      },
+    });
+
+    console.log(room);
 
     return res
       .status(RESOURCE_UPDATED_SUCCESSFULLY.code)
@@ -41,4 +51,4 @@ const rejectFriend = async (req: ProtectedRequest, res: Response) => {
   }
 };
 
-export default rejectFriend;
+export default acceptFriend;

@@ -4,6 +4,7 @@ import morgan from "morgan";
 import bodyParser from "body-parser";
 import userRouter from "./routes/user.routes";
 import featureRouter from "./routes/feature.routes";
+import roomRouter from "./routes/room.routes";
 
 const router: Router = Router();
 
@@ -14,6 +15,7 @@ router
   .use(bodyParser.urlencoded({ extended: false }))
   .use(morgan(":method :url :status :res[content-length] - :response-time ms"))
   .use("/user", userRouter)
-  .use("/feature", featureRouter);
+  .use("/feature", featureRouter)
+  .use("/room", roomRouter);
 
 export default router;

@@ -1,4 +1,4 @@
-import { Response, request } from "express";
+import { Response } from "express";
 import { ProtectedRequest } from "../../../utils/types";
 import {
   INTERNAL_SERVER_ERROR,
@@ -7,9 +7,9 @@ import {
   RESOURCE_UPDATED_SUCCESSFULLY,
 } from "../../../utils/static/codes.err";
 import { db } from "../../../utils/db";
-import { FRIEND_REQUEST_STATUS } from "../../../utils/static/enums";
+import { FRIEND_REQUEST_STATUS } from "typings";
 
-const acceptFriend = async (req: ProtectedRequest, res: Response) => {
+const rejectFriend = async (req: ProtectedRequest, res: Response) => {
   try {
     const userId = req.user;
     const { requestId } = req.params;
@@ -24,7 +24,7 @@ const acceptFriend = async (req: ProtectedRequest, res: Response) => {
         id: requestId,
       },
       data: {
-        status: FRIEND_REQUEST_STATUS.accepted,
+        status: FRIEND_REQUEST_STATUS.rejected,
       },
     });
 
@@ -41,4 +41,4 @@ const acceptFriend = async (req: ProtectedRequest, res: Response) => {
   }
 };
 
-export default acceptFriend;
+export default rejectFriend;

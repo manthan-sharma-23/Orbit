@@ -7,7 +7,7 @@ import {
 } from "../../../utils/static/codes.err";
 import {  ProtectedRequest } from "../../../utils/types";
 import { db } from "../../../utils/db";
-import { FRIEND_REQUEST_STATUS } from "../../../utils/static/enums";
+import { FRIEND_REQUEST_STATUS } from "typings";
 
 const getFriends = async (req: ProtectedRequest, res: Response) => {
   try {

@@ -26,6 +26,24 @@ export type OUTPUT_GET_USER = {
   user: USER;
 };
 
+//
+export const FRIEND_REQUEST_STATUS = {
+  pending: "pending",
+  accepted: "accepted",
+  rejected: "rejected",
+};
+
+export const ROOM_TYPE = {
+  group: "group",
+  person: "person",
+};
+
+export type FRIEND_REQUEST = {
+  status: string;
+  senderId: string;
+  receiverId: string;
+};
+
 // Web Socket types
 export enum ChatEvent {
   SendMessage = "send_message",
