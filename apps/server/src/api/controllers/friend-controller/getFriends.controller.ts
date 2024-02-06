@@ -32,26 +32,31 @@ const getFriends = async (req: ProtectedRequest, res: Response) => {
       },
     });
 
-    const friendIDs: string[] = friendsAccepted.map((friend) => {
-      if (friend.receiverId !== userId) {
-        return friend.receiverId;
+    console.log("Accepted ", friendsAccepted);
+    const friendIDs: { roomId: string; id: string }[] = friendsAccepted.map(
+      (friend) => {
+        if (friend.receiverId !== userId) {
+          return { id: friend.receiverId, roomId: friend.roomId };
+        }
+        return { id: friend.senderId, roomId: friend.roomId };
       }
-      return friend.senderId;
-    });
+    );
 
     const friends: Partial<FRIEND>[] = await Promise.all(
-      friendIDs.map(async (id) => {
+      friendIDs.map(async (frnd) => {
         const friend: FRIEND = await db.user.findFirst({
           where: {
-            id,
+            id: frnd.id,
           },
           select: {
+            id: true,
             name: true,
             email: true,
             image: true,
           },
         });
-        return friend;
+
+        return { ...friend, roomId: frnd.roomId };
       })
     );
 

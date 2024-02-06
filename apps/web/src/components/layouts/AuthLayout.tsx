@@ -8,7 +8,7 @@ interface AuthProps {
 import {
   useLoginUserMutation,
   useRegisterUserMutation,
-} from "../../lib/store/rtk-query/user.api";
+} from "../../features/store/rtk-query/user.api";
 
 const AuthLayout: React.FC<AuthProps> = ({ page }) => {
   const [form, setForm] = useState<FormType | null>(InitialFormState);

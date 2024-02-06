@@ -2,14 +2,14 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Signinup from "./pages/Sign-in-up";
 import { Provider } from "react-redux";
-import { store } from "./lib/store/store";
+import { store } from "./features/store/store";
 import BaseLayout from "./components/layouts/BaseLayout";
 import ChatLayout from "./components/layouts/ChatLayout";
 import Chat from "./pages/Chat";
 
 function App() {
   return (
-    <div>
+    <main>
       <Provider store={store}>
         <BrowserRouter>
           <Routes>
@@ -24,7 +24,7 @@ function App() {
           </Routes>
         </BrowserRouter>
       </Provider>
-    </div>
+    </main>
   );
 }
 

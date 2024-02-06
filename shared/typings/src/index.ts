@@ -22,9 +22,11 @@ export type USER = {
 };
 
 export type FRIEND = {
+  id?: string;
   name?: string;
   email?: string;
   image?: string;
+  roomId?: string;
 };
 
 export type OUTPUT_GET_USER = {
@@ -44,11 +46,19 @@ export const ROOM_TYPE = {
   person: "person",
 };
 
+export type ROOM = {
+  id: string;
+  name?: string;
+  users?: USER[];
+  createdAt: Date;
+};
+
 export type FRIEND_REQUEST = {
   id: string;
   status: string;
   senderId: string;
   receiverId: string;
+  roomId: string;
 };
 
 // Web Socket types

@@ -1,14 +1,14 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../styles/scroll.css";
 import * as Ri from "react-icons/ri";
 import { BsPerson } from "react-icons/bs";
 import { FiPlus } from "react-icons/fi";
 import { useState } from "react";
-import { useGetFriendsQuery } from "../../lib/store/rtk-query/friends.api";
+import { useGetFriendsQuery } from "../../features/store/rtk-query/friends.api";
 
-const ChatProfilePannel = async () => {
+const ChatProfilePannel = () => {
   const [isAddOn, setAddOn] = useState<boolean>(false);
-  const friends = await useGetFriendsQuery();
+  const friends = useGetFriendsQuery();
 
   return (
     <div className="h-full w-full bg-[#F0F0F0] flex flex-col justify-start items-center">
@@ -47,8 +47,13 @@ const ChatProfilePannel = async () => {
         </div>
         <div className="h-full w-4/5 relative bg-transparent overflow-y-scroll scrollw pl-2 pr-[2px]">
           {friends.data &&
-            friends.data.friends.map((friend:{name:string,image:string}) => (
-              <ProfileCard name={friend.name} image={friend.image} />
+            friends.data.friends.map((friend) => (
+              <ProfileCard
+                key={friend.roomId}
+                name={friend.name}
+                image={friend.image}
+                roomId={friend.roomId}
+              />
             ))}
         </div>
       </div>
@@ -56,12 +61,28 @@ const ChatProfilePannel = async () => {
   );
 };
 
-const ProfileCard = ({ name, image }: { name?: string; image?: string }) => {
+const ProfileCard = ({
+  name,
+  image,
+  roomId,
+}: {
+  name?: string;
+  image?: string;
+  roomId?: string;
+}) => {
+  const navigate = useNavigate();
   return (
     <>
-      <div className="bg-white h-[8.5vh] w-full rounded-lg p-2 flex items-center my-2 cursor-pointer shadow-lg">
-        <div className="h-full w-[20%] flex justify-center items-center rounded-full overflow-hidden">
-          <img src={image} className="h-[60px] w-[60px] rounded-full" />
+      <div
+        onClick={() => navigate(`/chat/${roomId}`)}
+        className="bg-white h-[8.5vh] w-full rounded-lg p-2 flex items-center my-2 cursor-pointer shadow-lg"
+      >
+        <div className="h-full w-[20%] flex justify-center items-center rounded-full p-[1px] overflow-hidden">
+          {image ? (
+            <img src={image} className="h-[60px] w-[60px] rounded-full" />
+          ) : (
+            <div className="h-[60px] w-[60px] bg-gray-400 rounded-full" />
+          )}
         </div>
         <div className="h-full w-[90%] flex justify-center items-center">
           <div className="h-full w-[90%] flex flex-col justify-center items-start pl-3">

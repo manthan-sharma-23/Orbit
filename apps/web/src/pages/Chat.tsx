@@ -1,7 +1,9 @@
 import Input from "../components/interface/Input";
 import Button from "../components/interface/Button";
+import { useParams } from "react-router-dom";
 
 const Chat = () => {
+  const { id } = useParams();
   return (
     <div className="h-full w-full flex flex-col justify-center items-center rounded-xl shadow">
       <div className="w-full h-[94%] bg-white rounded-xl border-[1px] border-black my-2 shadow-lg"></div>
@@ -10,6 +12,8 @@ const Chat = () => {
           <Input
             backgroundColor="#dbdbdbec"
             borderColor="black"
+            placeholder={id}
+            showPlaceholder={true}
             onChange={(e) => {
               console.log(e.target.value);
             }}

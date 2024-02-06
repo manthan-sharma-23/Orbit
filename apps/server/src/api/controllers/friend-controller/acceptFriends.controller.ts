@@ -7,7 +7,12 @@ import {
   RESOURCE_UPDATED_SUCCESSFULLY,
 } from "../../../utils/static/codes.err";
 import { db } from "../../../utils/db";
-import { FRIEND_REQUEST, FRIEND_REQUEST_STATUS } from "typings";
+import {
+  FRIEND_REQUEST,
+  FRIEND_REQUEST_STATUS,
+  ROOM,
+  ROOM_TYPE,
+} from "typings";
 
 const acceptFriend = async (req: ProtectedRequest, res: Response) => {
   try {
@@ -19,31 +24,49 @@ const acceptFriend = async (req: ProtectedRequest, res: Response) => {
         .status(RESOURCE_NOT_FOUND.code)
         .json(RESOURCE_NOT_FOUND.action);
 
+    const friendRequest: FRIEND_REQUEST = await db.friend.findFirst({
+      where: {
+        id: requestId,
+      },
+    });
+
+    if (!friendRequest)
+      return res
+        .status(RESOURCE_NOT_FOUND.code)
+        .json(RESOURCE_NOT_FOUND.action);
+
+    const roomers = [friendRequest.senderId, friendRequest.receiverId];
+
+    const room: ROOM = await db.room.create({
+      data: {
+        type: ROOM_TYPE.person,
+        users: {
+          connect: roomers.map((id) => ({ id })),
+        },
+      },
+    });
+
     const response: FRIEND_REQUEST = await db.friend.update({
       where: {
         id: requestId,
       },
       data: {
+        roomId: room.id,
         status: FRIEND_REQUEST_STATUS.accepted,
       },
+      select: {
+        status: true,
+        roomId: true,
+        updatedAt: true,
+      },
     });
-
-    const users = [response.senderId, response.receiverId];
 
     if (!response)
       return res.status(RESOURCE_CONFLICT.code).json(RESOURCE_CONFLICT.action);
 
-    const room = await db.room.create({
-      data: {
-        users: { connect: users.map((id) => ({ id })) },
-      },
-    });
-
-    console.log(room);
-
     return res
       .status(RESOURCE_UPDATED_SUCCESSFULLY.code)
-      .json(RESOURCE_UPDATED_SUCCESSFULLY.action);
+      .json({ ...RESOURCE_UPDATED_SUCCESSFULLY.action, response });
   } catch (error) {
     return res
       .status(INTERNAL_SERVER_ERROR.code)

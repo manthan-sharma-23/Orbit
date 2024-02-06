@@ -1,10 +1,9 @@
 import { Outlet } from "react-router-dom";
 import ChatProfilePannel from "../containers/ChatProfilePannel";
-import { useGetUserQuery } from "../../lib/store/rtk-query/user.api";
+import { useGetUserQuery } from "../../features/store/rtk-query/user.api";
 import * as Io from "react-icons/io5";
 import { BiSolidBell } from "react-icons/bi";
 import { useState } from "react";
-import Input from "../interface/Input";
 
 const ChatLayout = () => {
   return (

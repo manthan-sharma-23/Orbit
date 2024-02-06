@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
-import { useGetUserQuery } from "../lib/store/rtk-query/user.api";
-import { useGetWebSocketMessagesQuery } from "../lib/store/rtk-query/websocket/ws.slice";
+import { useGetWebSocketMessagesQuery } from "../features/store/rtk-query/ws.api";
+import { useGetUserQuery } from "../features/store/rtk-query/user.api";
 
 const Home = () => {
   const { isLoading } = useGetWebSocketMessagesQuery({});
