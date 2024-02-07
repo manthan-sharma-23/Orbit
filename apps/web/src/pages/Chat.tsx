@@ -36,7 +36,6 @@ export default function Chat() {
       wsInstance.addEventListener("message", (msg) => {
         const text: MESSAGE = JSON.parse(msg.data);
         if (text.type === "MESSAGE" && text.payload.message) {
-          console.log(text);
           const newMessage: TEXT = {
             sendAt: text.payload.message.sendAt,
             userId: text.payload.message.userId,

@@ -22,7 +22,6 @@ export default async function RegisterUser(req: Request, res: Response) {
     if (!email || !password)
       return res.status(INVALID_INPUTS.code).json(INVALID_INPUTS.action);
 
-    console.log("running");
     let user = await db.user.findFirst({
       where: {
         email,

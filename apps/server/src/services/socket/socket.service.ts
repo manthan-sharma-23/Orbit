@@ -36,7 +36,6 @@ export const WebSocketConfig = (server: Server) => {
     ws.on("message", async (msg) => {
       const message: MESSAGE = JSON.parse(msg.toString());
 
-      console.log(message);
 
       if (message.type === "JOIN") {
         users[wsId] = {

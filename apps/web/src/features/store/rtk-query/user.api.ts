@@ -26,7 +26,6 @@ export const userApi = createApi({
         },
       }),
       transformResponse: (response: OUTPUT_LOGIN_FORM, meta, arg) => {
-        console.log("Tranform Response : ", response);
         window.localStorage.setItem("token", response.token);
         return response;
       },
@@ -41,7 +40,6 @@ export const userApi = createApi({
         },
       }),
       transformResponse: (response: OUTPUT_LOGIN_FORM, meta, arg) => {
-        console.log("Tranform Response : ", response);
         window.localStorage.setItem("token", response.token);
         return response;
       },
