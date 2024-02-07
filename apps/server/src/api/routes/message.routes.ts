@@ -5,7 +5,7 @@ import { fetchMessages } from "../controllers/message-controller/fetchMessages.c
 
 const router: Router = Router();
 
-router.get("/getmessages", authUser, fetchMessages);
+router.get("/getmessages/:roomId", authUser, fetchMessages);
 router.post("/sendmessage", authUser, sendMessageToDB);
 
 export default router;

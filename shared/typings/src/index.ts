@@ -19,6 +19,7 @@ export type USER = {
   email: string;
   image?: any;
   emailVerified?: Date;
+  id?: string;
 };
 
 export type FRIEND = {
@@ -73,7 +74,7 @@ export type MESSAGE = {
   type: "JOIN" | "MESSAGE";
   payload: {
     roomId?: string;
-    message?: string;
+    message?: TEXT;
   };
 };
 

@@ -6,20 +6,17 @@ export const messageApi = createApi({
   reducerPath: "messageApi",
   baseQuery: fetchBaseQuery({ baseUrl: SERVER_URL }),
   endpoints: (build) => ({
-    getMessages: build.query<any, { roomId: string }>({
+    getMessages: build.query<TEXT[], { roomId: string }>({
       query: ({ roomId }) => ({
-        url: "/api/messages/getmessages/",
+        url: "/api/messages/getmessages/" + roomId,
         method: "GET",
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          roomId,
-        }),
       }),
     }),
-    sendMessage: build.mutation<any, { message: string; roomId: string }>({
+    sendMessage: build.mutation<any, { message: TEXT; roomId: string }>({
       query: ({ message, roomId }) => ({
         url: "/api/messages/sendmessage",
         method: "POST",

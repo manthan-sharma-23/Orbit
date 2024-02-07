@@ -2,22 +2,23 @@ import Input from "../components/interface/Input";
 import Button from "../components/interface/Button";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { MESSAGE } from "typings";
+import { MESSAGE, TEXT } from "typings";
 import {
   useGetMessagesQuery,
   useSendMessageMutation,
 } from "../features/store/rtk-query/message.api";
+import { useGetUserQuery } from "../features/store/rtk-query/user.api";
 
-const Chat = () => {
+export default function Chat() {
   const { id } = useParams();
   const [sendMessage] = useSendMessageMutation();
+  const user = useGetUserQuery();
   const { data, isLoading } = useGetMessagesQuery({ roomId: id! });
   const [ws, setWs] = useState<WebSocket | null>(null);
   const [message, setMessage] = useState<string | null>(null);
-  const [messages, setMessages] = useState<string[]>([]);
+  const [messages, setMessages] = useState<TEXT[]>([]);
 
   useEffect(() => {
-    console.log(data);
     const wsInstance = new WebSocket("ws://localhost:3100");
 
     wsInstance.onopen = () => {
@@ -35,13 +36,18 @@ const Chat = () => {
       wsInstance.addEventListener("message", (msg) => {
         const text: MESSAGE = JSON.parse(msg.data);
         if (text.type === "MESSAGE" && text.payload.message) {
-          setMessages((prev) => [
-            ...prev,
-            text.payload.message as unknown as string,
-          ]);
+          console.log(text);
+          const newMessage: TEXT = {
+            sendAt: text.payload.message.sendAt,
+            userId: text.payload.message.userId,
+            text: text.payload.message.text,
+          };
+          setMessages((prev) => [...prev, newMessage]);
         }
       });
     };
+
+    setMessages(data!);
 
     return () => {
       if (wsInstance) {
@@ -51,17 +57,22 @@ const Chat = () => {
   }, []);
 
   const sendMessages = () => {
-    if (id && message && ws && ws.readyState === WebSocket.OPEN) {
+    if (user.data && id && message && ws && ws.readyState === WebSocket.OPEN) {
+      const msg: TEXT = {
+        sendAt: new Date(),
+        userId: user.data.user.id!,
+        text: message,
+      };
       try {
         const text: MESSAGE = {
           type: "MESSAGE",
           payload: {
             roomId: id,
-            message,
+            message: msg,
           },
         };
         ws.send(JSON.stringify(text));
-        sendMessage({ message, roomId: id });
+        sendMessage({ message: msg, roomId: id });
 
         setMessage(null);
       } catch (err) {
@@ -74,15 +85,16 @@ const Chat = () => {
     return <div className=" text-black text-2xl">Loading...</div>;
   }
 
-  // if (isError) {
-  //   return <div>Error</div>;
-  // }
-
   return (
     <div className="h-full w-full flex flex-col justify-center items-center rounded-xl shadow">
-      <div className="w-full h-[94%] bg-white rounded-xl border-[1px] border-black my-2 shadow-lg">
-        {messages.map((msg) => (
-          <MessageDialouge text={msg} />
+      <div className="w-full h-[94%] bg-white rounded-xl border-[1px] border-black my-2 shadow-lg overflow-y-scroll">
+        {messages.map((msg, index) => (
+          <MessageDialouge
+            text={msg.text}
+            key={index}
+            userId={user.data?.user.id}
+            senderId={msg.userId}
+          />
         ))}
       </div>
       <div className="w-full h-[6%] rounded-2xl flex justify-center items-center bg-transparent">
@@ -104,16 +116,24 @@ const Chat = () => {
       </div>
     </div>
   );
-};
+}
 
-const MessageDialouge = ({ text }: { text?: string }) => {
+const MessageDialouge = ({
+  senderId,
+  text,
+  userId,
+}: {
+  text?: string;
+  userId?: string;
+  senderId?: string;
+}) => {
   return (
-    <div className="mx-3 my-4">
-      <span className="bg-black/80 text-white w-auto text-xl p-2 rounded-lg">
+    <div
+      className={`mx-3 my-2 flex items-center justify-${userId === senderId ? "end" : "start"}`}
+    >
+      <span className="bg-black/80 text-white w-auto text-xl px-3 py-2 rounded-lg">
         {text}
       </span>
     </div>
   );
 };
-
-export default Chat;

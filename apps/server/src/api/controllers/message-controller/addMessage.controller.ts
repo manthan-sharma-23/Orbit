@@ -10,18 +10,21 @@ import { db } from "../../../utils/db";
 
 export const sendMessageToDB = async (req: ProtectedRequest, res: Response) => {
   try {
-
     const userId = req.user!;
-    const { roomId, message } = req.body;
+    let { roomId, message } = req.body;
+
     if (!userId || !roomId) {
       return res.sendStatus(INVALID_CREDENTIALS.code);
     }
+
+    const date = new Date(message.sendAt);
 
     const response = await db.message.create({
       data: {
         userId,
         roomId,
-        text: message,
+        text: message.text,
+        sendAt: date,
       },
       select: {
         text: true,

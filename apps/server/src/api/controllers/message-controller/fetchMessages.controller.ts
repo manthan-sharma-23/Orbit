@@ -6,8 +6,7 @@ import { TEXT } from "typings";
 
 export const fetchMessages = async (req: ProtectedRequest, res: Response) => {
   try {
-    console.log("Controller reached");
-    const { roomId } = req.body;
+    const { roomId } = req.params;
 
     const messages: TEXT[] = await db.message.findMany({
       where: {

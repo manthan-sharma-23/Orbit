@@ -36,12 +36,16 @@ export const WebSocketConfig = (server: Server) => {
     ws.on("message", async (msg) => {
       const message: MESSAGE = JSON.parse(msg.toString());
 
+      console.log(message);
+
       if (message.type === "JOIN") {
         users[wsId] = {
           roomId: message.payload.roomId!,
           ws,
         };
-        ws.send("Joined room " + message.payload.roomId);
+        ws.send(
+          JSON.stringify({ message: "INFO", room: message.payload.roomId })
+        );
       }
 
       if (message.type === "MESSAGE") {
@@ -53,7 +57,7 @@ export const WebSocketConfig = (server: Server) => {
               JSON.stringify({
                 type: "MESSAGE",
                 payload: {
-                  message: text,
+                  message: text!,
                 },
               })
             );
