@@ -1,12 +1,11 @@
+import "../styles/scroll.css";
+
 import Input from "../components/interface/Input";
 import Button from "../components/interface/Button";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { MESSAGE, TEXT } from "typings";
-import {
-  useGetMessagesQuery,
-  useSendMessageMutation,
-} from "../features/store/rtk-query/message.api";
+import { useSendMessageMutation } from "../features/store/rtk-query/message.api";
 import { useGetUserQuery } from "../features/store/rtk-query/user.api";
 import { SERVER_URL } from "../utils/constants/config";
 
@@ -94,21 +93,21 @@ export default function Chat() {
     }
   };
 
-  // if (isLoading && messages === undefined) {
-  //   return <div className=" text-black text-2xl h-full w-full">Loading...</div>;
-  // }
+  if (!user.data || !user.data.user.id) {
+    return <div className=" text-black text-2xl h-full w-full">Loading...</div>;
+  }
 
   return (
     <div className="h-full w-full flex flex-col justify-center items-center rounded-xl shadow">
       {messages && (
-        <MessageContainer messages={messages} userId={user.data?.user.id!} />
+        <MessageContainer messages={messages} userId={user.data.user.id} />
       )}
       <div className="w-full h-[6%] rounded-2xl flex justify-center items-center bg-transparent">
         <div className="w-[90%] h-full flex items-center justify-center shadow-md">
           <Input
             backgroundColor="#dbdbdbec"
             borderColor="black"
-            placeholder={id}
+            placeholder={"Enter the message you want to send"}
             showPlaceholder={true}
             value={message || ""}
             onChange={(e) => {
@@ -132,7 +131,7 @@ const MessageContainer = ({
   userId: string;
 }) => {
   return (
-    <div className="w-full h-[94%] bg-white rounded-xl border-[1px] border-black my-2 shadow-lg overflow-y-scroll">
+    <div className="w-full h-[94%] bg-white rounded-xl border-[1px] overflow-x-hidden border-black my-2 shadow-lg overflow-y-scroll scrollc ">
       {messages &&
         messages.map((msg, index) => (
           <MessageDialouge
@@ -157,7 +156,7 @@ const MessageDialouge = ({
 }) => {
   return (
     <div
-      className={`mx-3 my-2 flex items-center justify-${userId === senderId ? "end" : "start"}`}
+      className={`mx-3 my-[3px] flex items-center justify-${userId === senderId ? "end" : "start"}`}
     >
       <span className="bg-black/80 text-white w-auto text-xl px-3 py-2 rounded-lg">
         {text}

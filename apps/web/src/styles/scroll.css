@@ -9,3 +9,16 @@
   background-color: rgba(128, 128, 128, 0.24);
   border-radius: 30px;
 }
+
+.scrollc::-webkit-scrollbar {
+  width: 10px;
+  margin-left: 5px;
+}
+.scrollc::-webkit-scrollbar-track {
+  border: none;
+  border-radius: 30px;
+}
+.scrollc::-webkit-scrollbar-thumb {
+  background-color: rgba(92, 92, 92, 0.747);
+  border-radius: 30px;
+}
