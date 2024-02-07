@@ -172,3 +172,8 @@ export const RESOURCE_CONFLICT = {
       "CONFLICT --- There was a conflict with the current state of the resource",
   },
 };
+
+export const MESSAGE_SENT_SUCCESSFULLY = {
+  code: 200, // You may adjust the code as per your application's status codes
+  action: { message: "SUCCESS --- Message sent successfully" },
+};

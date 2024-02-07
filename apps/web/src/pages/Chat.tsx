@@ -3,14 +3,21 @@ import Button from "../components/interface/Button";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { MESSAGE } from "typings";
+import {
+  useGetMessagesQuery,
+  useSendMessageMutation,
+} from "../features/store/rtk-query/message.api";
 
 const Chat = () => {
   const { id } = useParams();
+  const [sendMessage] = useSendMessageMutation();
+  const { data, isLoading } = useGetMessagesQuery({ roomId: id! });
   const [ws, setWs] = useState<WebSocket | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [messages, setMessages] = useState<string[]>([]);
 
   useEffect(() => {
+    console.log(data);
     const wsInstance = new WebSocket("ws://localhost:3100");
 
     wsInstance.onopen = () => {
@@ -36,10 +43,6 @@ const Chat = () => {
       });
     };
 
-    wsInstance.onclose = () => {
-      console.log("web socket connection close");
-    };
-
     return () => {
       if (wsInstance) {
         wsInstance.close();
@@ -48,18 +51,33 @@ const Chat = () => {
   }, []);
 
   const sendMessages = () => {
-    if (message && ws && ws.readyState === WebSocket.OPEN) {
-      const text: MESSAGE = {
-        type: "MESSAGE",
-        payload: {
-          roomId: id,
-          message,
-        },
-      };
-      ws.send(JSON.stringify(text));
-      setMessage(null);
+    if (id && message && ws && ws.readyState === WebSocket.OPEN) {
+      try {
+        const text: MESSAGE = {
+          type: "MESSAGE",
+          payload: {
+            roomId: id,
+            message,
+          },
+        };
+        ws.send(JSON.stringify(text));
+        sendMessage({ message, roomId: id });
+
+        setMessage(null);
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
+
+  if (isLoading) {
+    return <div className=" text-black text-2xl">Loading...</div>;
+  }
+
+  // if (isError) {
+  //   return <div>Error</div>;
+  // }
+
   return (
     <div className="h-full w-full flex flex-col justify-center items-center rounded-xl shadow">
       <div className="w-full h-[94%] bg-white rounded-xl border-[1px] border-black my-2 shadow-lg">

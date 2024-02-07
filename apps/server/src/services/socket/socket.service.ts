@@ -41,6 +41,7 @@ export const WebSocketConfig = (server: Server) => {
           roomId: message.payload.roomId!,
           ws,
         };
+        ws.send("Joined room " + message.payload.roomId);
       }
 
       if (message.type === "MESSAGE") {

@@ -70,11 +70,12 @@ const ProfileCard = ({
   image?: string;
   roomId?: string;
 }) => {
-  const navigate = useNavigate();
   return (
     <>
       <div
-        onClick={() => navigate(`/chat/${roomId}`)}
+        onClick={() => {
+          window.location.assign(`/chat/${roomId}`);
+        }}
         className="bg-white h-[8.5vh] w-full rounded-lg p-2 flex items-center my-2 cursor-pointer shadow-lg"
       >
         <div className="h-full w-[20%] flex justify-center items-center rounded-full p-[1px] overflow-hidden">

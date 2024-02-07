@@ -76,3 +76,9 @@ export type MESSAGE = {
     message?: string;
   };
 };
+
+export type TEXT = {
+  sendAt: Date;
+  userId: string;
+  text: string;
+};
