@@ -8,12 +8,13 @@ import {
   useSendMessageMutation,
 } from "../features/store/rtk-query/message.api";
 import { useGetUserQuery } from "../features/store/rtk-query/user.api";
+import { SERVER_URL } from "../utils/constants/config";
 
 export default function Chat() {
   const { id } = useParams();
   const [sendMessage] = useSendMessageMutation();
   const user = useGetUserQuery();
-  const { data, isLoading } = useGetMessagesQuery({ roomId: id! });
+  // const { data, isLoading } = useGetMessagesQuery({ roomId: id! });
   const [ws, setWs] = useState<WebSocket | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [messages, setMessages] = useState<TEXT[]>([]);
@@ -46,7 +47,20 @@ export default function Chat() {
       });
     };
 
-    setMessages(data!);
+    fetch(SERVER_URL + "/api/messages/getmessages/" + id, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data: TEXT[]) => {
+        setMessages(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
     return () => {
       if (wsInstance) {
@@ -80,22 +94,15 @@ export default function Chat() {
     }
   };
 
-  if (isLoading) {
-    return <div className=" text-black text-2xl">Loading...</div>;
-  }
+  // if (isLoading && messages === undefined) {
+  //   return <div className=" text-black text-2xl h-full w-full">Loading...</div>;
+  // }
 
   return (
     <div className="h-full w-full flex flex-col justify-center items-center rounded-xl shadow">
-      <div className="w-full h-[94%] bg-white rounded-xl border-[1px] border-black my-2 shadow-lg overflow-y-scroll">
-        {messages.map((msg, index) => (
-          <MessageDialouge
-            text={msg.text}
-            key={index}
-            userId={user.data?.user.id}
-            senderId={msg.userId}
-          />
-        ))}
-      </div>
+      {messages && (
+        <MessageContainer messages={messages} userId={user.data?.user.id!} />
+      )}
       <div className="w-full h-[6%] rounded-2xl flex justify-center items-center bg-transparent">
         <div className="w-[90%] h-full flex items-center justify-center shadow-md">
           <Input
@@ -116,6 +123,28 @@ export default function Chat() {
     </div>
   );
 }
+
+const MessageContainer = ({
+  messages,
+  userId,
+}: {
+  messages: TEXT[];
+  userId: string;
+}) => {
+  return (
+    <div className="w-full h-[94%] bg-white rounded-xl border-[1px] border-black my-2 shadow-lg overflow-y-scroll">
+      {messages &&
+        messages.map((msg, index) => (
+          <MessageDialouge
+            text={msg.text}
+            key={index}
+            userId={userId}
+            senderId={msg.userId}
+          />
+        ))}
+    </div>
+  );
+};
 
 const MessageDialouge = ({
   senderId,
