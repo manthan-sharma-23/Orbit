@@ -9,6 +9,7 @@ const Input = ({
   showPlaceholder = true,
   type = "text",
   borderColor = "black/30",
+  value,
   onChange,
   backgroundColor = "transparent",
 }: {
@@ -22,6 +23,7 @@ const Input = ({
   showPlaceholder?: boolean;
   type?: "text" | "email" | "password";
   borderColor?: string;
+  value?: string;
   backgroundColor?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }) => {
@@ -35,6 +37,7 @@ const Input = ({
       <input
         className={`flex h-${height} w-full rounded-md border-[1.7px] border-${borderColor} bg-${backgroundColor}  font-medium px-3 py-2 text-md placeholder:text-gray-600 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50`}
         type={type}
+        value={value}
         placeholder={showPlaceholder ? placeholder : ""}
         onChange={onChange}
       />

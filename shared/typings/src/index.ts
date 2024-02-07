@@ -68,3 +68,11 @@ export enum ChatEvent {
   SendAllMessages = "send_all_messages",
   RecieveMessages = "recieve_message",
 }
+
+export type MESSAGE = {
+  type: "JOIN" | "MESSAGE";
+  payload: {
+    roomId?: string;
+    message?: string;
+  };
+};

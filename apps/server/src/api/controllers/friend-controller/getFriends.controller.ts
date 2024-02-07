@@ -32,7 +32,6 @@ const getFriends = async (req: ProtectedRequest, res: Response) => {
       },
     });
 
-    console.log("Accepted ", friendsAccepted);
     const friendIDs: { roomId: string; id: string }[] = friendsAccepted.map(
       (friend) => {
         if (friend.receiverId !== userId) {
