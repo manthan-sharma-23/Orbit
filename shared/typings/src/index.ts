@@ -47,6 +47,12 @@ export const ROOM_TYPE = {
   person: "person",
 };
 
+export const MESSAGE_TYPE = {
+  info: "INFO",
+  message: "MESSAGE",
+  join: "JOIN",
+};
+
 export type ROOM = {
   id: string;
   name?: string;

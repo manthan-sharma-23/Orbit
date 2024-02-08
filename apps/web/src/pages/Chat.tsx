@@ -3,7 +3,7 @@ import "../styles/scroll.css";
 import Input from "../components/interface/Input";
 import Button from "../components/interface/Button";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MESSAGE, TEXT } from "typings";
 import { useSendMessageMutation } from "../features/store/rtk-query/message.api";
 import { useGetUserQuery } from "../features/store/rtk-query/user.api";
@@ -35,6 +35,8 @@ export default function Chat() {
 
       wsInstance.addEventListener("message", (msg) => {
         const text: MESSAGE = JSON.parse(msg.data);
+
+        console.log(text);
         if (text.type === "MESSAGE" && text.payload.message) {
           const newMessage: TEXT = {
             sendAt: text.payload.message.sendAt,
@@ -93,6 +95,12 @@ export default function Chat() {
     }
   };
 
+  const handleEnterPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      sendMessages();
+    }
+  };
+
   if (!user.data || !user.data.user.id) {
     return <div className=" text-black text-2xl h-full w-full">Loading...</div>;
   }
@@ -110,6 +118,7 @@ export default function Chat() {
             placeholder={"Enter the message you want to send"}
             showPlaceholder={true}
             value={message || ""}
+            onKeyDown={handleEnterPress}
             onChange={(e) => {
               setMessage(e.target.value);
             }}
@@ -130,8 +139,22 @@ const MessageContainer = ({
   messages: TEXT[];
   userId: string;
 }) => {
+  const messageContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (messageContainerRef.current) {
+      messageContainerRef.current.scrollTo({
+        top: messageContainerRef.current.scrollHeight,
+        behavior: "smooth", // Add animation for smoother scrolling
+      });
+    }
+  }, [messages]);
+
   return (
-    <div className="w-full h-[94%] bg-white rounded-xl border-[1px] overflow-x-hidden border-black my-2 shadow-lg overflow-y-scroll scrollc ">
+    <div
+      ref={messageContainerRef}
+      className="w-full h-[94%] bg-white rounded-xl border-[1px] overflow-x-hidden border-black my-2 shadow-lg overflow-y-scroll scrollc "
+    >
       {messages &&
         messages.map((msg, index) => (
           <MessageDialouge

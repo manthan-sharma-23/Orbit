@@ -11,6 +11,7 @@ const Input = ({
   borderColor = "black/30",
   value,
   onChange,
+  onKeyDown,
   backgroundColor = "transparent",
 }: {
   width?: string;
@@ -26,6 +27,7 @@ const Input = ({
   value?: string;
   backgroundColor?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 }) => {
   return (
     <div className={`w-${width} h-${height}`}>
@@ -38,6 +40,7 @@ const Input = ({
         className={`flex h-${height} w-full rounded-md border-[1.7px] border-${borderColor} bg-${backgroundColor}  font-medium px-3 py-2 text-md placeholder:text-gray-600 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50`}
         type={type}
         value={value}
+        onKeyDown={onKeyDown}
         placeholder={showPlaceholder ? placeholder : ""}
         onChange={onChange}
       />

@@ -1,68 +1,69 @@
 import { type Server } from "http";
-import { MESSAGE } from "typings";
+import Redis from "ioredis";
+import { MESSAGE, MESSAGE_TYPE } from "typings";
 import { WebSocket, WebSocketServer } from "ws";
 
-const users: { [key: string]: { roomId: string; ws: WebSocket } } = {};
-// {
-//   "user1":{
-//     roomId:"",
-//     ws:""
-//   },
-//   "user2":{
-//     roomId:"",
-//     ws:""
-//   },
-//   "user3":{
-//     roomId:"",
-//     ws:""
-//   },
-// }
+const publisher = new Redis({ port: 6375 });
+const subscriber = new Redis({ port: 6375 });
 
-let counter = 0;
+const channelName = "MESSAGE";
+
+const users: { [key: string]: { roomId: string; socket: WebSocket } } = {};
+
+let counter = 0; //cache counter
 
 export const WebSocketConfig = (server: Server) => {
   const wss = new WebSocketServer({ server });
 
-  wss.on("connection", (ws) => {
-    const wsId = counter++;
+  wss.on("connection", (socket) => {
+    const socketId = counter++;
     console.log("New WebSocket Connected " + wss.clients.keys);
 
-    // MESSAGE TYPE
-    // {
-    //   type:"",
-    //   payload:{}
-    // }
-
-    ws.on("message", async (msg) => {
-      const message: MESSAGE = JSON.parse(msg.toString());
-
-
-      if (message.type === "JOIN") {
-        users[wsId] = {
-          roomId: message.payload.roomId!,
-          ws,
-        };
-        ws.send(
-          JSON.stringify({ message: "INFO", room: message.payload.roomId })
-        );
+    subscriber.subscribe(channelName, (err, count) => {
+      if (err) {
+        console.error("Error subscribing:", err);
+        return;
       }
 
-      if (message.type === "MESSAGE") {
-        const roomId = users[wsId]?.roomId;
-        const text = message.payload.message;
-        Object.keys(users).forEach((wsId) => {
-          if (users[wsId]?.roomId === roomId) {
-            users[wsId]?.ws.send(
-              JSON.stringify({
-                type: "MESSAGE",
-                payload: {
-                  message: text!,
-                },
-              })
-            );
-          }
-        });
-      }
+      subscriber.on("message", async (channel, message) => {
+        if (channel === channelName) {
+          const msg: MESSAGE = JSON.parse(message);
+
+          const roomId = users[socketId]?.roomId;
+          const text = msg.payload.message;
+
+          Object.keys(users).forEach(async (socketId) => {
+            if (users[socketId]?.roomId === roomId) {
+              users[socketId]?.socket.send(
+                JSON.stringify({
+                  type: "MESSAGE",
+                  payload: {
+                    message: text!,
+                  },
+                })
+              );
+            }
+          });
+        }
+      });
+
+      socket.on("message", async (msg) => {
+        const message: MESSAGE = JSON.parse(msg.toString());
+
+        if (message.type === MESSAGE_TYPE.join) {
+          users[socketId] = {
+            roomId: message.payload.roomId!,
+            socket,
+          };
+          socket.send(
+            JSON.stringify({ message: "INFO", room: message.payload.roomId })
+          );
+        }
+
+        if (message.type === MESSAGE_TYPE.message) {
+          publisher.publish(channelName, JSON.stringify(message));
+        }
+      });
     });
   });
 };
