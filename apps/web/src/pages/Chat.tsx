@@ -72,7 +72,7 @@ export default function Chat() {
         wsInstance.close();
       }
     };
-  }, []);
+  });
 
   const sendMessages = () => {
     if (user.data && id && message && ws && ws.readyState === WebSocket.OPEN) {
