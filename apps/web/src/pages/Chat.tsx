@@ -63,6 +63,11 @@ export default function Chat() {
         console.log(err);
       });
 
+
+      wsInstance.onclose=()=>{
+        console.log('Connection closed')
+      }
+
     return () => {
       if (wsInstance) {
         wsInstance.close();
