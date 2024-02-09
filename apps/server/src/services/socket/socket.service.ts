@@ -1,6 +1,15 @@
 import { WebSocketServer } from "ws";
 import http from "http";
 import { MESSAGE, MESSAGE_TYPE, TEXT } from "typings";
+import RedisClient from "../redis/redis.service";
+import { REDIS_PORT } from "../../utils/constants/config";
+import Redis from "ioredis";
+
+const publisher = new RedisClient(REDIS_PORT);
+const subscriber = new RedisClient(REDIS_PORT);
+const channel = "MESSAGE";
+
+subscriber.subscriber(channel);
 
 export default class SocketService {
   private _wss: WebSocketServer;
@@ -27,10 +36,14 @@ export default class SocketService {
           message.payload.roomId &&
           message.payload.message
         ) {
-          const roomId = this._users[socketId]?.roomId;
-          const text = message.payload.message;
+          publisher.publish("MESSAGE", message);
 
-          this._sendMessageToRoom(roomId!, text);
+          const roomId = this._users[socketId]?.roomId;
+
+          subscriber.listenMessageEvent((message) => {
+            if (message.payload.message )
+              this._sendMessageToRoom(roomId!, message.payload.message);
+          });
         }
       });
 

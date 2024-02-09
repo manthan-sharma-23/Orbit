@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import redisClient from "../../services/redis/redis";
-import { Redis } from "ioredis";
-import { RATELIMIT } from "../../utils/constants/config";
+import { RATELIMIT, REDIS_PORT } from "../../utils/constants/config";
+import RedisClient from "../../services/redis/redis.service";
 
 export async function rateLimiter(
   req: Request,
@@ -11,7 +10,8 @@ export async function rateLimiter(
   const ip = req.connection.remoteAddress?.slice(0, 6) as string;
 
   // Ensure redisClient is a commandable Redis client
-  const redis = redisClient as Redis;
+  const redisClient = new RedisClient(REDIS_PORT);
+  const redis = redisClient.client;
 
   try {
     const response = await redis.multi().incr(ip).expire(ip, 60).exec();
