@@ -77,7 +77,7 @@ export enum ChatEvent {
 }
 
 export type MESSAGE = {
-  type: "JOIN" | "MESSAGE";
+  type: "JOIN" | "MESSAGE" | "INFO";
   payload: {
     roomId?: string;
     message?: TEXT;
@@ -89,4 +89,3 @@ export type TEXT = {
   userId: string;
   text: string;
 };
-

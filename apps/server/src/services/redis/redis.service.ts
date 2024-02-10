@@ -10,15 +10,15 @@ export default class RedisClient {
     this._redis = new Redis({ port });
   }
 
-  private _publish(channel: string, message: any) {
+  private _publish(channel: string, message: any): void {
     this._redis.publish(channel, JSON.stringify(message));
   }
 
-  private _subscribe(channel: string) {
+  private _subscribe(channel: string): void {
     this._redis.subscribe(channel);
   }
 
-  private _listenMessageEvent(callback: (message: MESSAGE) => void) {
+  private _listenMessageEvent(callback: (message: MESSAGE) => void): void {
     this._redis.on("message", (channel: string, message: string) => {
       // return { channel, message };
       if (message !== this.prev_message) {

@@ -20,7 +20,7 @@ export default class SocketService {
     this._wss = new WebSocketServer({ server });
   }
 
-  private _listenSocketEvents(wss: WebSocketServer) {
+  private _listenSocketEvents(wss: WebSocketServer): void {
     wss.on("connection", (socket) => {
       const socketId = this._counter++;
 
@@ -41,7 +41,7 @@ export default class SocketService {
           const roomId = this._users[socketId]?.roomId;
 
           subscriber.listenMessageEvent((message) => {
-            if (message.payload.message )
+            if (message.payload.message)
               this._sendMessageToRoom(roomId!, message.payload.message);
           });
         }
@@ -55,7 +55,7 @@ export default class SocketService {
     });
   }
 
-  private _joinRoom(socketId: number, roomId: string, socket: any) {
+  private _joinRoom(socketId: number, roomId: string, socket: any): void {
     this.users[socketId] = {
       roomId,
       socket,
@@ -63,7 +63,7 @@ export default class SocketService {
     socket.send(JSON.stringify({ message: "INFO", room: roomId }));
   }
 
-  private _sendMessageToRoom(roomId: string, text: TEXT) {
+  private _sendMessageToRoom(roomId: string, text: TEXT): void {
     Object.keys(this._users).forEach(async (socketId) => {
       if (this._users[socketId]?.roomId === roomId) {
         this._users[socketId]?.socket.send(
