@@ -1,13 +1,22 @@
 import { Outlet } from "react-router-dom";
-import { useGetUserQuery } from "../features/store/rtk-query/user.api";
+import { useRecoilValue } from "recoil";
+import { userNameSelector } from "../features/store/selectors/user.selector";
+import { useGetUser } from "../features/hooks/getUsr.hook";
 
 const Home = () => {
-  const user = useGetUserQuery();
+  const isLoading = useGetUser();
+  const username = useRecoilValue(userNameSelector);
+
+  console.log(isLoading);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="h-screen w-full flex text-black">
       <p className="w-full h-full flex items-center justify-center text-4xl font-bold">
-        {user.data?.user ? user.data.user.name : "Home"}
+        {username ? username : "Home"}
       </p>
 
       <Outlet />

@@ -1,11 +1,14 @@
 import { Outlet } from "react-router-dom";
 import ChatProfilePannel from "../containers/ChatProfilePannel";
-import { useGetUserQuery } from "../../features/store/rtk-query/user.api";
 import * as Io from "react-icons/io5";
 import { BiSolidBell } from "react-icons/bi";
 import { useState } from "react";
+import { useRecoilValue } from "recoil";
+import { userNameSelector } from "../../features/store/selectors/user.selector";
+import { useGetUser } from "../../features/hooks/getUsr.hook";
 
 const ChatLayout = () => {
+  useGetUser();
   return (
     <div className="h-screen w-full flex justify-center items-center">
       <div className="h-screen w-[30vw]">
@@ -25,8 +28,10 @@ const defaultProfile =
   "https://publish.purewow.net/wp-content/uploads/sites/2/2023/06/gosling-universal.jpg?resize=720%2C780";
 
 const SearchBar = () => {
-  const { data, isLoading } = useGetUserQuery();
+  const username = useRecoilValue(userNameSelector);
   const [search, setSearch] = useState<boolean>(false);
+
+  console.log(username);
   return (
     <div className="h-[10vh] w-full flex justify-center items-center px-2">
       <div className="w-[80%] h-full px-2 flex justify-between items-center">
@@ -49,17 +54,10 @@ const SearchBar = () => {
       </div>
       <div className="w-[20%] h-[70px] bg-white shadow-md  flex justify-between items-center pr-3 mr-3 rounded-xl">
         <p className="min-w-[12rem] h-auto  text-[1rem] font-mono  px-8 tracking-wider ">
-          {isLoading ? "isLoading..." : "Hey " + data?.user.name?.split(" ")[0]}
+          {username?.split(" ")[0]}
         </p>
         <span className=" h-[60px] w-[60px] border-2 border-white rounded-full overflow-hidden shadow-xl ">
-          {isLoading ? (
-            <div>Loading..</div>
-          ) : (
-            <img
-              src={data?.user.image || defaultProfile}
-              className=" h-full w-full  object-cover"
-            />
-          )}
+          <img src={defaultProfile} className=" h-full w-full  object-cover" />
         </span>
       </div>
     </div>

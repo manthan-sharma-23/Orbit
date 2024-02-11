@@ -9,6 +9,7 @@ import {
   useLoginUserMutation,
   useRegisterUserMutation,
 } from "../../features/store/rtk-query/user.api";
+import { useLoginUser } from "../../features/hooks/useLoginUser.hook";
 
 const AuthLayout: React.FC<AuthProps> = ({ page }) => {
   const [form, setForm] = useState<FormType | null>(InitialFormState);
@@ -31,7 +32,7 @@ const AuthLayout: React.FC<AuthProps> = ({ page }) => {
       setLoading(false);
       navigate("/");
     } else {
-      await loginUser({ ...form });
+      useLoginUser({ ...form });
       setLoading(false);
       navigate("/");
     }

@@ -3,7 +3,7 @@ import { MESSAGE, MESSAGE_TYPE } from "typings";
 import { MESSAGE_CHANNEL } from "../../utils/constants/config";
 
 export default class RedisClient {
-  private prev_message: any = "";
+  private prev_message: string = "";
   private _redis: Redis;
 
   constructor(port: number) {

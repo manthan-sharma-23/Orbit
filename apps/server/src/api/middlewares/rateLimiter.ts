@@ -1,6 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import { RATELIMIT, REDIS_PORT } from "../../utils/constants/config";
 import RedisClient from "../../services/redis/redis.service";
+import {
+  INTERNAL_SERVER_ERROR,
+  TOO_MANY_REQUESTS,
+} from "../../utils/static/codes.err";
 
 export async function rateLimiter(
   req: Request,
@@ -21,17 +25,21 @@ export async function rateLimiter(
         const hit = response[0][1] as number;
         if (hit > RATELIMIT) {
           return res
-            .status(429)
-            .json({ message: "Too many requests persecond" });
+            .status(TOO_MANY_REQUESTS.code)
+            .json(TOO_MANY_REQUESTS.action);
         }
       }
     } else {
       console.error("Redis response is undefined");
-      return res.status(500).json({ message: "Internal server error" });
+      return res
+        .status(INTERNAL_SERVER_ERROR.code)
+        .json(INTERNAL_SERVER_ERROR.action);
     }
   } catch (error) {
     console.error("Redis error in rateLimiter:", error);
-    return res.status(500).json({ message: "Internal server error" });
+    return res
+      .status(INTERNAL_SERVER_ERROR.code)
+      .json(INTERNAL_SERVER_ERROR.action);
   }
 
   next();

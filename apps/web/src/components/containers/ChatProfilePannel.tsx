@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "../../styles/scroll.css";
 import * as Ri from "react-icons/ri";
 import { BsPerson } from "react-icons/bs";

@@ -6,8 +6,8 @@ import { useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { MESSAGE, TEXT } from "typings";
 import { useSendMessageMutation } from "../features/store/rtk-query/message.api";
-import { useGetUserQuery } from "../features/store/rtk-query/user.api";
 import { SERVER_URL } from "../utils/constants/config";
+import { useGetUserQuery } from "../features/store/rtk-query/user.api";
 
 export default function Chat() {
   const { id } = useParams();
@@ -72,7 +72,7 @@ export default function Chat() {
         wsInstance.close();
       }
     };
-  });
+  }, []);
 
   const sendMessages = () => {
     if (user.data && id && message && ws && ws.readyState === WebSocket.OPEN) {
