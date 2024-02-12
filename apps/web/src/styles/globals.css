@@ -8,4 +8,13 @@
   box-sizing: border-box;
 }
 
-
+.bg-image {
+  color: rgba(0, 0, 0, 0.527);
+  image-rendering: pixelated;
+  object-fit: cover;
+  position: absolute;
+  /* z-index: -1; */
+  opacity: .3;
+  filter: blur(90%);
+  
+}
