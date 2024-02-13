@@ -9,6 +9,9 @@ import Signout from "./pages/auth/Signout";
 import Signin from "./pages/auth/Signin";
 import Signup from "./pages/auth/Signup";
 import AuthLayout from "./components/layouts/AuthLayout";
+import GlobalPage from "./pages/GlobalPage";
+import DMPage from "./pages/DMPage";
+import DMLayout from "./components/layouts/DMLayout";
 
 function App() {
   return (
@@ -23,6 +26,10 @@ function App() {
             </Route>
             <Route path="/" element={<AppLayout />}>
               <Route index element={<HomePage />} />
+              <Route path="/global" element={<GlobalPage />} />
+              <Route path="/dms" element={<DMLayout />}>
+                <Route path="/dms/:id" element={<DMPage />} />
+              </Route>
               <Route path="/chat" element={<ChatLayout />}>
                 <Route index element={<ChatPage />} />
               </Route>

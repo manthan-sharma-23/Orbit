@@ -3,10 +3,10 @@
 }
 .scrollw::-webkit-scrollbar-track {
   border: none;
-  border-radius: 30px;
+  border-radius: 15px;
 }
 .scrollw::-webkit-scrollbar-thumb {
-  background-color: rgba(128, 128, 128, 0.24);
+  background-color: #eb6e85d0;
   border-radius: 30px;
 }
 

@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
+import { useRecoilValue } from "recoil";
+import { userSelector } from "../features/store/selectors/user.selector";
 
 const HomePage = () => {
-  return <div>Home</div>;
+  const { username } = useRecoilValue(userSelector);
+  return <div className="text-white">{username}</div>;
 };
 
 export default HomePage;

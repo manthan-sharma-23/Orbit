@@ -6,6 +6,6 @@ export const userSelector = selector({
   get: ({ get }) => {
     const username = get(userAtom);
 
-    return username.user?.name;
+    return { username: username.user?.name, id: username.user?.id };
   },
 });
