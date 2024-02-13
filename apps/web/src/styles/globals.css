@@ -9,12 +9,11 @@
 }
 
 .bg-image {
-  color: rgba(0, 0, 0, 0.527);
+  color: rgba(238, 219, 219, 0.733);
   image-rendering: pixelated;
   object-fit: cover;
   position: absolute;
   /* z-index: -1; */
-  opacity: .3;
+  opacity: 0.3;
   filter: blur(90%);
-  
 }
