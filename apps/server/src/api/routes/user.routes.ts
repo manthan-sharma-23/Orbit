@@ -8,9 +8,9 @@ import { getUserById } from "../controllers/user-controller/user.getAny";
 
 const router: Router = Router();
 
-router.get("/", rateLimiter, authUser, getUser);
-router.get("/getuser/:userId", authUser, getUserById);
 router.post("/register", rateLimiter, RegisterUser);
 router.post("/login", rateLimiter, LoginUser);
+router.get("/", authUser, getUser);
+router.get("/getuser/:userId", authUser, getUserById);
 
 export default router;
