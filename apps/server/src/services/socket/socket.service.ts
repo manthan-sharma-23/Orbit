@@ -4,7 +4,6 @@ import { MESSAGE, MESSAGE_TYPE, TEXT } from "typings";
 import RedisClient from "../redis/redis.service";
 import { REDIS_PORT } from "../../utils/constants/config";
 
-
 const publisher = new RedisClient(REDIS_PORT);
 const subscriber = new RedisClient(REDIS_PORT);
 const channel = "MESSAGE";
@@ -37,12 +36,12 @@ export default class SocketService {
           message.payload.message
         ) {
           publisher.publish("MESSAGE", message);
-
-          const roomId = this._users[socketId]?.roomId;
-
           subscriber.listenMessageEvent((message) => {
             if (message.payload.message)
-              this._sendMessageToRoom(roomId!, message.payload.message);
+              this._sendMessageToRoom(
+                message.payload.roomId!,
+                message.payload.message
+              );
           });
         }
       });

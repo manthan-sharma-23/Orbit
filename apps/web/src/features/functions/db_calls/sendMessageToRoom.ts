@@ -11,6 +11,6 @@ export const sendMessageToRoomDb = (message: TEXT, roomId: string) => {
     body: JSON.stringify({ message, roomId }),
   })
     .then((res) => res.json())
-    .then((data) => console.log("Data",data))
+    .then((data) => {})
     .catch((err) => console.log(err));
 };

@@ -13,12 +13,12 @@ import { useRecoilValue } from "recoil";
 import { userSelector } from "../features/store/selectors/user.selector";
 
 const DMPage = () => {
-  const { id, userId } = useParams();
+  const { roomId, userId } = useParams();
   const [message, setMessage] = useState<string | null>(null);
-  const { loading, dmRoom, setDmRoom } = useGetDmRoom(id!, userId!);
+  const { loading, dmRoom, setDmRoom } = useGetDmRoom(roomId!, userId!);
   const user = useRecoilValue(userSelector);
 
-  const ws = useListenWebSocket(id!, setDmRoom)!;
+  const ws = useListenWebSocket(roomId!, setDmRoom)!;
   const handleEnterPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       clickSend();
@@ -27,8 +27,8 @@ const DMPage = () => {
 
   const clickSend = () => {
     if (ws.readyState !== WebSocket.OPEN) alert("Server Overload");
-    if (id && user.id && message && ws.readyState === WebSocket.OPEN) {
-      sendMessageTo_WS_SERVER(ws, id, user.id, message);
+    if (roomId && user.id && message && ws.readyState === WebSocket.OPEN) {
+      sendMessageTo_WS_SERVER(ws, roomId, user.id, message);
       setMessage(null);
     } else {
       console.log("Please fill convention");

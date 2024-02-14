@@ -1,8 +1,6 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useGetFriends } from "../../features/hooks/dm-hooks/useGetFriends.hook";
 import "../../styles/scroll.css";
-import { useSetRecoilState } from "recoil";
-import { dmAtom } from "../../features/store/atoms/dm-atoms/dm.atom";
 import { FRIEND } from "typings";
 
 const ChatInfo = () => {
@@ -30,13 +28,13 @@ const ChatInfo = () => {
 };
 
 const FriendBox = ({ friend }: { friend: FRIEND }) => {
-  const { id } = useParams();
+  const { roomId } = useParams();
   return (
     <div
       onClick={() => {
         window.location.assign("/dms/" + friend.roomId + "/" + friend.id);
       }}
-      className={`h-[10vh] w-full text-white/85 ${friend.roomId === id ? "bg-white/10" : ""}  flex relative my-2 hover:bg-white/10 cursor-pointer rounded-lg hover:text-white transition-all`}
+      className={`h-[10vh] w-full text-white/85 ${friend.roomId === roomId ? "bg-white/10" : ""}  flex relative my-2 hover:bg-white/10 cursor-pointer rounded-lg hover:text-white transition-all`}
     >
       <div className="h-full w-[20%] flex justify-center items-center">
         {friend.image ? (

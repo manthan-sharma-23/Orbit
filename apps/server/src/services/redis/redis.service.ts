@@ -3,7 +3,6 @@ import { MESSAGE, MESSAGE_TYPE } from "typings";
 import { MESSAGE_CHANNEL } from "../../utils/constants/config";
 
 export default class RedisClient {
-  private prev_message: string = "";
   private _redis: Redis;
 
   constructor(port: number) {
@@ -20,12 +19,8 @@ export default class RedisClient {
 
   private _listenMessageEvent(callback: (message: MESSAGE) => void): void {
     this._redis.on("message", (channel: string, message: string) => {
-      // return { channel, message };
-      if (message !== this.prev_message) {
-        const msg: MESSAGE = JSON.parse(message);
-        if (channel === MESSAGE_CHANNEL) callback(msg);
-        this.prev_message = message;
-      }
+      const msg: MESSAGE = JSON.parse(message);
+      if (channel === MESSAGE_CHANNEL) callback(msg);
     });
   }
 

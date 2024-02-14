@@ -3,6 +3,8 @@ import { WEBSOCKET_URL } from "../../utils/constants/config";
 import { FRIEND, MESSAGE, TEXT } from "typings";
 import { SetterOrUpdater } from "recoil";
 
+let message: any = "";
+
 export const useListenWebSocket = (
   roomId: string,
   setRoom: SetterOrUpdater<{
@@ -26,28 +28,24 @@ export const useListenWebSocket = (
       );
 
       wsInstance.addEventListener("message", (msg) => {
-        const text: MESSAGE = JSON.parse(msg.data);
+        console.log(msg)
+        if (msg.data !== message) {
+          const text: MESSAGE = JSON.parse(msg.data);
 
-        console.log(text)
-
-        if (text.type === "MESSAGE" && text.payload.message) {
-          const newMessage: TEXT = {
-            sendAt: text.payload.message.sendAt,
-            userId: text.payload.message.userId,
-            text: text.payload.message.text,
-          };
-          setRoom((prev) => ({
-            ...prev,
-            MESSAGES: [...prev.MESSAGES!, newMessage],
-          }));
+          if (text.type === "MESSAGE" && text.payload.message) {
+            const newMessage: TEXT = {
+              sendAt: text.payload.message.sendAt,
+              userId: text.payload.message.userId,
+              text: text.payload.message.text,
+            };
+            setRoom((prev) => ({
+              ...prev,
+              MESSAGES: [...prev.MESSAGES!, newMessage],
+            }));
+            message = msg.data;
+          }
         }
       });
-    };
-
-    return () => {
-      if (wsInstance) {
-        wsInstance.close();
-      }
     };
   }, []);
 
