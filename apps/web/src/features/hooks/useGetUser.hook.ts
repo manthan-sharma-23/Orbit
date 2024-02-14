@@ -1,11 +1,11 @@
 import React from "react";
-import Recoil from "recoil";
+import Recoil, { useRecoilState } from "recoil";
 import { userAtom } from "../store/atoms/user.atom";
 import { SERVER_URL } from "../../utils/constants/config";
 import { OUTPUT_GET_USER } from "typings";
 
-export const useGetUser = (): boolean => {
-  const [user, setUser] = Recoil.useRecoilState(userAtom);
+export const useGetUser = () => {
+  const [user, setUser] = useRecoilState(userAtom);
 
   React.useEffect(() => {
     setUser({ ...user, isLoading: true });
@@ -23,5 +23,5 @@ export const useGetUser = (): boolean => {
       .catch((err) => console.log(err));
   }, []);
 
-  return user.isLoading;
+  return user;
 };

@@ -36,9 +36,9 @@ const AppLayout = () => {
               </div>
             </div>
           </div>
-          <p className="cursor-pointer text-3xl text-white mt-[0px]">
+          <div className="cursor-pointer text-3xl text-white mt-[0px]">
             <MdOutlineKeyboardArrowDown />
-          </p>
+          </div>
         </div>
         <div className="w-full h-[60%] text-white flex justify-start items-center pt-3 flex-col gap-5 ">
           <a

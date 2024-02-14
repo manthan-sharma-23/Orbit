@@ -21,7 +21,7 @@ const DMLayout = () => {
           </div>
         </div>
         <div className="w-[75%] h-full  flex">
-          <div className="w-[70%] h-full bg-white">
+          <div className="w-[70%] h-full bg-white/5">
             <Outlet />
           </div>
           <div className="w-[30%] h-full bg-white/10">

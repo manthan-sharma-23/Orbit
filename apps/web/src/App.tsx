@@ -28,7 +28,7 @@ function App() {
               <Route index element={<HomePage />} />
               <Route path="/global" element={<GlobalPage />} />
               <Route path="/dms" element={<DMLayout />}>
-                <Route path="/dms/:id" element={<DMPage />} />
+                <Route path="/dms/:id/:userId" element={<DMPage />} />
               </Route>
               <Route path="/chat" element={<ChatLayout />}>
                 <Route index element={<ChatPage />} />
