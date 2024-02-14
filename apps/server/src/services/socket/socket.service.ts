@@ -3,7 +3,7 @@ import http from "http";
 import { MESSAGE, MESSAGE_TYPE, TEXT } from "typings";
 import RedisClient from "../redis/redis.service";
 import { REDIS_PORT } from "../../utils/constants/config";
-import Redis from "ioredis";
+
 
 const publisher = new RedisClient(REDIS_PORT);
 const subscriber = new RedisClient(REDIS_PORT);

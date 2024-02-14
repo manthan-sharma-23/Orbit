@@ -4,15 +4,36 @@ import { IoCall } from "react-icons/io5";
 import { LuFolderClosed } from "react-icons/lu";
 import { useGetDmRoom } from "../features/hooks/dm-hooks/useGetDmRoom.hook";
 import { useParams } from "react-router-dom";
-import { useGetUser } from "../features/hooks/useGetUser.hook";
 import { TEXT } from "typings";
 import moment from "moment";
+import { useEffect, useRef, useState } from "react";
+import { useListenWebSocket } from "../features/hooks/ws.hook";
+import { sendMessageTo_WS_SERVER } from "../features/functions/ws/sendMessage.ws";
+import { useRecoilValue } from "recoil";
+import { userSelector } from "../features/store/selectors/user.selector";
 
 const DMPage = () => {
   const { id, userId } = useParams();
+  const [message, setMessage] = useState<string | null>(null);
+  const { loading, dmRoom, setDmRoom } = useGetDmRoom(id!, userId!);
+  const user = useRecoilValue(userSelector);
 
-  const user = useGetUser();
-  const { loading, dmRoom } = useGetDmRoom(id!, userId!);
+  const ws = useListenWebSocket(id!, setDmRoom)!;
+  const handleEnterPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      clickSend();
+    }
+  };
+
+  const clickSend = () => {
+    if (ws.readyState !== WebSocket.OPEN) alert("Server Overload");
+    if (id && user.id && message && ws.readyState === WebSocket.OPEN) {
+      sendMessageTo_WS_SERVER(ws, id, user.id, message);
+      setMessage(null);
+    } else {
+      console.log("Please fill convention");
+    }
+  };
 
   if (loading) {
     return (
@@ -50,9 +71,17 @@ const DMPage = () => {
           </div>
           <input
             placeholder="Enter you message "
+            value={message || ""}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={handleEnterPress}
             className="rounded-2xl px-2 focus:outline-none w-[65%] h-[5vh] border-gray-300 border-2"
           />
-          <button className="bg-black text-white h-[2.9rem] rounded-xl font-sans font-medium hover:bg-white hover:text-black hover:border-black hover:border-2 transition-all text-lg w-[5rem] justify-center items-center flex">
+          <button
+            onClick={() => {
+              clickSend();
+            }}
+            className="bg-black text-white h-[2.9rem] rounded-xl font-sans font-medium hover:bg-white hover:text-black hover:border-black hover:border-2 transition-all text-lg w-[5rem] justify-center items-center flex"
+          >
             Send
           </button>
         </div>
@@ -62,11 +91,30 @@ const DMPage = () => {
 };
 
 const MessageContainer = ({ messages = [] }: { messages?: TEXT[] }) => {
+  const messageContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (messageContainerRef.current) {
+      messageContainerRef.current.scrollTo({
+        top: messageContainerRef.current.scrollHeight,
+        behavior: "smooth", // Add animation for smoother scrolling
+      });
+    }
+  }, [messages]);
   return (
-    <div className="h-full w-full overflow-y-scroll  scrollc px-2 overflow-x-hidden">
-      {messages.map((text) => (
-        <MessageBox text={text.text} sender={text.userId} time={text.sendAt} />
-      ))}
+    <div
+      ref={messageContainerRef}
+      className="h-full w-full overflow-y-scroll  scrollc px-2 overflow-x-hidden"
+    >
+      {messages &&
+        messages.map((text, index) => (
+          <MessageBox
+            key={index}
+            text={text.text}
+            sender={text.userId}
+            time={text.sendAt}
+          />
+        ))}
     </div>
   );
 };

@@ -1,8 +1,8 @@
 import { INPUT_LOGIN_FORM, OUTPUT_LOGIN_FORM } from "typings";
-import { SERVER_URL } from "../../utils/constants/config";
+import { SERVER_URL } from "../../../utils/constants/config";
 
-export const registerForm = (form: INPUT_LOGIN_FORM) => {
-  fetch(SERVER_URL + "/api/user/register", {
+export const loginForm = (form: INPUT_LOGIN_FORM) => {
+  fetch(SERVER_URL + "/api/user/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -11,7 +11,7 @@ export const registerForm = (form: INPUT_LOGIN_FORM) => {
   })
     .then((res) => res.json())
     .then((data: OUTPUT_LOGIN_FORM) => {
-      localStorage.setItem("token", data.token);
+      window.localStorage.setItem("token", data.token);
       window.location.assign("/");
     })
     .catch((err) => {

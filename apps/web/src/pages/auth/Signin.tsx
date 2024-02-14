@@ -1,5 +1,5 @@
 import { INPUT_LOGIN_FORM } from "typings";
-import { loginForm } from "../../features/functions/login.form";
+import { loginForm } from "../../features/functions/form/login.form";
 import { useState } from "react";
 
 const Signin = () => {

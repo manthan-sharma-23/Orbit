@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { INPUT_LOGIN_FORM } from "typings";
-import { registerForm } from "../../features/functions/register.form";
+import { registerForm } from "../../features/functions/form/register.form";
 
 const Signup = () => {
   const [formDetails, setFormDetails] = useState<INPUT_LOGIN_FORM>({});

@@ -2,9 +2,7 @@ import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { dmAtom } from "../../store/atoms/dm-atoms/dm.atom";
 import { SERVER_URL } from "../../../utils/constants/config";
-import { userSelector } from "../../store/selectors/user.selector";
 import { TEXT, USER } from "typings";
-import { userAtom } from "../../store/atoms/user.atom";
 
 export const useGetDmRoom = (id: string, userId: string) => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -48,5 +46,5 @@ export const useGetDmRoom = (id: string, userId: string) => {
       .catch((err) => console.log(err));
   }, []);
 
-  return { loading, dmRoom };
+  return { loading, dmRoom, setDmRoom };
 };
