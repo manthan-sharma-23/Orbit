@@ -4,10 +4,12 @@ import getFriends from "../controllers/friend-controller/getFriends.controller";
 import addFriend from "../controllers/friend-controller/addFriend.controller";
 import acceptFriend from "../controllers/friend-controller/acceptFriends.controller";
 import rejectFriend from "../controllers/friend-controller/rejectFriends.controller";
+import getPendingRequests from "../controllers/friend-controller/getRequest.controller";
 
 const router: Router = Router();
 
 router.get("/friends", authUser, getFriends);
+router.get("/pending", authUser, getPendingRequests);
 router.post("/addfriend", authUser, addFriend);
 router.post("/accept/:requestId", authUser, acceptFriend);
 router.post("/reject/:requestId", authUser, rejectFriend);

@@ -8,6 +8,7 @@ import { SlGlobe } from "react-icons/sl";
 // import icon from "../../assets/teams.jpg";
 import { useRecoilValue } from "recoil";
 import { userSelector } from "../../features/store/selectors/user.selector";
+import { profileColor } from "../../utils/constants/color.code";
 
 const links = {
   home: "/",
@@ -21,6 +22,7 @@ const links = {
 const AppLayout = () => {
   const params = window.location.pathname;
   const { username } = useRecoilValue(userSelector);
+  const hexCode = profileColor();
 
   return (
     <div className="text-black h-screen w-screen overflow-hidden flex justify-center bg-white items-center">
@@ -87,7 +89,10 @@ const AppLayout = () => {
               <Io5Icons.IoSettingsOutline />
             )}
           </a>
-          <div className="cursor-pointer relative z-10 h-[3.8rem] w-[3.8rem] border-[1px] font-sans font-extrabold text-white text-4xl tracking-wider border-white rounded-md bg-purple-500  overflow-hidden flex justify-center items-center">
+          <div
+            style={{ backgroundColor: hexCode }}
+            className={`cursor-pointer relative z-10 h-[3.8rem]  w-[3.8rem] border-[1px] font-sans font-extrabold text-white text-4xl tracking-wider border-white rounded-md overflow-hidden flex justify-center items-center`}
+          >
             {username?.split("")[0] || "#"}
           </div>
         </div>

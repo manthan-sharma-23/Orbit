@@ -24,6 +24,7 @@ const Signin = () => {
         />
         <input
           placeholder="Enter your password"
+          type="password"
           onChange={(e) =>
             setFormDetails((prev) => ({ ...prev, password: e.target.value }))
           }

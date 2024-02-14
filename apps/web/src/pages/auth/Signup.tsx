@@ -31,6 +31,7 @@ const Signup = () => {
           }
         />
         <input
+          type="password"
           placeholder="Enter your password"
           onChange={(e) =>
             setFormDetails((prev) => ({ ...prev, password: e.target.value }))

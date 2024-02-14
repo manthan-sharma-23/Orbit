@@ -5,10 +5,16 @@ import { FaUserFriends } from "react-icons/fa";
 import { RiTimer2Fill } from "react-icons/ri";
 import { IoPersonAddSharp } from "react-icons/io5";
 import { selectFriendDialougeAtom } from "../../features/store/atoms/dm-atoms/friendDialouge.atom";
+import { useGetFriends } from "../../features/hooks/dm-hooks/useGetFriends.hook";
+import { useGetUsers } from "../../features/hooks/useGetPublicUser.hook";
+import { IoMdPersonAdd } from "react-icons/io";
+import { addFriendCall } from "../../features/functions/db_calls/addFriend";
+import { profileColor } from "../../utils/constants/color.code";
+import { useGetPendingRequests } from "../../features/hooks/dm-hooks/useGetPendingRequests.hook";
 
 const options = {
   friends: "friends",
-  addFriend: "notifs",
+  addFriend: "addFriend",
   pending: "pending",
 };
 
@@ -56,6 +62,22 @@ const FriendContainer = () => {
 };
 
 const ContentFriendDialouge = ({ render }: { render: string }) => {
+  const account = useRecoilValue(userSelector);
+  const userFriends = useGetFriends();
+  const users = useGetUsers();
+  const requests = useGetPendingRequests();
+
+  const notFriends = users.users.filter((user) => {
+    return (
+      user.id !== account.id &&
+      !userFriends.friends.some((friend) => friend.id === user.id)
+    );
+  });
+
+  if (userFriends.loading || users.loading ) {
+    return <div>Loading..</div>;
+  }
+
   if (render === options.friends) {
     return (
       <div className="h-full w-full overflow-y-scroll py-1 px-2 scrollw">
@@ -63,6 +85,28 @@ const ContentFriendDialouge = ({ render }: { render: string }) => {
         <EachFriend />
         <EachFriend />
         <EachFriend />
+      </div>
+    );
+  } else if (render === options.addFriend) {
+    return (
+      <div className="h-full w-full overflow-y-scroll py-1 px-2 scrollw">
+        {notFriends &&
+          notFriends.map((user) => (
+            <AddFriend name={user.name} image={user.image} userId={user.id!} />
+          ))}
+      </div>
+    );
+  } else {
+    return (
+      <div className="h-full w-full overflow-y-scroll py-1 px-2 scrollw">
+        {requests.users &&
+          requests.users.map((user) => (
+            <PendingRequests
+              name={user.users.name}
+              image={user.users.image}
+              userId={user.users.id!}
+            />
+          ))}
       </div>
     );
   }
@@ -85,6 +129,88 @@ const EachFriend = () => {
           <p className="bg-green-300 h-[10px] w-[10px]" />
           <p>Online</p>
         </p>
+      </div>
+    </div>
+  );
+};
+const AddFriend = ({
+  name,
+  image,
+  userId,
+}: {
+  name?: string;
+  image?: string;
+  userId: string;
+}) => {
+  const onClick = (id: string) => {
+    addFriendCall(id);
+  };
+
+  const randomColor = profileColor();
+
+  return (
+    <div className="h-[9vh] w-full my-2 hover:bg-white/20 rounded-lg cursor-pointer flex justify-center items-center">
+      <div className="h-full w-[25%] flex justify-center items-center">
+        {image ? (
+          <img
+            className="overflow-hidden h-[5rem] w-[5rem] rounded-full p-2"
+            src="https://images-platform.99static.com/pULAgn-AED8QzzPGS40V0GCDOEk=/0x0:1000x1000/500x500/top/smart/99designs-contests-attachments/130/130378/attachment_130378088"
+          />
+        ) : (
+          <div
+            style={{ backgroundColor: randomColor }}
+            className={`overflow-hidden h-[4rem] w-[4rem] rounded-full p-2  text-white flex items-center justify-center text-3xl font-sans font-extrabold`}
+          >
+            {name?.split("")[0]}
+          </div>
+        )}
+      </div>
+      <div className="h-full w-[75%]  py-2 px-3 flex items-center justify-between">
+        <p className="w-auto h-auto text-lg font-semibold font-sans">{name}</p>
+        <div className="text-white/80 font-extralight flex items-center justify-center  gap-2 text-[1.7rem] text-black bg-white/20 h-[2.5rem] w-[2.5rem] rounded-full p-2 ">
+          <IoMdPersonAdd onClick={() => onClick(userId)} />
+        </div>
+      </div>
+    </div>
+  );
+};
+const PendingRequests = ({
+  name,
+  image,
+  userId,
+}: {
+  name?: string;
+  image?: string;
+  userId: string;
+}) => {
+  const onClick = (id: string) => {
+    addFriendCall(id);
+  };
+
+  const randomColor = profileColor();
+
+  return (
+    <div className="h-[9vh] w-full my-2 hover:bg-white/20 rounded-lg cursor-pointer flex justify-center items-center">
+      <div className="h-full w-[25%] flex justify-center items-center">
+        {image ? (
+          <img
+            className="overflow-hidden h-[5rem] w-[5rem] rounded-full p-2"
+            src="https://images-platform.99static.com/pULAgn-AED8QzzPGS40V0GCDOEk=/0x0:1000x1000/500x500/top/smart/99designs-contests-attachments/130/130378/attachment_130378088"
+          />
+        ) : (
+          <div
+            style={{ backgroundColor: randomColor }}
+            className={`overflow-hidden h-[4rem] w-[4rem] rounded-full p-2  text-white flex items-center justify-center text-3xl font-sans font-extrabold`}
+          >
+            {name?.split("")[0]}
+          </div>
+        )}
+      </div>
+      <div className="h-full w-[75%]  py-2 px-3 flex items-center justify-between">
+        <p className="w-auto h-auto text-lg font-semibold font-sans">{name}</p>
+        <div className="text-white/80 font-extralight flex items-center justify-center  gap-2 text-[1.7rem] text-black bg-white/20 h-[2.5rem] w-[2.5rem] rounded-full p-2 ">
+          <IoMdPersonAdd onClick={() => onClick(userId)} />
+        </div>
       </div>
     </div>
   );
