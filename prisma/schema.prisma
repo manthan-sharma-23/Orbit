@@ -14,6 +14,7 @@ model User {
   password      String?
   emailVerified DateTime?
   image         String?
+  theme         String?
   status        String?   @default("available")
   view          String?   @default("public")
   rooms         Room[] // A user can be part of multiple rooms

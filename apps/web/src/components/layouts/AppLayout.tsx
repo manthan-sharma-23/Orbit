@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import * as GoIcons from "react-icons/go";
 import * as Io5Icons from "react-icons/io5";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
@@ -23,6 +23,7 @@ const AppLayout = () => {
   const params = window.location.pathname;
   const { username } = useRecoilValue(userSelector);
   const hexCode = profileColor();
+  const navigate = useNavigate();
 
   return (
     <div className="text-black h-screen w-screen overflow-hidden flex justify-center bg-white items-center">
@@ -90,6 +91,9 @@ const AppLayout = () => {
             )}
           </a>
           <div
+            onClick={() => {
+              navigate(username ? "/auth/signout" : "/auth/signin");
+            }}
             style={{ backgroundColor: hexCode }}
             className={`cursor-pointer relative z-10 h-[3.8rem]  w-[3.8rem] border-[1px] font-sans font-extrabold text-white text-4xl tracking-wider border-white rounded-md overflow-hidden flex justify-center items-center`}
           >

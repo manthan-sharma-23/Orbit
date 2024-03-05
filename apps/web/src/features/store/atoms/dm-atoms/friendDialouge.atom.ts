@@ -10,5 +10,5 @@ import { atom } from "recoil";
 
 export const selectFriendDialougeAtom = atom({
   key: "selectFriendDialouge/atom",
-  default: "addFriend",
+  default: "pending",
 });

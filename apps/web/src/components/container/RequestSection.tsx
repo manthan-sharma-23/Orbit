@@ -11,6 +11,7 @@ import { IoMdPersonAdd } from "react-icons/io";
 import { addFriendCall } from "../../features/functions/db_calls/addFriend";
 import { profileColor } from "../../utils/constants/color.code";
 import { useGetPendingRequests } from "../../features/hooks/dm-hooks/useGetPendingRequests.hook";
+import { acceptFriendCall } from "../../features/functions/db_calls/acceptFriendRequest";
 
 const options = {
   friends: "friends",
@@ -65,7 +66,6 @@ const ContentFriendDialouge = ({ render }: { render: string }) => {
   const account = useRecoilValue(userSelector);
   const userFriends = useGetFriends();
   const users = useGetUsers();
-  const requests = useGetPendingRequests();
 
   const notFriends = users.users.filter((user) => {
     return (
@@ -74,7 +74,7 @@ const ContentFriendDialouge = ({ render }: { render: string }) => {
     );
   });
 
-  if (userFriends.loading || users.loading ) {
+  if (userFriends.loading || users.loading) {
     return <div>Loading..</div>;
   }
 
@@ -91,22 +91,20 @@ const ContentFriendDialouge = ({ render }: { render: string }) => {
     return (
       <div className="h-full w-full overflow-y-scroll py-1 px-2 scrollw">
         {notFriends &&
-          notFriends.map((user) => (
-            <AddFriend name={user.name} image={user.image} userId={user.id!} />
+          notFriends.map((user, index) => (
+            <AddFriend
+              key={index}
+              name={user.name}
+              image={user.image}
+              userId={user.id!}
+            />
           ))}
       </div>
     );
-  } else {
+  } else if (render === options.pending) {
     return (
       <div className="h-full w-full overflow-y-scroll py-1 px-2 scrollw">
-        {requests.users &&
-          requests.users.map((user) => (
-            <PendingRequests
-              name={user.users.name}
-              image={user.users.image}
-              userId={user.users.id!}
-            />
-          ))}
+        <PendingPannelLayout />
       </div>
     );
   }
@@ -174,20 +172,52 @@ const AddFriend = ({
     </div>
   );
 };
-const PendingRequests = ({
+
+const PendingPannelLayout = () => {
+  const { users, loading } = useGetPendingRequests();
+  const { id } = useRecoilValue(userSelector);
+
+  if (loading) {
+    return (
+      <div className="w-full h-full flex justify-center items-center ">
+        Loading...
+      </div>
+    );
+  }
+  return (
+    <div className="w-full h-full overflow-x-hidden overflow-y-scroll scrollw">
+      {users &&
+        users.map((user, index) => {
+          if (user.user.id !== id)
+            return (
+              <EachPendingRequest
+                key={index}
+                requestId={user.requestId}
+                name={user.user.name}
+                image={user.user.image}
+              />
+            );
+        })}
+    </div>
+  );
+};
+
+const EachPendingRequest = ({
   name,
   image,
-  userId,
+  requestId,
 }: {
   name?: string;
   image?: string;
-  userId: string;
+  requestId: string;
 }) => {
-  const onClick = (id: string) => {
-    addFriendCall(id);
-  };
-
   const randomColor = profileColor();
+  console.log("Pending id", requestId);
+
+  const acceptRequest = () => {
+    acceptFriendCall(requestId);
+    window.location.reload();
+  };
 
   return (
     <div className="h-[9vh] w-full my-2 hover:bg-white/20 rounded-lg cursor-pointer flex justify-center items-center">
@@ -209,7 +239,7 @@ const PendingRequests = ({
       <div className="h-full w-[75%]  py-2 px-3 flex items-center justify-between">
         <p className="w-auto h-auto text-lg font-semibold font-sans">{name}</p>
         <div className="text-white/80 font-extralight flex items-center justify-center  gap-2 text-[1.7rem] text-black bg-white/20 h-[2.5rem] w-[2.5rem] rounded-full p-2 ">
-          <IoMdPersonAdd onClick={() => onClick(userId)} />
+          <IoMdPersonAdd onClick={() => acceptRequest()} />
         </div>
       </div>
     </div>

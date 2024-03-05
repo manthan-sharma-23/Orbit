@@ -2,29 +2,34 @@ import { USER } from "typings";
 import { SERVER_URL } from "../../../utils/constants/config";
 import { useEffect, useState } from "react";
 
+interface PendingRequests {
+  user: USER;
+  requestId: string;
+}
 export const useGetPendingRequests = () => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [users, setUsers] = useState<{ users: USER; requedId: string }[]>([]);
+  const [users, setUsers] = useState<PendingRequests[]>([]);
 
   useEffect(() => {
     setLoading(true);
     fetch(SERVER_URL + "/api/feature/pending", {
-      method: "POST",
+      method: "GET",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
         "Content-Type": "application/json",
       },
     })
       .then((res) => res.json())
-      .then((data) => {
+      .then((data: PendingRequests[]) => {
         console.log(data);
-        // setUsers(data);
-        // setLoading(false);
+        setUsers(data);
+        setLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setLoading(false);
+        console.log(err);
+      });
   }, []);
-
-  console.log(users);
 
   return { loading, users };
 };

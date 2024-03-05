@@ -1,5 +1,5 @@
 import React from "react";
-import Recoil, { useRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { userAtom } from "../store/atoms/user.atom";
 import { SERVER_URL } from "../../utils/constants/config";
 import { OUTPUT_GET_USER } from "typings";

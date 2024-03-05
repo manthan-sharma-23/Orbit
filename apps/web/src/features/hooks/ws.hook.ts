@@ -3,7 +3,7 @@ import { WEBSOCKET_URL } from "../../utils/constants/config";
 import { FRIEND, MESSAGE, TEXT } from "typings";
 import { SetterOrUpdater } from "recoil";
 
-let message: any = "";
+let message: string = "";
 
 export const useListenWebSocket = (
   roomId: string,
@@ -28,8 +28,7 @@ export const useListenWebSocket = (
       );
 
       wsInstance.addEventListener("message", (msg) => {
-        console.log(msg)
-        if (msg.data !== message) {
+        if (String(msg.data) !== message) {
           const text: MESSAGE = JSON.parse(msg.data);
 
           if (text.type === "MESSAGE" && text.payload.message) {
@@ -42,7 +41,7 @@ export const useListenWebSocket = (
               ...prev,
               MESSAGES: [...prev.MESSAGES!, newMessage],
             }));
-            message = msg.data;
+            message = String(msg.data);
           }
         }
       });
