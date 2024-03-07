@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { loginUser } from "@/features/funcs/auth/useLoginUser";
 import { type INPUT_LOGIN_FORM } from "typings";
+import { useToast } from "../ui/use-toast";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -16,6 +17,7 @@ const formInit: INPUT_LOGIN_FORM = {
 };
 
 export function SignIn({ className, ...props }: UserAuthFormProps) {
+  const { toast } = useToast();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [formDetails, setFormDetails] =
     React.useState<INPUT_LOGIN_FORM>(formInit);
@@ -29,7 +31,10 @@ export function SignIn({ className, ...props }: UserAuthFormProps) {
         password: formDetails.password,
       });
     } else {
-      alert("Enter correct credentials");
+      toast({
+        variant: "default",
+        title: "Please Enter Correct Credentials",
+      });
     }
   }
 
