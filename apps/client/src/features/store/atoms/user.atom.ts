@@ -3,10 +3,12 @@ import { USER } from "typings";
 
 interface userState {
   user: USER | null;
+  loading: boolean;
 }
 
 const initialState: userState = {
   user: null,
+  loading: false,
 };
 
 export const userAtom = atom({

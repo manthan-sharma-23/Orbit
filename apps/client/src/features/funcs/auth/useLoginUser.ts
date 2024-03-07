@@ -27,6 +27,7 @@ export const loginUser = ({
     })
     .then((data: OUTPUT_LOGIN_FORM) => {
       window.localStorage.setItem("token", data.token);
+      window.location.assign("/");
       setLoading(false);
     })
     .catch((err) => {
