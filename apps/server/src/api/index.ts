@@ -6,6 +6,7 @@ import userRouter from "./routes/user.routes";
 import featureRouter from "./routes/feature.routes";
 import roomRouter from "./routes/room.routes";
 import messageRouter from "./routes/message.routes";
+import teamRouter from "./routes/team.routes";
 
 const router: Router = Router();
 
@@ -18,6 +19,7 @@ router
   .use("/user", userRouter)
   .use("/feature", featureRouter)
   .use("/room", roomRouter)
-  .use("/messages", messageRouter);
+  .use("/messages", messageRouter)
+  .use("/team", teamRouter);
 
 export default router;

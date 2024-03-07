@@ -9,4 +9,7 @@ export interface UserJwtPayload extends JwtPayload {
   userId?: string;
 }
 
-
+export type SocketUserMap = {
+  roomId: string;
+  socket: WebSocket;
+};

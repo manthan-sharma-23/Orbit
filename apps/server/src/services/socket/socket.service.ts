@@ -3,6 +3,7 @@ import http from "http";
 import { MESSAGE, MESSAGE_TYPE, TEXT } from "typings";
 import RedisClient from "../redis/redis.service";
 import { REDIS_PORT } from "../../utils/constants/config";
+import { SocketUserMap } from "../../utils/types";
 
 const publisher = new RedisClient(REDIS_PORT);
 const subscriber = new RedisClient(REDIS_PORT);
@@ -13,7 +14,8 @@ subscriber.subscriber(channel);
 export default class SocketService {
   private _wss: WebSocketServer;
   private _counter = 0;
-  private _users: { [key: string]: { roomId: string; socket: any } } = {};
+  public _users: Map<number, SocketUserMap> = new Map();
+  private prev_message: string = "";
 
   constructor(server: http.Server) {
     this._wss = new WebSocketServer({ server });
@@ -24,57 +26,31 @@ export default class SocketService {
       const socketId = this._counter++;
 
       socket.on("message", async (msg) => {
-        const message: MESSAGE = JSON.parse(msg.toString());
+        publisher.publish(channel, msg.toString());
+      });
 
-        if (message.type === MESSAGE_TYPE.join && message.payload.roomId) {
-          this._joinRoom(socketId, message.payload.roomId, socket);
-        }
-
-        if (
-          message.type === MESSAGE_TYPE.message &&
-          message.payload.roomId &&
-          message.payload.message
-        ) {
-          publisher.publish("MESSAGE", message);
-          subscriber.listenMessageEvent((message) => {
-            if (message.payload.message)
-              this._sendMessageToRoom(
-                message.payload.roomId!,
-                message.payload.message
-              );
-          });
+      subscriber.listenMessageEvent((msg) => {
+        if (this.prev_message !== JSON.stringify(msg)) {
+          socket.send(JSON.stringify(msg));
         }
       });
 
       socket.onclose = () => {
-        console.log("Sevrer websocket closed");
-
-        delete this.users[socketId];
+        console.log("Server websocket closed");
+        this._users.delete(socketId);
       };
     });
   }
 
-  private _joinRoom(socketId: number, roomId: string, socket: any): void {
-    this.users[socketId] = {
-      roomId,
-      socket,
-    };
-    socket.send(JSON.stringify({ message: "INFO", room: roomId }));
-  }
-
-  private _sendMessageToRoom(roomId: string, text: TEXT): void {
-    Object.keys(this._users).forEach(async (socketId) => {
-      if (this._users[socketId]?.roomId === roomId) {
-        this._users[socketId]?.socket.send(
-          JSON.stringify({
-            type: "MESSAGE",
-            payload: {
-              message: text,
-            },
-          })
-        );
-      }
-    });
+  public addUser({
+    socketId,
+    socketInfo,
+  }: {
+    socketId: number;
+    socketInfo: SocketUserMap;
+  }): Map<number, SocketUserMap> {
+    this._users.set(socketId, socketInfo);
+    return this._users;
   }
 
   get listenWebSocketServerEvents() {

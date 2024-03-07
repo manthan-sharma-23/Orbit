@@ -15,7 +15,7 @@ const port = PORT;
 const server = http.createServer(app);
 
 // web socket
-const socketServer = new SocketService(server);
+export const socketServer = new SocketService(server);
 socketServer.listenWebSocketServerEvents(socketServer.wss);
 
 //express api endpoint '/api'

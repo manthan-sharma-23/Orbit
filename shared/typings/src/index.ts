@@ -47,11 +47,11 @@ export const ROOM_TYPE = {
   person: "person",
 };
 
-export const MESSAGE_TYPE = {
-  info: "INFO",
-  message: "MESSAGE",
-  join: "JOIN",
-};
+export enum MESSAGE_TYPE {
+  info = "INFO",
+  message = "MESSAGE",
+  join = "JOIN",
+}
 
 export type ROOM = {
   id: string;
@@ -77,7 +77,7 @@ export enum ChatEvent {
 }
 
 export type MESSAGE = {
-  type: "JOIN" | "MESSAGE" | "INFO";
+  type: MESSAGE_TYPE;
   payload: {
     roomId?: string;
     message?: TEXT;
