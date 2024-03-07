@@ -2,7 +2,7 @@ import { z } from "zod";
 
 //user controllers
 export const INPUT_LOGIN_FORM = z.object({
-  name: z.string(),
+  name: z.string().nullable(),
   email: z.string().email(),
   password: z.string().min(5),
 });
