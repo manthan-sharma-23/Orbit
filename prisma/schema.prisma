@@ -8,27 +8,29 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String     @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?    @unique
   password      String?
   emailVerified DateTime?
   image         String?
   theme         String?
-  status        String?   @default("available")
-  view          String?   @default("public")
+  status        String?    @default("available")
+  view          String?    @default("public")
   rooms         Room[] // A user can be part of multiple rooms
   messages      Message[] // A user can send multiple messages
   friends       Friend[]
+  UserTeam      UserTeam[]
+  UserTask      UserTask[]
 }
 
 model Room {
   id       String    @id @default(cuid())
-  name     String?
   createAt DateTime  @default(now())
   type     String    @default("person")
   users    User[] // A room can have multiple users
   messages Message[] // A room can have multiple messages
+  Team     Team[]
 }
 
 model Message {
@@ -50,4 +52,68 @@ model Friend {
   roomId     String?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+}
+
+model Team {
+  id          String        @id @default(cuid())
+  name        String
+  description String?
+  room        Room          @relation(fields: [roomId], references: [id])
+  roomId      String
+  users       UserTeam[] // A team can have multiple users with roles
+  TeamChannel TeamChannel[]
+}
+
+model UserTeam {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  team      Team     @relation(fields: [teamId], references: [id])
+  teamId    String
+  role      String // Define roles for users in the team
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Channel {
+  id          String        @id @default(cuid())
+  name        String
+  description String?
+  teams       TeamChannel[] // A channel can have multiple teams
+}
+
+model TeamChannel {
+  id        String   @id @default(cuid())
+  team      Team     @relation(fields: [teamId], references: [id])
+  teamId    String
+  channel   Channel  @relation(fields: [channelId], references: [id])
+  channelId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Task {
+  id          String     @id @default(cuid())
+  title       String
+  description String?
+  status      String     @default("pending")
+  tags        Tag[] // A task can have multiple tags
+  assignedTo  UserTask[] // A task can be assigned to multiple users
+}
+
+model Tag {
+  id    String  @id @default(cuid())
+  name  String
+  color String?
+  tasks Task[] // Many-to-many relationship with tasks
+}
+
+model UserTask {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  task      Task     @relation(fields: [taskId], references: [id])
+  taskId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
