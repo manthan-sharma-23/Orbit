@@ -22,12 +22,18 @@ export const addTeamMemberController = async (
     if (!userId || !teamId) {
       return res.sendStatus(INVALID_CREDENTIALS.code);
     }
-    const userIsAdminQuery = await db.userTeam.findFirst({
+    const userIsAdminQuery = await db.userTeam.findFirstOrThrow({
       where: {
         AND: [{ teamId }, { userId }],
       },
       select: {
         role: true,
+      },
+    });
+    const team: { roomId: string } = await db.team.findUniqueOrThrow({
+      where: { id: teamId },
+      select: {
+        roomId: true,
       },
     });
 
@@ -72,6 +78,18 @@ export const addTeamMemberController = async (
           userId: newMemberId!,
           channelId,
           role: TEAM_ROLE.member,
+        },
+      }),
+      db.room.update({
+        where: {
+          id: team.roomId,
+        },
+        data: {
+          users: {
+            connect: {
+              id: newMemberId,
+            },
+          },
         },
       }),
     ]);
