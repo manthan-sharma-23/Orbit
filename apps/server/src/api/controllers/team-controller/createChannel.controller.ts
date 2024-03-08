@@ -23,7 +23,12 @@ export const createChannel = async (req: ProtectedRequest, res: Response) => {
     });
     if (!channel.id) return res.sendStatus(RESOURCE_NOT_MODIFIED.code);
 
-    const generalTeam=await db.team.create
+    const generalTeam = await db.team.create({
+      data: {
+        name: "general",
+        description: "General Team",
+      },
+    });
   } catch (error) {
     return res
       .status(INTERNAL_SERVER_ERROR.code)
