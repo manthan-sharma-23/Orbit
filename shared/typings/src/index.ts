@@ -89,3 +89,16 @@ export type TEXT = {
   userId: string;
   text: string;
 };
+
+export enum TEAM_TYPE {
+  inviteOnly = "invite_only",
+  public = "public",
+  private = "private",
+}
+
+export type TEAM = {
+  name: string;
+  description?: string;
+  roomId: string;
+  type: TEAM_TYPE;
+};

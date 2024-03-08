@@ -60,6 +60,7 @@ model Team {
   description String?
   room        Room          @relation(fields: [roomId], references: [id])
   roomId      String
+  type        String?       @default("invite_only")
   users       UserTeam[] // A team can have multiple users with roles
   TeamChannel TeamChannel[]
 }
@@ -76,18 +77,20 @@ model UserTeam {
 }
 
 model Channel {
-  id          String        @id @default(cuid())
+  id          String  @id @default(cuid())
   name        String
   description String?
-  teams       TeamChannel[] // A channel can have multiple teams
+
+  teams TeamChannel[] // A channel can have multiple teams
 }
 
 model TeamChannel {
-  id        String   @id @default(cuid())
-  team      Team     @relation(fields: [teamId], references: [id])
+  id        String  @id @default(cuid())
+  team      Team    @relation(fields: [teamId], references: [id])
   teamId    String
-  channel   Channel  @relation(fields: [channelId], references: [id])
+  channel   Channel @relation(fields: [channelId], references: [id])
   channelId String
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
