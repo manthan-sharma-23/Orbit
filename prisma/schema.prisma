@@ -20,8 +20,8 @@ model User {
   rooms         Room[] // A user can be part of multiple rooms
   messages      Message[] // A user can send multiple messages
   friends       Friend[]
-  UserTeam      UserTeam[]
-  UserTask      UserTask[]
+  userTeams     UserTeam[]
+  userTasks     UserTask[]
 }
 
 model Room {
@@ -30,7 +30,7 @@ model Room {
   type     String    @default("person")
   users    User[] // A room can have multiple users
   messages Message[] // A room can have multiple messages
-  Team     Team[]
+  team     Team? // A room can be associated with zero or one team
 }
 
 model Message {
@@ -55,16 +55,15 @@ model Friend {
 }
 
 model Team {
-  id          String        @id @default(cuid())
+  id          String     @id @default(cuid())
   name        String
   description String?
-  type        String?       @default("invite_only")
-  channel     Channel       @relation(fields: [channelId], references: [id])
+  type        String?    @default("invite_only")
+  channel     Channel    @relation(fields: [channelId], references: [id])
   channelId   String
-  users       UserTeam[] // A team can have multiple users
-  Room        Room?         @relation(fields: [roomId], references: [id])
-  roomId      String?
-  TeamChannel TeamChannel[]
+  members     UserTeam[] // A team can have multiple users
+  room        Room       @relation(fields: [roomId], references: [id])
+  roomId      String     @unique
 }
 
 model UserTeam {
@@ -82,19 +81,7 @@ model Channel {
   id          String  @id @default(cuid())
   name        String
   description String?
-
-  teams TeamChannel[] // A channel can have multiple teams
-  Team  Team[]
-}
-
-model TeamChannel {
-  id        String   @id @default(cuid())
-  team      Team     @relation(fields: [teamId], references: [id])
-  teamId    String
-  channel   Channel  @relation(fields: [channelId], references: [id])
-  channelId String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  teams       Team[]
 }
 
 model Task {

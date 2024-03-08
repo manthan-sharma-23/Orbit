@@ -9,8 +9,10 @@ import { db } from "../../../utils/db";
 
 export const createChannel = async (req: ProtectedRequest, res: Response) => {
   try {
-    const { user } = req;
+    const userId = req.user;
     const { channel_name, channel_description } = req.body;
+
+    if (!userId) res.sendStatus(FORBIDDEN_RESOURCE.code);
 
     const channel = await db.channel.create({
       data: {
@@ -27,8 +29,33 @@ export const createChannel = async (req: ProtectedRequest, res: Response) => {
       data: {
         name: "general",
         description: "General Team",
+        channel: {
+          connect: {
+            id: channel.id,
+          },
+        },
+        members: {
+          create: {
+            userId: userId!,
+            role: "admin",
+          },
+        },
+        room: {
+          create: {
+            type: "team",
+            users: {
+              connect: {
+                id: userId,
+              },
+            },
+          },
+        },
+      },
+      include: {
+        room: true,
       },
     });
+    return res.status(200).json({ channel, generalTeam });
   } catch (error) {
     return res
       .status(INTERNAL_SERVER_ERROR.code)
