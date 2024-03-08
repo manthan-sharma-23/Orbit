@@ -13,8 +13,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<RootLayout />}>
-            <Route path="/" element={<ApplicationLayout />}>
-              <Route index element={<Home />} />
+            <Route path="/home" element={<ApplicationLayout />}>
+              <Route path="/home/:path" element={<Home />} />
             </Route>
             <Route path="/auth" element={<AuthenticationLayout />}>
               <Route path="/auth/signin" element={<SignIn />} />

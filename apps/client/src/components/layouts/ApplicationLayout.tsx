@@ -1,6 +1,6 @@
 import { useGetUser } from "@/features/hooks/root/useGetUser";
 import { userAtom } from "@/features/store/atoms/user.atom";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { Separator } from "../ui/separator";
 import {
@@ -9,6 +9,7 @@ import {
   ResizablePanelGroup,
 } from "../ui/resizable";
 import { navoption } from "@/lib/static/bar.icons";
+import _ from "lodash";
 import { useState } from "react";
 import {
   Drawer,
@@ -23,8 +24,10 @@ import {
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { TypographySmall } from "../ui/typography/small";
+import { TypographyH2 } from "../ui/typography/h2";
 
 const ApplicationLayout = () => {
+  const { path } = useParams();
   const user = useRecoilValue(userAtom);
   const [barCollapse, setBarCollapse] = useState(false);
   useGetUser();
@@ -44,9 +47,9 @@ const ApplicationLayout = () => {
         className="rounded-lg border w-full"
       >
         <ResizablePanel
-          defaultSize={16}
-          maxSize={16}
-          minSize={12}
+          defaultSize={12}
+          maxSize={15}
+          minSize={9}
           collapsible
           onCollapse={() => {
             setBarCollapse(true);
@@ -80,7 +83,14 @@ const ApplicationLayout = () => {
                       </DrawerDescription>
                     </DrawerHeader>
                     <DrawerFooter>
-                      <Button>Submit</Button>
+                      <Button
+                        onClick={() => {
+                          window.localStorage.removeItem("token");
+                          window.location.assign("/auth/signin");
+                        }}
+                      >
+                        Logout
+                      </Button>
                       <DrawerClose>
                         <Button variant="outline">Cancel</Button>
                       </DrawerClose>
@@ -96,18 +106,16 @@ const ApplicationLayout = () => {
                       <>
                         <Link
                           key={index}
-                          to="#"
-                          className={`w-full flex justify-between items-center p-2 px-4 ${index === 0 && "bg-[#18181B] text-white"} rounded-md `}
+                          to={"/home/" + link.href}
+                          className={`w-full flex justify-between items-center p-2 px-4 ${path === link.href && "bg-[#18181B] text-white"} rounded-md ${path !== link.href && "hover:bg-stone-200"}`}
                         >
                           <p className="flex  justify-start items-center">
                             <link.icon className="mr-2 h-4 w-4" />
-                            {link.title}
+                            <p>{link.title}</p>
                           </p>
-                          {link.label && (
-                            <span className={""}>{link.label}</span>
-                          )}
+                          {link.label && <span>{link.label}</span>}
                         </Link>
-                        {index === 4 && <Separator className="my-4" />}
+                        {index === 5 && <Separator className="my-4" />}
                       </>
                     );
                   })}
@@ -142,7 +150,7 @@ const ApplicationLayout = () => {
           }}
         />
         <ResizablePanel defaultSize={82}>
-          <Outlet />
+          <Outlet/>
         </ResizablePanel>
       </ResizablePanelGroup>
     </div>
