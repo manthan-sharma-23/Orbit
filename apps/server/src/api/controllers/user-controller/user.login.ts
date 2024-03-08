@@ -24,7 +24,6 @@ export default async function LoginUser(req: Request, res: Response) {
         email,
       },
     });
-    console.log(user);
 
     if (!user) return res.status(DONT_EXISTS.code).json(DONT_EXISTS.action);
 

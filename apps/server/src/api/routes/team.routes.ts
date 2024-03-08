@@ -5,6 +5,7 @@ import { createChannel } from "../controllers/channel-controller/createChannel.c
 import { getChannelInfo } from "../controllers/channel-controller/getChannelInfo.controller";
 import { getTeamInfo } from "../controllers/team-controller/getTeamInfo.controller";
 import { addTeamMemberController } from "../controllers/team-controller/addTeamMember.controller";
+import { createTeam } from "../controllers/team-controller/createTeam.controller";
 
 const router: Router = Router();
 
@@ -12,6 +13,7 @@ router
   .post("/create/channel", authUser, createChannel) // add rate limiter in prod
   .get("/channel/:channelId", authUser, getChannelInfo)
   .get("/get/team/:teamId", authUser, getTeamInfo)
-  .post("/member/add",authUser,addTeamMemberController);
+  .post("/member/add",authUser,addTeamMemberController)
+  .post("/create/team",authUser,createTeam);
 
 export default router;

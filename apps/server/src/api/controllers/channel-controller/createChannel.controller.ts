@@ -24,38 +24,48 @@ export const createChannel = async (req: ProtectedRequest, res: Response) => {
         id: true,
       },
     });
+
     if (!channel.id) return res.sendStatus(RESOURCE_NOT_MODIFIED.code);
 
-    const generalTeam = await db.team.create({
-      data: {
-        name: "general",
-        description: "General Team",
-        channel: {
-          connect: {
-            id: channel.id,
-          },
+    const generalTeam = await db.$transaction([
+      db.userChannel.create({
+        data: {
+          userId: userId!,
+          channelId: channel.id,
+          role: TEAM_ROLE.admin,
         },
-        members: {
-          create: {
-            userId: userId!,
-            role: TEAM_ROLE.admin,
+      }),
+      db.team.create({
+        data: {
+          name: "general",
+          description: "General Team",
+          channel: {
+            connect: {
+              id: channel.id,
+            },
           },
-        },
-        room: {
-          create: {
-            type: "team",
-            users: {
-              connect: {
-                id: userId,
+          members: {
+            create: {
+              userId: userId!,
+              role: TEAM_ROLE.admin,
+            },
+          },
+          room: {
+            create: {
+              type: "team",
+              users: {
+                connect: {
+                  id: userId,
+                },
               },
             },
           },
         },
-      },
-      include: {
-        room: true,
-      },
-    });
+        include: {
+          room: true,
+        },
+      }),
+    ]);
     return res.status(200).json({ channel, generalTeam });
   } catch (error) {
     return res

@@ -8,20 +8,21 @@ datasource db {
 }
 
 model User {
-  id            String     @id @default(cuid())
+  id            String        @id @default(cuid())
   name          String?
-  email         String?    @unique
+  email         String?       @unique
   password      String?
   emailVerified DateTime?
   image         String?
   theme         String?
-  status        String?    @default("available")
-  view          String?    @default("public")
+  status        String?       @default("available")
+  view          String?       @default("public")
   rooms         Room[] // A user can be part of multiple rooms
   messages      Message[] // A user can send multiple messages
   friends       Friend[]
   userTeams     UserTeam[]
   userTasks     UserTask[]
+  UserChannel   UserChannel[]
 }
 
 model Room {
@@ -78,10 +79,20 @@ model UserTeam {
 }
 
 model Channel {
-  id          String  @id @default(cuid())
+  id          String        @id @default(cuid())
   name        String
   description String?
   teams       Team[]
+  UserChannel UserChannel[]
+}
+
+model UserChannel {
+  id        String  @id @default(uuid())
+  user      User    @relation(fields: [userId], references: [id])
+  userId    String
+  chanel    Channel @relation(fields: [channelId], references: [id])
+  channelId String
+  role      String  @default("member")
 }
 
 model Task {
