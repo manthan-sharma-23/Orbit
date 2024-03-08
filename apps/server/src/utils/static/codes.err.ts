@@ -177,3 +177,10 @@ export const MESSAGE_SENT_SUCCESSFULLY = {
   code: 200, // You may adjust the code as per your application's status codes
   action: { message: "SUCCESS --- Message sent successfully" },
 };
+
+export const NON_UNIQUE_RESOURCE = {
+  code: 409,
+  action: {
+    message: "CONFLICT --- The resource already exists in the system",
+  },
+};

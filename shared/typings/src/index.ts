@@ -102,3 +102,9 @@ export type TEAM = {
   roomId: string;
   type: TEAM_TYPE;
 };
+
+export enum TEAM_ROLE {
+  admin = "admin",
+  member = "member",
+  coadmin = "coadmin",
+}

@@ -6,6 +6,7 @@ import {
 } from "../../../utils/static/codes.err";
 import { ProtectedRequest } from "../../../utils/types";
 import { db } from "../../../utils/db";
+import { TEAM_ROLE } from "typings";
 
 export const createChannel = async (req: ProtectedRequest, res: Response) => {
   try {
@@ -37,7 +38,7 @@ export const createChannel = async (req: ProtectedRequest, res: Response) => {
         members: {
           create: {
             userId: userId!,
-            role: "admin",
+            role: TEAM_ROLE.admin,
           },
         },
         room: {
