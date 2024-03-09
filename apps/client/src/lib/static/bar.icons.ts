@@ -10,6 +10,7 @@ import {
   CheckCircle,
   MessageCircleMore,
   Pin,
+  Circle,
 } from "lucide-react";
 
 export const navoption = {
@@ -57,11 +58,11 @@ export const navoption = {
       href: "junk",
     },
     {
-      title: "Archive",
+      title: "Spaces",
       label: "",
-      icon: Archive,
+      icon: Circle,
       variant: "ghost",
-      href: "archive",
+      href: "spaces",
     },
     {
       title: "Social",

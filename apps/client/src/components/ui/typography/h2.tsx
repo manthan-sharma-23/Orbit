@@ -3,7 +3,7 @@ export function TypographyH2({
   className,
 }: {
   text?: string;
-  className: string;
+  className?: string;
 }) {
   return (
     <h2
