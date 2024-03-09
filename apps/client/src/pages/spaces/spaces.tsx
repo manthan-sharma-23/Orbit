@@ -46,7 +46,7 @@ const Spaces = () => {
                 setSelectedSpace({ id });
               }}
             >
-              <SelectTrigger className="w-full h-[6vh] py-3 border-[1px] border-black/30">
+              <SelectTrigger className="w-full h-[6vh] py-3 border-[1px] border-black/30  ">
                 <SelectValue defaultValue={"1"} defaultChecked={false} />
               </SelectTrigger>
               <SelectContent>
@@ -58,7 +58,7 @@ const Spaces = () => {
                           space.space.image ||
                           `/channel_icons/${getRandomNumberWithLeadingZeros(4)}.jpg`
                         }
-                        className="h-[4vh] w-[4vh] rounded-full border-[1px] border-black"
+                        className="h-[4vh] w-[4vh] rounded-full border-[1px] border-black relative z-20"
                       />
                       <p className="w-auto h-[4vh] flex justify-start items-center ml-3 text-lg font-medium">
                         {space.space.name}
