@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import Inbox from "./inbox";
-import Spaces from "./spaces";
+import Spaces from "./spaces/spaces";
 
 const Home = () => {
   const { path } = useParams();

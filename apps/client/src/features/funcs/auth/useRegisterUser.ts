@@ -30,7 +30,7 @@ export const registerUser = ({
     })
     .then((data: OUTPUT_LOGIN_FORM) => {
       window.localStorage.setItem("token", data.token);
-      window.location.assign("/");
+      window.location.assign("/home/inbox");
       setLoading(false);
     })
     .catch((err) => {

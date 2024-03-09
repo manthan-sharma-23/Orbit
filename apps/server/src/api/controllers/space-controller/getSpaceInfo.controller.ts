@@ -14,14 +14,14 @@ export const getSpaceInfo = async (req: ProtectedRequest, res: Response) => {
     const userId = req.user;
     if (!userId) return res.sendStatus(FORBIDDEN_RESOURCE.code);
 
-    const { channelId } = req.params;
+    const { spaceId } = req.params;
 
-    if (!channelId) return res.sendStatus(INVALID_CREDENTIALS.code);
+    if (!spaceId) return res.sendStatus(INVALID_CREDENTIALS.code);
 
     //fetch channel info
     const channel = await db.space.findUnique({
       where: {
-        id: channelId!,
+        id: spaceId!,
       },
       include: {
         teams: {

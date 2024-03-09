@@ -7,6 +7,7 @@ import featureRouter from "./routes/feature.routes";
 import roomRouter from "./routes/room.routes";
 import messageRouter from "./routes/message.routes";
 import teamRouter from "./routes/team.routes";
+import spaceRouter from "./routes/space.routes";
 
 const router: Router = Router();
 
@@ -20,6 +21,7 @@ router
   .use("/feature", featureRouter)
   .use("/room", roomRouter)
   .use("/messages", messageRouter)
-  .use("/team", teamRouter);
+  .use("/team", teamRouter)
+  .use("/space", spaceRouter);
 
 export default router;

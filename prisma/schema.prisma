@@ -62,6 +62,7 @@ model Team {
   space       Space      @relation(fields: [spaceId], references: [id])
   spaceId     String
   members     UserTeam[]
+  threads     Thread[]
 }
 
 model UserTeam {
@@ -92,6 +93,14 @@ model UserSpace {
   space   Space  @relation(fields: [spaceId], references: [id])
   spaceId String
   role    String @default("member")
+}
+
+model Thread {
+  id     String  @id @default(uuid())
+  name   String
+  type   String  @default("chat")
+  Team   Team?   @relation(fields: [teamId], references: [id])
+  teamId String?
 }
 
 model Task {

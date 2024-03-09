@@ -108,3 +108,19 @@ export enum TEAM_ROLE {
   member = "member",
   coadmin = "coadmin",
 }
+
+export interface USER_SPACE_SCHEMA {
+  id: string;
+  role: TEAM_ROLE;
+  userId: string;
+  spaceId: string;
+  space: SPACE_SCHEMA;
+}
+
+export interface SPACE_SCHEMA {
+  id: string;
+  name: string;
+  description: string;
+  image: string;
+  createdBy: string;
+}

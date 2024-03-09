@@ -9,7 +9,7 @@ import {
   UNAUTHORIZED_ACCESS,
 } from "../../../utils/static/codes.err";
 import { db } from "../../../utils/db";
-import { TEAM_ROLE, TEAM_TYPE } from "typings";
+import { TEAM_ROLE } from "typings";
 
 export const addTeamMemberController = async (
   req: ProtectedRequest,
@@ -28,12 +28,6 @@ export const addTeamMemberController = async (
       },
       select: {
         role: true,
-      },
-    });
-    const team: { roomId: string } = await db.team.findUniqueOrThrow({
-      where: { id: teamId },
-      select: {
-        roomId: true,
       },
     });
 
@@ -76,18 +70,6 @@ export const addTeamMemberController = async (
           userId: newMemberId!,
           spaceId,
           role: TEAM_ROLE.member,
-        },
-      }),
-      db.room.update({
-        where: {
-          id: team.roomId,
-        },
-        data: {
-          users: {
-            connect: {
-              id: newMemberId,
-            },
-          },
         },
       }),
     ]);
