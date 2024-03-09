@@ -97,10 +97,12 @@ export enum TEAM_TYPE {
 }
 
 export type TEAM = {
+  id: string;
   name: string;
   description?: string;
-  roomId: string;
+  spaceId: string;
   type: TEAM_TYPE;
+  threads: THREAD_SCHEME[];
 };
 
 export enum TEAM_ROLE {
@@ -123,4 +125,22 @@ export interface SPACE_SCHEMA {
   description: string;
   image: string;
   createdBy: string;
+}
+
+export const THREADS_BASE = {
+  general: {
+    name: "general",
+    type: "chat",
+  },
+  announcement: {
+    name: "announcement",
+    type: "announcement",
+  },
+};
+
+export interface THREAD_SCHEME {
+  id: string;
+  name: string;
+  type: string;
+  teamId: string;
 }

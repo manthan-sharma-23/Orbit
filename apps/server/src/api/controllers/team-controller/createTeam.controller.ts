@@ -7,13 +7,13 @@ import {
   RESOURCE_NOT_MODIFIED,
 } from "../../../utils/static/codes.err";
 import { db } from "../../../utils/db";
-import { TEAM_ROLE, TEAM_TYPE } from "typings";
+import { TEAM, TEAM_ROLE, TEAM_TYPE, THREADS_BASE } from "typings";
 
 export const createTeam = async (req: ProtectedRequest, res: Response) => {
   try {
     const userId = req.user;
 
-    const { name, type, spaceId } = req.body;
+    const { name, type, spaceId, description } = req.body;
 
     if (!spaceId) return res.sendStatus(RESOURCE_CONFLICT.code);
 
@@ -33,12 +33,12 @@ export const createTeam = async (req: ProtectedRequest, res: Response) => {
       checkIfUserIsAdminInChannelQuery &&
       checkIfUserIsAdminInChannelQuery.role === TEAM_ROLE.admin
     ) {
-      const createTeamQuery = await db.$transaction([
+      const createTeamQuery: [TEAM] = await db.$transaction([
         db.team.create({
           data: {
             name: name,
             type: type || TEAM_TYPE.inviteOnly,
-            description: "Another team in Channel",
+            description: description || "Another team in Channel",
             space: {
               connect: {
                 id: spaceId,
@@ -50,6 +50,27 @@ export const createTeam = async (req: ProtectedRequest, res: Response) => {
                 role: TEAM_ROLE.admin,
               },
             },
+          },
+        }),
+      ]);
+
+      if (!createTeamQuery[0].id) {
+        throw Error;
+      }
+
+      await db.$transaction([
+        db.thread.create({
+          data: {
+            name: THREADS_BASE.general.name,
+            type: THREADS_BASE.general.type,
+            teamId: createTeamQuery[0].id,
+          },
+        }),
+        db.thread.create({
+          data: {
+            name: THREADS_BASE.announcement.name,
+            type: THREADS_BASE.announcement.type,
+            teamId: createTeamQuery[0].id,
           },
         }),
       ]);

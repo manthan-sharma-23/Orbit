@@ -16,9 +16,9 @@ import { useGetUserSpaces } from "@/features/hooks/spaces/useGetUserSpaces";
 import Loading from "@/components/ui/Loading";
 import { getRandomNumberWithLeadingZeros } from "@/lib/utils/rnad";
 import { useSetRecoilState } from "recoil";
-import { selectedSpaceAtom } from "@/features/hooks/spaces/spaceId.atom";
 import SpaceInfoPannel from "./spaceInfoPannel";
 import SpaceActivityPannel from "./spaceActivityPannel";
+import { selectedSpaceAtom } from "@/features/store/atoms/spaces/spaceId.atom";
 
 const Spaces = () => {
   const { loading, spaces } = useGetUserSpaces();
@@ -35,9 +35,9 @@ const Spaces = () => {
     <div className="h-full w-full">
       <ResizablePanelGroup direction="horizontal">
         <ResizablePanel
-          minSize={25}
-          defaultSize={30}
-          maxSize={35}
+          minSize={20}
+          defaultSize={20}
+          maxSize={20}
           className="p-0 border-0 flex flex-col"
         >
           <nav className="flex justify-start items-center p-2 h-[8vh] overflow-hidden gap-3">
@@ -46,8 +46,8 @@ const Spaces = () => {
                 setSelectedSpace({ id });
               }}
             >
-              <SelectTrigger className="w-[55%] h-[6vh] py-3 border-[1px] border-black/30">
-                <SelectValue defaultValue={""} />
+              <SelectTrigger className="w-full h-[6vh] py-3 border-[1px] border-black/30">
+                <SelectValue defaultValue={"1"} defaultChecked={false} />
               </SelectTrigger>
               <SelectContent>
                 {spaces.map((space, index) => (
@@ -68,11 +68,6 @@ const Spaces = () => {
                 ))}
               </SelectContent>
             </Select>
-            <section className="w-[45%] h-[6vh] py-3 flex justify-end gap-4 pr-4 items-center">
-              <ListFilter className="border-[1px] border-black/20 text-black/60 hover:text-black/85 h-[4.5vh] w-[4.5vh] p-2 rounded-md cursor-pointer hover:bg-black/15" />
-              <BellRing className="border-[1px] border-black/20 text-black/60 hover:text-black/85 h-[4.5vh] w-[4.5vh] p-2 rounded-md cursor-pointer hover:bg-black/15" />
-              <Plus className="border-[1px] border-black/20 text-black/60 hover:text-black/85 h-[4.5vh] w-[4.5vh] p-2 rounded-md cursor-pointer hover:bg-black/15" />
-            </section>
           </nav>
           <Separator className="bg-black/10" />
           <section className="h-[92vh]">

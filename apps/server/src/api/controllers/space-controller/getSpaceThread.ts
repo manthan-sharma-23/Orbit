@@ -6,6 +6,7 @@ import {
   RESOURCE_NOT_FOUND,
 } from "../../../utils/static/codes.err";
 import { db } from "../../../utils/db";
+import { TEAM } from "typings";
 
 export const getSpaceThreads = async (req: ProtectedRequest, res: Response) => {
   try {
@@ -17,7 +18,7 @@ export const getSpaceThreads = async (req: ProtectedRequest, res: Response) => {
       return res.json(RESOURCE_NOT_FOUND.code).json(RESOURCE_NOT_FOUND.action);
     }
 
-    const teams = await db.team.findMany({
+    const teams: TEAM[] = await db.team.findMany({
       where: {
         spaceId,
         members: {
@@ -25,6 +26,9 @@ export const getSpaceThreads = async (req: ProtectedRequest, res: Response) => {
             userId: userId,
           },
         },
+      },
+      include: {
+        threads: true,
       },
     });
 
