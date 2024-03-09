@@ -9,7 +9,7 @@ import {
 } from "../../../utils/static/codes.err";
 import { db } from "../../../utils/db";
 
-export const getChannelInfo = async (req: ProtectedRequest, res: Response) => {
+export const getSpaceInfo = async (req: ProtectedRequest, res: Response) => {
   try {
     const userId = req.user;
     if (!userId) return res.sendStatus(FORBIDDEN_RESOURCE.code);
@@ -19,7 +19,7 @@ export const getChannelInfo = async (req: ProtectedRequest, res: Response) => {
     if (!channelId) return res.sendStatus(INVALID_CREDENTIALS.code);
 
     //fetch channel info
-    const channel = await db.channel.findUnique({
+    const channel = await db.space.findUnique({
       where: {
         id: channelId!,
       },

@@ -19,7 +19,7 @@ export const sendMessageToDB = async (req: ProtectedRequest, res: Response) => {
 
     const date = new Date(message.sendAt);
 
-    const response = await db.message.create({
+    const response = await db.userMessage.create({
       data: {
         userId,
         roomId,

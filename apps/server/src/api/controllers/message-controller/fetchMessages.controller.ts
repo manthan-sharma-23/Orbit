@@ -8,7 +8,7 @@ import redis from "../../../services/redis/redis.client";
 export const fetchMessages = async (req: ProtectedRequest, res: Response) => {
   try {
     const { roomId } = req.params;
-    const messages: TEXT[] = await db.message.findMany({
+    const messages: TEXT[] = await db.userMessage.findMany({
       where: {
         roomId,
       },

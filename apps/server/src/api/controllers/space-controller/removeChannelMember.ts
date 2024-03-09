@@ -8,18 +8,18 @@ import {
 import { db } from "../../../utils/db";
 import { TEAM_ROLE, USER } from "typings";
 
-export const remoteChannelMembers = async (
+export const removeSpaceMember = async (
   req: ProtectedRequest,
   res: Response
 ) => {
   try {
     const userId = req.user;
-    const { memberId, channelId } = req.body;
+    const { memberId, spaceId } = req.body;
 
     if (userId !== memberId) {
-      const isAdmin: { role: string } = await db.userChannel.findFirstOrThrow({
+      const isAdmin: { role: string } = await db.userSpace.findFirstOrThrow({
         where: {
-          channelId,
+          spaceId,
           userId: userId!,
         },
         select: {
@@ -35,17 +35,17 @@ export const remoteChannelMembers = async (
     }
 
     // Remove user from the channel
-    await db.userChannel.deleteMany({
+    await db.userSpace.deleteMany({
       where: {
         userId: memberId,
-        channelId: channelId,
+        spaceId: spaceId,
       },
     });
 
     // Retrieve teams associated with the channel
     const teams = await db.team.findMany({
       where: {
-        channelId: channelId,
+        spaceId: spaceId,
       },
     });
 
@@ -57,38 +57,6 @@ export const remoteChannelMembers = async (
           teamId: team.id,
         },
       });
-
-      // Remove user from rooms associated with the team
-      const rooms = await db.room.findMany({
-        where: {
-          team: {
-            id: team.id,
-          },
-        },
-        include: {
-          users: true,
-        },
-      });
-
-      // Iterate through each room and remove the user from the users array
-      for (const room of rooms) {
-        // Filter out the user to be removed from the users array
-        const updatedUsers = room.users.filter(
-          (user: { id: string }) => user.id !== memberId
-        );
-
-        // Update the room with the modified users array
-        await db.room.update({
-          where: {
-            id: room.id,
-          },
-          data: {
-            users: {
-              set: updatedUsers,
-            },
-          },
-        });
-      }
     }
 
     // Respond with success message

@@ -17,7 +17,7 @@ export const addTeamMemberController = async (
 ) => {
   try {
     const userId = req.user;
-    const { newMemberId, teamId, channelId } = req.body;
+    const { newMemberId, teamId, spaceId } = req.body;
 
     if (!userId || !teamId) {
       return res.sendStatus(INVALID_CREDENTIALS.code);
@@ -53,8 +53,6 @@ export const addTeamMemberController = async (
       },
     });
 
-    console.log(isMemberAlreadyPresentQuery);
-
     if (isMemberAlreadyPresentQuery !== null) {
       return res
         .status(NON_UNIQUE_RESOURCE.code)
@@ -73,10 +71,10 @@ export const addTeamMemberController = async (
           user: true,
         },
       }),
-      db.userChannel.create({
+      db.userSpace.create({
         data: {
           userId: newMemberId!,
-          channelId,
+          spaceId,
           role: TEAM_ROLE.member,
         },
       }),

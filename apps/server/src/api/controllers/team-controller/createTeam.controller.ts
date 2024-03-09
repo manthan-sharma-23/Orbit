@@ -13,14 +13,14 @@ export const createTeam = async (req: ProtectedRequest, res: Response) => {
   try {
     const userId = req.user;
 
-    const { name, type, channelId } = req.body;
+    const { name, type, spaceId } = req.body;
 
-    if (!channelId) return res.sendStatus(RESOURCE_CONFLICT.code);
+    if (!spaceId) return res.sendStatus(RESOURCE_CONFLICT.code);
 
     const checkIfUserIsAdminInChannelQuery: { role: TEAM_ROLE } =
-      await db.userChannel.findFirstOrThrow({
+      await db.userSpace.findFirstOrThrow({
         where: {
-          channelId,
+          spaceId,
           userId: userId!,
         },
         select: {
@@ -39,19 +39,9 @@ export const createTeam = async (req: ProtectedRequest, res: Response) => {
             name: name,
             type: type || TEAM_TYPE.inviteOnly,
             description: "Another team in Channel",
-            channel: {
+            space: {
               connect: {
-                id: channelId,
-              },
-            },
-            room: {
-              create: {
-                type: "team",
-                users: {
-                  connect: {
-                    id: userId,
-                  },
-                },
+                id: spaceId,
               },
             },
             members: {

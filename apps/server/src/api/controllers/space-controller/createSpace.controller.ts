@@ -8,30 +8,32 @@ import { ProtectedRequest } from "../../../utils/types";
 import { db } from "../../../utils/db";
 import { TEAM_ROLE } from "typings";
 
-export const createChannel = async (req: ProtectedRequest, res: Response) => {
+export const createSpace = async (req: ProtectedRequest, res: Response) => {
   try {
     const userId = req.user;
-    const { channel_name, channel_description } = req.body;
+    const { space_name, space_description, image } = req.body;
 
     if (!userId) res.sendStatus(FORBIDDEN_RESOURCE.code);
 
-    const channel = await db.channel.create({
+    const space = await db.space.create({
       data: {
-        name: channel_name,
-        description: channel_description,
+        name: space_name,
+        description: space_description,
+        image: image || null,
+        createdBy: userId,
       },
       select: {
         id: true,
       },
     });
 
-    if (!channel.id) return res.sendStatus(RESOURCE_NOT_MODIFIED.code);
+    if (!space.id) return res.sendStatus(RESOURCE_NOT_MODIFIED.code);
 
     const generalTeam = await db.$transaction([
-      db.userChannel.create({
+      db.userSpace.create({
         data: {
           userId: userId!,
-          channelId: channel.id,
+          spaceId: space.id,
           role: TEAM_ROLE.admin,
         },
       }),
@@ -39,9 +41,9 @@ export const createChannel = async (req: ProtectedRequest, res: Response) => {
         data: {
           name: "general",
           description: "General Team",
-          channel: {
+          space: {
             connect: {
-              id: channel.id,
+              id: space.id,
             },
           },
           members: {
@@ -50,23 +52,10 @@ export const createChannel = async (req: ProtectedRequest, res: Response) => {
               role: TEAM_ROLE.admin,
             },
           },
-          room: {
-            create: {
-              type: "team",
-              users: {
-                connect: {
-                  id: userId,
-                },
-              },
-            },
-          },
-        },
-        include: {
-          room: true,
         },
       }),
     ]);
-    return res.status(200).json({ channel, generalTeam });
+    return res.status(200).json({ space, team: generalTeam });
   } catch (error) {
     return res
       .status(INTERNAL_SERVER_ERROR.code)
