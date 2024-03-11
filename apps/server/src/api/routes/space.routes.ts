@@ -4,7 +4,7 @@ import { createSpace } from "../controllers/space-controller/createSpace.control
 import { getSpaceInfo } from "../controllers/space-controller/getSpaceInfo.controller";
 import { removeSpaceMember } from "../controllers/space-controller/removeChannelMember";
 import { getUserSpaces } from "../controllers/space-controller/getUserSpace";
-import { getSpaceThreads } from "../controllers/space-controller/getSpaceThread";
+import { getSpaceThreads } from "../controllers/space-controller/getSpaceThread.controller";
 
 const router: Router = Router();
 

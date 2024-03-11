@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { BellRing, ListFilter, Plus } from "lucide-react";
+import { PlusIcon } from "lucide-react";
 import { useGetUserSpaces } from "@/features/hooks/spaces/useGetUserSpaces";
 import Loading from "@/components/ui/Loading";
 import { getRandomNumberWithLeadingZeros } from "@/lib/utils/rnad";
@@ -19,6 +19,18 @@ import { useSetRecoilState } from "recoil";
 import SpaceInfoPannel from "./spaceInfoPannel";
 import SpaceActivityPannel from "./spaceActivityPannel";
 import { selectedSpaceAtom } from "@/features/store/atoms/spaces/spaceId.atom";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
 
 const Spaces = () => {
   const { loading, spaces } = useGetUserSpaces();
@@ -46,8 +58,8 @@ const Spaces = () => {
                 setSelectedSpace({ id });
               }}
             >
-              <SelectTrigger className="w-full h-[6vh] py-3 border-[1px] border-black/30  ">
-                <SelectValue defaultValue={"1"} defaultChecked={false} />
+              <SelectTrigger className="w-[80%] h-[6vh] py-3 border-[1px] border-black/30  ">
+                <SelectValue defaultValue={" "} defaultChecked={false} />
               </SelectTrigger>
               <SelectContent>
                 {spaces.map((space, index) => (
@@ -68,6 +80,29 @@ const Spaces = () => {
                 ))}
               </SelectContent>
             </Select>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="w-[20%] h-[6vh] border-[1px] border-black/30"
+                >
+                  <PlusIcon />
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This action cannot be undone. This will permanently delete
+                    your account and remove your data from our servers.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction>Continue</AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </nav>
           <Separator className="bg-black/10" />
           <section className="h-[92vh]">

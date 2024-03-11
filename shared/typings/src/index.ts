@@ -133,7 +133,7 @@ export const THREADS_BASE = {
     type: "chat",
   },
   announcement: {
-    name: "announcement",
+    name: "announcements",
     type: "announcement",
   },
 };

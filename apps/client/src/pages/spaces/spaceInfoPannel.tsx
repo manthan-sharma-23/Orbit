@@ -33,11 +33,11 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import CreateThread from "./createThread";
 
 const SpaceInfoPannel = () => {
   const { loading, teams } = useGetSpaceTeamAndThreads();
-
-  console.log("teams", teams);
 
   if (loading) {
     return (
@@ -64,7 +64,7 @@ const SpaceInfoPannel = () => {
                 variant="outline"
                 className="w-1/2 hover:bg-black/70 hover:text-white bg-black text-white border-[1px] border-black/15"
               >
-                Start Session
+                Space Tools
               </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
@@ -109,7 +109,11 @@ const SpaceInfoPannel = () => {
         <p className="text-xl font-medium mt-4 pl-2">Teams Threads</p>
         <Separator className="bg-black/20 my-2" />
         <div className="flex flex-col justify-center items-start w-full h-auto gap-0 mt-5 mr-2 ">
-          <ScrollArea className="h-full w-full rounded-md">
+          <ScrollArea className="h-full w-full rounded-md flex flex-col ">
+            {teams &&
+              teams.map((team, index) => (
+                <CollapsibleThread team={team} key={index} />
+              ))}
             {teams &&
               teams.map((team, index) => (
                 <CollapsibleThread team={team} key={index} />
@@ -126,20 +130,24 @@ const CollapsibleThread = ({ team }: { team: TEAM }) => {
 
   return (
     <div
-      className={` w-full flex flex-col rounded-md ${!collapsed && "bg-[#e9e9e9]"} py-2 hover:bg-black/10`}
+      className={` w-full flex flex-col rounded-md ${!collapsed ? "bg-black/90" : "hover:bg-black/10"} py-2 my-[1px]`}
     >
-      <div
-        onClick={() => setCollapsed((e) => !e)}
-        className="flex justify-between items-center  h-[2rem] w-full px-4  transition-all cursor-pointer"
-      >
+      <div className="flex justify-between items-center  h-[2rem] w-full px-4  transition-all cursor-pointer">
         <span className="justify-start items-center flex h-full w-auto">
           {collapsed ? (
-            <ChevronRight className="h-4 w-4 text-black/60" />
+            <ChevronRight
+              className="h-4 w-4 text-black"
+              onClick={() => setCollapsed((e) => !e)}
+            />
           ) : (
-            <ChevronDown className="h-4 w-4 text-black" />
+            <ChevronDown
+              className="h-4 w-4 text-white"
+              onClick={() => setCollapsed((e) => !e)}
+            />
           )}
           <p
-            className={` ${!collapsed ? "text-black" : "text-black/60"} font-medium ml-1 `}
+            className={` ${!collapsed ? "text-white" : "text-black"} font-medium ml-1 `}
+            onClick={() => setCollapsed((e) => !e)}
           >
             {team.name}
           </p>
@@ -148,8 +156,10 @@ const CollapsibleThread = ({ team }: { team: TEAM }) => {
           <div className="flex justify-end items-start gap-2 ">
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger className="flex just-center items-center h-full border-2">
-                  <Plus className="h-5 text-black/50 hover:text-black" />
+                <TooltipTrigger className="flex just-center items-center h-full ">
+                  <AlertDialog>
+                    <CreateThread teamId={team.id} />
+                  </AlertDialog>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>Add Thread</p>
@@ -158,8 +168,8 @@ const CollapsibleThread = ({ team }: { team: TEAM }) => {
             </TooltipProvider>
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger className="flex just-center items-center h-full border-2">
-                  <Bolt className="h-5 text-black/50 hover:text-black" />
+                <TooltipTrigger className="flex just-center items-center h-full ">
+                  <Bolt className="h-5 text-white/70 hover:text-white" />
                 </TooltipTrigger>
                 <TooltipContent className="bg-black font-medium ">
                   <p>Edit</p>
@@ -168,10 +178,10 @@ const CollapsibleThread = ({ team }: { team: TEAM }) => {
             </TooltipProvider>
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger className="flex just-center items-center h-full border-2">
-                  <UserPlus className="h-5 text-black/50 hover:text-black" />
+                <TooltipTrigger className="flex just-center items-center h-full ">
+                  <UserPlus className="h-5 text-white/70 hover:text-white" />
                 </TooltipTrigger>
-                <TooltipContent className="bg-black font-medium ">
+                <TooltipContent className="bg-black font-medium  border-[1px] border-white">
                   <p>Add User</p>
                 </TooltipContent>
               </Tooltip>
@@ -180,11 +190,11 @@ const CollapsibleThread = ({ team }: { team: TEAM }) => {
         )}
       </div>
       {!collapsed && (
-        <div className={`flex flex-col ml-[2.5rem] gap-2 transition-all `}>
+        <div className={`flex flex-col ml-[2.5rem] gap-2 transition-all mb-2`}>
           {team.threads.map((thread, index) => (
             <div
               className={`flex justify-start items-center ${index === 0 && "mt-1"} 
-              text-black/60 hover:text-black cursor-pointer`}
+              text-white/70 hover:text-white cursor-pointer`}
               key={index}
             >
               {thread.type === "chat" ? (
