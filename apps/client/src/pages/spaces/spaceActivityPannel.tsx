@@ -1,10 +1,8 @@
+import { useParams } from "react-router-dom";
 
 const SpaceActivityPannel = () => {
-  return (
-    <div className='h-full w-full'>
-      
-    </div>
-  )
-}
+  const { threadId } = useParams();
+  return <div className="h-full w-full">{threadId}</div>;
+};
 
-export default SpaceActivityPannel
+export default SpaceActivityPannel;

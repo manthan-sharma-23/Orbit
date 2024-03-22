@@ -9,7 +9,6 @@ import {
   ChevronRight,
   Hash,
   Megaphone,
-  Plus,
   Search,
   UserPlus,
 } from "lucide-react";
@@ -33,8 +32,8 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import CreateThread from "./createThread";
+import { useNavigate } from "react-router-dom";
 
 const SpaceInfoPannel = () => {
   const { loading, teams } = useGetSpaceTeamAndThreads();
@@ -126,6 +125,7 @@ const SpaceInfoPannel = () => {
 };
 
 const CollapsibleThread = ({ team }: { team: TEAM }) => {
+  const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(true);
 
   return (
@@ -206,7 +206,10 @@ const CollapsibleThread = ({ team }: { team: TEAM }) => {
                   className={`h-5 w-5  p-0  mr-2 flex items-center justify-center `}
                 />
               )}
-              <p className={` flex justify-center items-center   `}>
+              <p
+                className={` flex justify-center items-center   `}
+                onClick={() => navigate("threads/" + thread.id)}
+              >
                 {thread.name}
               </p>
             </div>

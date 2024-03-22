@@ -23,7 +23,7 @@ export const createThread = async ({
   });
 
   if (!response.ok) {
-    return;
+    return null;
   }
 
   await response.json();

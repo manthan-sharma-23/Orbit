@@ -10,7 +10,6 @@ import {
 import { createThread } from "@/features/funcs/threads/createThread";
 import { useState } from "react";
 import {
-  AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
@@ -22,13 +21,15 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Plus } from "lucide-react";
 import { Icons } from "@/components/ui/Icons";
-import { useNavigate } from "react-router-dom";
 
-const CreateThread = ({ teamId }: { teamId: string }) => {
+const CreateThread = ({
+  teamId,
+}: {
+  teamId: string;
+}) => {
   const [threadName, setThreadName] = useState<string | null>(null);
   const [typeOfChat, setTypeOfChat] = useState<string>("chat");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
   const createThreadOnClick = async () => {
     setLoading(true);
@@ -43,6 +44,7 @@ const CreateThread = ({ teamId }: { teamId: string }) => {
       type: typeOfChat,
     })
       .then(() => {
+
         setLoading(false);
       })
       .catch(() => {

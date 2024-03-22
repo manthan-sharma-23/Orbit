@@ -17,7 +17,6 @@ import Loading from "@/components/ui/Loading";
 import { getRandomNumberWithLeadingZeros } from "@/lib/utils/rnad";
 import { useSetRecoilState } from "recoil";
 import SpaceInfoPannel from "./spaceInfoPannel";
-import SpaceActivityPannel from "./spaceActivityPannel";
 import { selectedSpaceAtom } from "@/features/store/atoms/spaces/spaceId.atom";
 import {
   AlertDialog,
@@ -31,6 +30,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { Outlet } from "react-router-dom";
 
 const Spaces = () => {
   const { loading, spaces } = useGetUserSpaces();
@@ -111,7 +111,7 @@ const Spaces = () => {
         </ResizablePanel>
         <ResizableHandle withHandle className="border-0" />
         <ResizablePanel className="border-0">
-          <SpaceActivityPannel />
+          <Outlet/>
         </ResizablePanel>
       </ResizablePanelGroup>
     </div>
