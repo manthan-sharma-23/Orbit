@@ -1,4 +1,4 @@
-import e from "express";
+import express from "express";
 import ApiRoutes from "./api";
 import { config } from "dotenv";
 import { PORT } from "./utils/constants/config";
@@ -8,15 +8,16 @@ import SocketService from "./services/socket/socket.service";
 config();
 
 // express api
-const app = e();
+const app = express();
 const port = PORT;
 
 // http server to serve web socket
 const server = http.createServer(app);
 
-// web socket
-export const socketServer = new SocketService(server);
-socketServer.listenWebSocketServerEvents(socketServer.wss);
+// web sockets
+const socketServer = new SocketService(server);
+const WebSocketServer = socketServer.WebSocketServer;
+socketServer.listenWebSocketEvents(WebSocketServer);
 
 //express api endpoint '/api'
 app.use("/api", ApiRoutes);

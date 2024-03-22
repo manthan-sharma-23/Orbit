@@ -4,7 +4,6 @@ import {
   INTERNAL_SERVER_ERROR,
   RESOURCE_CONFLICT,
   RESOURCE_CREATED_SUCCESSFULLY,
-  RESOURCE_NOT_MODIFIED,
 } from "../../../utils/static/codes.err";
 import { db } from "../../../utils/db";
 import { TEAM, TEAM_ROLE, TEAM_TYPE, THREADS_BASE } from "typings";

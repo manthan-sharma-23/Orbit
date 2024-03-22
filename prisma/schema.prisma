@@ -8,21 +8,22 @@ datasource db {
 }
 
 model User {
-  id            String        @id @default(cuid())
-  name          String?
-  email         String?       @unique
-  password      String?
-  emailVerified DateTime?
-  image         String?
-  theme         String?
-  status        String?       @default("available")
-  view          String?       @default("public")
-  rooms         Room[] // A user can be part of multiple rooms
-  messages      UserMessage[] // A user can send multiple messages
-  friends       Friend[]
-  userTeams     UserTeam[]
-  userTasks     UserTask[]
-  userSpace     UserSpace[]
+  id             String          @id @default(cuid())
+  name           String?
+  email          String?         @unique
+  password       String?
+  emailVerified  DateTime?
+  image          String?
+  theme          String?
+  status         String?         @default("available")
+  view           String?         @default("public")
+  rooms          Room[] // A user can be part of multiple rooms
+  userMessages   UserMessage[] // A user can send multiple messages
+  threadMessages ThreadMessage[]
+  friends        Friend[]
+  userTeams      UserTeam[]
+  userTasks      UserTask[]
+  userSpace      UserSpace[]
 }
 
 model Room {
@@ -96,11 +97,24 @@ model UserSpace {
 }
 
 model Thread {
-  id     String  @id @default(uuid())
-  name   String
-  type   String  @default("chat")
-  Team   Team?   @relation(fields: [teamId], references: [id])
-  teamId String?
+  id       String          @id @default(uuid())
+  name     String
+  type     String          @default("chat")
+  Team     Team?           @relation(fields: [teamId], references: [id])
+  teamId   String?
+  messages ThreadMessage[]
+}
+
+model ThreadMessage {
+  id        Int      @id @default(autoincrement())
+  type      String?  @default("chat")
+  data      String
+  isActive  Boolean  @default(true)
+  Thread    Thread?  @relation(fields: [threadId], references: [id])
+  threadId  String?
+  User      User?    @relation(fields: [userId], references: [id])
+  userId      String?
+  timeStamp DateTime @default(now())
 }
 
 model Task {

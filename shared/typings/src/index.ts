@@ -47,11 +47,7 @@ export const ROOM_TYPE = {
   person: "person",
 };
 
-export enum MESSAGE_TYPE {
-  info = "INFO",
-  message = "MESSAGE",
-  join = "JOIN",
-}
+export type MESSAGE_TYPE = "INFO" | "JOIN" | "MESSAGE";
 
 export type ROOM = {
   id: string;
@@ -81,7 +77,9 @@ export type MESSAGE = {
   payload: {
     roomId?: string;
     message?: TEXT;
+    announcement?: string;
   };
+  timeStamp: Date;
 };
 
 export type TEXT = {
@@ -102,7 +100,7 @@ export type TEAM = {
   description?: string;
   spaceId: string;
   type: TEAM_TYPE;
-  threads: THREAD_SCHEME[];
+  threads: THREAD_SCHEMA[];
 };
 
 export enum TEAM_ROLE {
@@ -138,9 +136,20 @@ export const THREADS_BASE = {
   },
 };
 
-export interface THREAD_SCHEME {
+export interface THREAD_SCHEMA {
   id: string;
   name: string;
   type: string;
   teamId: string;
+  messages: THREAD_MESSAGE_SCHEMA[];
+}
+
+export interface THREAD_MESSAGE_SCHEMA {
+  id: number;
+  type: "chat" | "announcement";
+  isActive: boolean;
+  threadId: string;
+  data: string;
+  from: string;
+  timeStamp: Date;
 }

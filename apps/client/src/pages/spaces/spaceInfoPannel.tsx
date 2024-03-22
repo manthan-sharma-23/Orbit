@@ -113,10 +113,6 @@ const SpaceInfoPannel = () => {
               teams.map((team, index) => (
                 <CollapsibleThread team={team} key={index} />
               ))}
-            {teams &&
-              teams.map((team, index) => (
-                <CollapsibleThread team={team} key={index} />
-              ))}
           </ScrollArea>
         </div>
       </div>

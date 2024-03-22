@@ -35,7 +35,7 @@ import { cn } from "@/lib/utils";
 const ApplicationLayout = () => {
   const { path } = useParams();
   const user = useRecoilValue(userAtom);
-  const [barCollapse, setBarCollapse] = useState(true);
+  const [barCollapse, setBarCollapse] = useState(false);
   useGetUser();
 
   if (user.loading) {

@@ -44,7 +44,7 @@ const Spaces = () => {
     );
   }
   return (
-    <div className="h-full w-full">
+    <div className="h-full w-full p-0">
       <ResizablePanelGroup direction="horizontal">
         <ResizablePanel
           minSize={20}
@@ -109,9 +109,9 @@ const Spaces = () => {
             <SpaceInfoPannel />
           </section>
         </ResizablePanel>
-        <ResizableHandle withHandle className="border-0" />
-        <ResizablePanel className="border-0">
-          <Outlet/>
+        <ResizableHandle withHandle className="border-0 m-0" />
+        <ResizablePanel className=" p-0 m-0 h-full w-full">
+          <Outlet />
         </ResizablePanel>
       </ResizablePanelGroup>
     </div>

@@ -7,7 +7,7 @@ import Home from "./pages/home";
 import ApplicationLayout from "./components/layouts/ApplicationLayout";
 import RootLayout from "./components/layouts/RootLayout";
 import Spaces from "./pages/spaces/spaces";
-import SpaceActivityPannel from "./pages/spaces/spaceActivityPannel";
+import { Thread } from "./pages/threads/thread";
 
 function App() {
   return (
@@ -19,7 +19,7 @@ function App() {
               <Route path="/home/spaces" element={<Spaces />}>
                 <Route
                   path="/home/spaces/threads/:threadId"
-                  element={<SpaceActivityPannel />}
+                  element={<Thread />}
                 />
               </Route>
               <Route path="/home/:path" element={<Home />} />

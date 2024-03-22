@@ -1,5 +1,6 @@
 import { Request } from "express";
 import { JwtPayload } from "jsonwebtoken";
+import { WebSocket } from "ws";
 
 export interface ProtectedRequest extends Request {
   user?: string;

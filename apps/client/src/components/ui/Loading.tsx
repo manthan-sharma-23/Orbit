@@ -1,9 +1,9 @@
-import React from "react";
+import { Icons } from "./Icons";
 
 const Loading = () => {
   return (
     <div className="w-full h-full flex justify-center items-center">
-      <img src="/loading.gif" className="bg -white h-9 w-9"/>
+      <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
     </div>
   );
 };
