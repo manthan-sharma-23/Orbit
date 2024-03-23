@@ -62,7 +62,7 @@ export const navoption = {
       label: "",
       icon: Circle,
       variant: "ghost",
-      href: "spaces",
+      href: "spaces/null",
     },
     {
       title: "Social",

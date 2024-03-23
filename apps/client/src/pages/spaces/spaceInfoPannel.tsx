@@ -33,7 +33,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import CreateThread from "./createThread";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const SpaceInfoPannel = () => {
   const { loading, teams } = useGetSpaceTeamAndThreads();
@@ -124,6 +124,11 @@ const CollapsibleThread = ({ team }: { team: TEAM }) => {
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(true);
 
+  const { spaceId } = useParams();
+
+  const { threadId } = useParams();
+
+  console.log(threadId);
   return (
     <div
       className={` w-full flex flex-col rounded-md ${!collapsed ? "bg-black/90" : "hover:bg-black/10"} py-2 my-[1px]`}
@@ -190,7 +195,7 @@ const CollapsibleThread = ({ team }: { team: TEAM }) => {
           {team.threads.map((thread, index) => (
             <div
               className={`flex justify-start items-center ${index === 0 && "mt-1"} 
-              text-white/70 hover:text-white cursor-pointer`}
+              text-white/70 hover:text-white ${thread.id === threadId ? "text-white" : ""} cursor-pointer`}
               key={index}
             >
               {thread.type === "chat" ? (
@@ -204,7 +209,9 @@ const CollapsibleThread = ({ team }: { team: TEAM }) => {
               )}
               <p
                 className={` flex justify-center items-center   `}
-                onClick={() => navigate("threads/" + thread.id)}
+                onClick={() =>
+                  navigate(`/home/spaces/${spaceId}/threads/${thread.id}`)
+                }
               >
                 {thread.name}
               </p>

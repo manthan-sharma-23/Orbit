@@ -6,8 +6,6 @@ export const threadMessagesSelector = selector({
   get: ({ get }) => {
     const thread = get(threadAtom);
 
-    return {
-      messages: thread.messages,
-    };
+    return thread.messages;
   },
 });

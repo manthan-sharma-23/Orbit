@@ -15,7 +15,7 @@ import { PlusIcon } from "lucide-react";
 import { useGetUserSpaces } from "@/features/hooks/spaces/useGetUserSpaces";
 import Loading from "@/components/ui/Loading";
 import { getRandomNumberWithLeadingZeros } from "@/lib/utils/rnad";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import SpaceInfoPannel from "./spaceInfoPannel";
 import { selectedSpaceAtom } from "@/features/store/atoms/spaces/spaceId.atom";
 import {
@@ -30,11 +30,17 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const Spaces = () => {
   const { loading, spaces } = useGetUserSpaces();
-  const setSelectedSpace = useSetRecoilState(selectedSpaceAtom);
+  const [selectedSpace, setSelectedSpace] = useRecoilState(selectedSpaceAtom);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    navigate(`/home/spaces/${selectedSpace.id}`);
+  }, [selectedSpace]);
 
   if (loading) {
     return (
