@@ -8,6 +8,7 @@ import ApplicationLayout from "./components/layouts/ApplicationLayout";
 import RootLayout from "./components/layouts/RootLayout";
 import Spaces from "./pages/spaces/spaces";
 import { Thread } from "./pages/threads/thread";
+import Inbox from "./pages/inbox/inbox";
 
 function App() {
   return (
@@ -21,6 +22,9 @@ function App() {
                   path="/home/spaces/:spaceId/threads/:threadId"
                   element={<Thread />}
                 />
+              </Route>
+              <Route path="/home/inbox" element={<Inbox />}>
+                <Route path="/home/inbox/:mailId" element={<Inbox />} />
               </Route>
               <Route path="/home/:path" element={<Home />} />
             </Route>

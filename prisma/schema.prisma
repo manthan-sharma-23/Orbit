@@ -24,6 +24,7 @@ model User {
   userTeams      UserTeam[]
   userTasks      UserTask[]
   userSpace      UserSpace[]
+  mails          Mail[]
 }
 
 model Room {
@@ -113,7 +114,7 @@ model ThreadMessage {
   Thread    Thread?  @relation(fields: [threadId], references: [id])
   threadId  String?
   User      User?    @relation(fields: [userId], references: [id])
-  userId      String?
+  userId    String?
   timeStamp DateTime @default(now())
 }
 
@@ -141,4 +142,13 @@ model UserTask {
   taskId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Mail {
+  id     String  @id @default(uuid())
+  Data   String
+  to     String
+  from   String
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
 }

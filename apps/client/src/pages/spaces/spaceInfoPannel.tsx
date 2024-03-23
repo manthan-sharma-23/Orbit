@@ -162,7 +162,7 @@ const CollapsibleThread = ({ team }: { team: TEAM }) => {
                     <CreateThread teamId={team.id} />
                   </AlertDialog>
                 </TooltipTrigger>
-                <TooltipContent>
+                <TooltipContent className="bg-black font-medium ">
                   <p>Add Thread</p>
                 </TooltipContent>
               </Tooltip>
@@ -182,7 +182,7 @@ const CollapsibleThread = ({ team }: { team: TEAM }) => {
                 <TooltipTrigger className="flex just-center items-center h-full ">
                   <UserPlus className="h-5 text-white/70 hover:text-white" />
                 </TooltipTrigger>
-                <TooltipContent className="bg-black font-medium  border-[1px] border-white">
+                <TooltipContent className="bg-black font-medium  border-[1px] ">
                   <p>Add User</p>
                 </TooltipContent>
               </Tooltip>
@@ -191,7 +191,7 @@ const CollapsibleThread = ({ team }: { team: TEAM }) => {
         )}
       </div>
       {!collapsed && (
-        <div className={`flex flex-col ml-[2.5rem] gap-2 transition-all mb-2`}>
+        <div className={`flex flex-col ml-[2.5rem] gap-2 transition-all mb-2 `}>
           {team.threads.map((thread, index) => (
             <div
               className={`flex justify-start items-center ${index === 0 && "mt-1"} 

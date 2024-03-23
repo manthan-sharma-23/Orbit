@@ -69,10 +69,10 @@ const MessageBundleTile = ({
           <img
             src={bundleInfo.image}
             alt="User Image"
-            className="h-8 w-8 rounded-full mr-2"
+            className="h-8 w-8 rounded-full mx-1"
           />
         ) : (
-          <div className="h-8 w-8 rounded-full bg-black flex items-center justify-center mr-2">
+          <div className="h-8 w-8 rounded-full bg-black flex items-center justify-center mx-1">
             <span className="text-white">
               {bundleInfo.username?.split("")[0]}
             </span>
