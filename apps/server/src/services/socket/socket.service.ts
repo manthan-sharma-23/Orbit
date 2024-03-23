@@ -59,11 +59,7 @@ export default class SocketService {
       });
     }
 
-    if (
-      message.type === "MESSAGE" &&
-      message.payload.message &&
-      message.payload.roomId
-    ) {
+    if (message.type === "MESSAGE" && message.payload.roomId) {
       this._users.forEach((user) => {
         if (user.roomId === message.payload.roomId) {
           user.socket.send(JSON.stringify(message));

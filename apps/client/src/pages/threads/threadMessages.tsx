@@ -4,15 +4,26 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { userAtom } from "@/features/store/atoms/user.atom";
 import Loading from "@/components/ui/Loading";
 import { THREAD_MESSAGE_SCHEMA } from "typings";
-import { UserBaseDetailSelector } from "@/features/store/selectors/user/userBase.Selector";
 import moment from "moment";
+import { useEffect, useLayoutEffect, useRef } from "react";
+import "../../lib/styles/scorllBar.css";
 
 const ThreadMessages = () => {
   const user = useRecoilValue(userAtom);
   const messages = useRecoilValue(threadMessagesSelector);
   const MessagesBundle: THREAD_MESSAGE_SCHEMA[][] = groupMessages(messages);
 
-  console.log(MessagesBundle);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo({
+        top: scrollRef.current.scrollHeight,
+        behavior: "smooth", // Add animation for smoother scrolling
+      });
+    }
+  }, [messages]);
+
   if (user.loading || user.user?.id === undefined) {
     return (
       <div className="h-full w-full ">
@@ -23,11 +34,14 @@ const ThreadMessages = () => {
 
   return (
     <div className="h-full w-full border-0 p-2 px-12">
-      <ScrollArea className="h-full w-full px-2">
+      <div
+        className="h-full w-full px-2 overflow-y-scroll scroll_container"
+        ref={scrollRef}
+      >
         {MessagesBundle.map((msgs, index) => (
           <MessageBundleTile key={index} messages={msgs} />
         ))}
-      </ScrollArea>
+      </div>
     </div>
   );
 };
@@ -46,13 +60,9 @@ const MessageBundleTile = ({
 
   const isMe = user?.id === bundleInfo.from;
 
-  console.log(messages);
-
-  console.log(isMe);
-
   return (
     <div
-      className={`h-auto w-full  mb-2 p-2 flex items-start ${isMe && "flex-row-reverse justify-start"} border-0`}
+      className={`h-auto w-full  mb-2 p-2 flex items-start justify-start ${isMe && "flex-row-reverse "} border-0`}
     >
       <div className="flex flex-col justify-start  h-full w-auto mx-2">
         {bundleInfo.image ? (
@@ -70,7 +80,9 @@ const MessageBundleTile = ({
         )}
       </div>
       <div className="flex flex-col w-auto ">
-        <span className="font-medium text-black/40  text-right ">
+        <span
+          className={`font-medium text-black/40  ${isMe ? "text-right" : "text-left"} `}
+        >
           {isMe ? "You" : bundleInfo.username}
         </span>
         {messages.map((message, index) => (
@@ -90,10 +102,12 @@ const MessageTile = ({
 }) => {
   const time = moment(message.timeStamp).format("LT");
   return (
-    <div className="h-auto w-full bg-black text-white px-3 py-1 rounded mb-[1px]">
+    <div
+      className={`h-auto w-full ${isMe ? "bg-[#f0f0f1] text-black" : "bg-black text-white"} font-medium  px-3 py-1 rounded mb-[1px]`}
+    >
       <div className="min-w-[7rem] h-auto flex flex-col">
-        <p className="h-auto w-auto">{message.data}</p>
-        <p className="h-[2rem] w-auto text-xs flex justify-end items-end text-white/80">
+        <p className="h-auto w-auto mr-5">{message.data}</p>
+        <p className="h-[2rem] w-auto text-xs flex justify-end items-end ">
           {time}
         </p>
       </div>

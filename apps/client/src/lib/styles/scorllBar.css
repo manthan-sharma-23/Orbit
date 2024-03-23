@@ -1,0 +1,23 @@
+.scroll_container {
+  background-color: white;
+  overflow-y: auto; /* Enable vertical scrolling */
+  scrollbar-width: thin; /* Reduce scrollbar thickness (optional) */
+  scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0); /* Customize scrollbar color (optional) */
+}
+
+.scroll_container::-webkit-scrollbar {
+  /* For WebKit browsers (Chrome, Safari) */
+  width: 8px; /* Set scrollbar width */
+  background-color: rgba(0, 0, 0, 0); /* Hide default scrollbar background */
+}
+
+.scroll_container::-webkit-scrollbar-thumb {
+  /* Style the scrollbar thumb */
+  background-color: rgba(0, 0, 0, 0.2); /* Set scrollbar thumb color */
+  border-radius: 6px; /* Add rounded corners */
+}
+
+.scroll_container::-webkit-scrollbar-thumb:hover {
+  /* Style the scrollbar thumb on hover */
+  background-color: rgba(0, 0, 0, 0.3); /* Slightly darken on hover */
+}

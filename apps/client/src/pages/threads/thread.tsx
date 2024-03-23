@@ -11,12 +11,14 @@ import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import ThreadMessages from "./threadMessages";
 import { THREAD_MESSAGE_SCHEMA } from "typings";
+import { UserBaseDetailSelector } from "@/features/store/selectors/user/userBase.Selector";
 
 export const Thread = () => {
   const { loading, thread } = useGetThreadInfo();
   const [message, setMessage] = useState<string | null>(null);
   const webSocket = useWebSocket();
   const user = useRecoilValue(userAtom);
+  const userBase = useRecoilValue(UserBaseDetailSelector);
   if (loading || webSocket === null || !user.user || !user.user?.id) {
     return (
       <div className="h-full w-full">
@@ -32,12 +34,13 @@ export const Thread = () => {
       isActive: true,
       threadId: thread.id,
       data: message,
-      from: user.user?.id,
+      userId: user.user?.id,
       timeStamp: new Date(),
     };
     sendMessageToThread({
       ws: webSocket,
       threadMessage,
+      user: userBase,
     });
 
     setMessage(null);
@@ -54,7 +57,7 @@ export const Thread = () => {
           <ThreadMessages />
         </div>
         <div className="h-[20%] w-full  bg-transparent flex justify-center items-center ">
-          <div className="w-[80%] h-full rounded-md p-[2.5px] bg-black/50 mb-10">
+          <div className="w-[80%] h-full rounded-md p-[2.5px] bg-black/50 ">
             <ChatTextArea
               onChange={(newValue: string) => setMessage(newValue)}
               value={message}

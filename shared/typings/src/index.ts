@@ -78,13 +78,14 @@ export type MESSAGE = {
     roomId?: string;
     message?: TEXT;
     announcement?: string;
+    threadMessage?: THREAD_MESSAGE_SCHEMA;
   };
   timeStamp: Date;
 };
 
 export type TEXT = {
   sendAt: Date;
-  userId: string;
+  userId?: string;
   text: string;
 };
 
@@ -145,11 +146,15 @@ export interface THREAD_SCHEMA {
 }
 
 export interface THREAD_MESSAGE_SCHEMA {
-  id: number;
-  type: "chat" | "announcement";
+  id?: number;
+  type: THREAD_MESSAGE_TYPE;
   isActive: boolean;
   threadId: string;
   data: string;
-  from: string;
+  userId: string;
   timeStamp: Date;
+  User?: Partial<USER>;
 }
+
+export type THREAD_MESSAGE_TYPE = "chat" | "announcement";
+

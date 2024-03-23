@@ -35,6 +35,12 @@ const ChatTextArea = ({
   value: string | null;
   handleSendMessage: () => void;
 }) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault(); // Prevents the default behavior of adding a new line
+      handleSendMessage(); // Call handleSendMessage when Enter key is pressed
+    }
+  };
   return (
     <div className="h-full w-full bg-white flex flex-col  rounded-md relative z-20">
       <Textarea
@@ -42,6 +48,7 @@ const ChatTextArea = ({
         onChange={(e) => onChange(e.target.value)}
         className="h-[70%] w-full bg-white border-0 text-md focus:outline-none font-medium"
         placeholder="Enter your Message"
+        onKeyDown={handleKeyDown}
       />
       <Separator className="bg-black/70" />
       <div className="h-[30%] w-full flex">

@@ -1,12 +1,14 @@
 import { addMessageToThread } from "@/features/funcs/threads/addMessageToThread";
-import { MESSAGE, THREAD_MESSAGE_SCHEMA } from "typings";
+import { MESSAGE, THREAD_MESSAGE_SCHEMA, USER } from "typings";
 
 export const sendMessageToThread = ({
   ws,
   threadMessage,
+  user,
 }: {
   ws: WebSocket;
   threadMessage: THREAD_MESSAGE_SCHEMA;
+  user: Partial<USER>;
 }): boolean => {
   try {
     const signal: MESSAGE = {
@@ -14,7 +16,7 @@ export const sendMessageToThread = ({
       timeStamp: threadMessage.timeStamp!,
       payload: {
         roomId: threadMessage.threadId,
-        threadMessage: { id: -1, ...threadMessage },
+        threadMessage: { id: -1, ...threadMessage, User: user },
       },
     };
 
