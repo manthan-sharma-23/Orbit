@@ -12,9 +12,12 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useState } from "react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const InboxList = () => {
   const [mailType, setMailType] = useRecoilState(MailTypeAtom);
+  const [showFilters, setShowFilters] = useState(false);
 
   return (
     <div className="h-full w-full">
@@ -25,12 +28,12 @@ const InboxList = () => {
         />
         <Tabs
           defaultValue={mailType}
-          className="w-[13vw] h-[3.2rem] border-0 bg-[#F4F4F5] text-[#52525B] flex justify-center items-center rounded-lg"
+          className="w-[15vw] h-[3.2rem] border-0 bg-[#F4F4F5] text-[#52525B] flex justify-center items-center rounded-lg"
         >
           <TabsList className="w-full h-full">
             <TabsTrigger
               value={"all"}
-              className="h-full w-1/2"
+              className="h-full w-1/3"
               onClick={() => {
                 setMailType("all");
               }}
@@ -39,18 +42,27 @@ const InboxList = () => {
             </TabsTrigger>
             <TabsTrigger
               value={"unread"}
-              className="h-full w-1/2"
+              className="h-full w-1/3"
               onClick={() => {
                 setMailType("unread");
               }}
             >
               Unread
             </TabsTrigger>
+            <TabsTrigger
+              value={"invites"}
+              className="h-full w-1/3"
+              onClick={() => {
+                setMailType("invites");
+              }}
+            >
+              Invites
+            </TabsTrigger>
           </TabsList>
         </Tabs>
       </div>
       <Separator />
-      <div className="h-[92vh] w-full">
+      <div className="h-[92vh] w-full relative">
         <div className="h-[7%] border-0 p-2 flex justify-center items-center">
           <form className="h-full w-[95%]">
             <div className="relative h-full w-full flex justify-center items-center">
@@ -59,7 +71,10 @@ const InboxList = () => {
             </div>
           </form>
           <div className="h-full w-[5rem] flex justify-center items-center ">
-            <span className="h-[2.8rem] w-[3rem] rounded-md cursor-pointer bg-[#efeff0] flex justify-center items-center">
+            <span
+              onClick={() => setShowFilters((v) => !v)}
+              className="h-[2.8rem] w-[3rem] rounded-md cursor-pointer bg-[#efeff0] flex justify-center items-center"
+            >
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger>
@@ -73,7 +88,17 @@ const InboxList = () => {
             </span>
           </div>
         </div>
-        <div className="h-[93%] border-0"></div>
+        <div
+          className={`absolute z-20 bg-white ${showFilters ? "h-[25vh]" : "h-[0vh]"} w-full p-2 transition-all duration-500`}
+        >
+          <div
+            className={`h-full w-full border-[1.5px] border-black/60 rounded-md ${!showFilters && "hidden transition-all"}`}
+          ></div>
+        </div>
+
+        <div className="h-[92%] border-0">
+          <ScrollArea className="h-full w-full rounded-md border p-4"></ScrollArea>
+        </div>
       </div>
     </div>
   );

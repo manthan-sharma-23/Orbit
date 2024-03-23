@@ -4,4 +4,4 @@ export enum AuthPageParams {
   signout = "/signout",
 }
 
-export type InboxMailType = "all" | "read" | "unread";
+export type InboxMailType = "all" | "read" | "unread" | "invites";

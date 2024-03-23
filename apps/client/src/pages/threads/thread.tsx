@@ -57,7 +57,7 @@ export const Thread = () => {
           <ThreadMessages />
         </div>
         <div className="h-[20%] w-full  bg-transparent flex justify-center items-center ">
-          <div className="w-[80%] h-full rounded-md p-[2.5px] bg-black/50 ">
+          <div className="w-[0%] h-full rounded-md p-[2.5px] bg-black/50 ">
             <ChatTextArea
               onChange={(newValue: string) => setMessage(newValue)}
               value={message}

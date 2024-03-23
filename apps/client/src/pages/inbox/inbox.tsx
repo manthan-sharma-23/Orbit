@@ -17,7 +17,7 @@ const Inbox = () => {
 
         {mailId && (
           <>
-            <ResizableHandle withHandle />{" "}
+            <ResizableHandle withHandle />
             <ResizablePanel minSize={15}>Two</ResizablePanel>
           </>
         )}

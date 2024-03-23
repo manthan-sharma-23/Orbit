@@ -158,3 +158,14 @@ export interface THREAD_MESSAGE_SCHEMA {
 
 export type THREAD_MESSAGE_TYPE = "chat" | "announcement";
 
+export interface MAIL {
+  id?: string;
+  data: string;
+  description?: string;
+  title: string;
+  isInvite: boolean;
+  invite?: string;
+  from: string;
+  to: string;
+  userId?: string;
+}

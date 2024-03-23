@@ -25,6 +25,7 @@ model User {
   userTasks      UserTask[]
   userSpace      UserSpace[]
   mails          Mail[]
+  invites        Invite[]
 }
 
 model Room {
@@ -65,6 +66,7 @@ model Team {
   spaceId     String
   members     UserTeam[]
   threads     Thread[]
+  Invite      Invite[]
 }
 
 model UserTeam {
@@ -86,6 +88,7 @@ model Space {
   createdBy   String?     @default("anonymous")
   image       String?
   UserSpace   UserSpace[]
+  Invite      Invite[]
 }
 
 model UserSpace {
@@ -144,11 +147,30 @@ model UserTask {
   updatedAt DateTime @updatedAt
 }
 
+model Invite {
+  id      String  @id @default(uuid())
+  type    String  @default("space")
+  status  Boolean @default(false)
+  Space   Space?  @relation(fields: [spaceId], references: [id])
+  spaceId String?
+  Team    Team?   @relation(fields: [teamId], references: [id])
+  teamId  String?
+  Mail    Mail[]
+  User    User?   @relation(fields: [userId], references: [id])
+  userId  String?
+}
+
 model Mail {
-  id     String  @id @default(uuid())
-  Data   String
-  to     String
-  from   String
-  User   User?   @relation(fields: [userId], references: [id])
-  userId String?
+  id          String  @id @default(uuid())
+  data        String
+  to          String
+  from        String
+  title       String
+  Description String?
+  isInvite    Boolean @default(false)
+  invite      String
+  User        User?   @relation(fields: [userId], references: [id])
+  userId      String?
+  Invite      Invite? @relation(fields: [inviteId], references: [id])
+  inviteId    String?
 }
