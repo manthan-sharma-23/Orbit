@@ -3,9 +3,8 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TypographyH2 } from "@/components/ui/typography/h2";
 import { MailTypeAtom } from "@/features/store/atoms/inbox/mailType.atom";
 import { useRecoilState } from "recoil";
-import { InboxMailType } from "../../lib/types/type";
 import { Input } from "@/components/ui/input";
-import { Filter, FilterX, ListFilter, Search } from "lucide-react";
+import { ListFilter, Search } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -14,6 +13,7 @@ import {
 } from "@/components/ui/tooltip";
 import { useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import Mails from "./mails";
 
 const InboxList = () => {
   const [mailType, setMailType] = useRecoilState(MailTypeAtom);
@@ -67,7 +67,10 @@ const InboxList = () => {
           <form className="h-full w-[95%]">
             <div className="relative h-full w-full flex justify-center items-center">
               <Search className="absolute left-3  h-4 w-4 text-muted-foreground" />
-              <Input placeholder="Search" className="pl-8 w-full h-full" />
+              <Input
+                placeholder="Search through your mails"
+                className="pl-8 w-full h-full"
+              />
             </div>
           </form>
           <div className="h-full w-[5rem] flex justify-center items-center ">
@@ -97,7 +100,9 @@ const InboxList = () => {
         </div>
 
         <div className="h-[92%] border-0">
-          <ScrollArea className="h-full w-full rounded-md border p-4"></ScrollArea>
+          <ScrollArea className="h-full w-full rounded-md border-0 p-4">
+            <Mails />
+          </ScrollArea>
         </div>
       </div>
     </div>

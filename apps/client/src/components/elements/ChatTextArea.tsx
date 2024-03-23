@@ -1,3 +1,4 @@
+import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import { Textarea } from "../ui/textarea";
 import {
@@ -42,7 +43,7 @@ const ChatTextArea = ({
     }
   };
   return (
-    <div className="h-full w-full bg-white flex flex-col  rounded-md relative z-20">
+    <div className="h-full w-full bg-white flex flex-col border-[1px] border-black/80  rounded-md relative z-20">
       <Textarea
         value={value || ""}
         onChange={(e) => onChange(e.target.value)}
@@ -70,15 +71,9 @@ const ChatTextArea = ({
           ))}
         </div>
         <div className="w-[20%] flex justify-end items-center pr-1">
-          <div>
-            <SendHorizontal
-              onClick={handleSendMessage}
-              className="text-white/70 hover:text-white bg-black rounded-l-md cursor-pointer p-[8px] h-[2.3rem] w-[2.3rem]"
-            />
-          </div>
-          <div className="h-[2.3rem] bg-black w-[1.5rem] rounded-r-md flex justify-center items-center p-[3px] border-l-[1px] border-white/60 ">
-            <ChevronDown className="text-white/70 hover:text-white cursor-pointer" />
-          </div>
+          <Button className="m-1 bg-black text-white font-medium onClick={handleSendMessage}">
+            Send
+          </Button>
         </div>
       </div>
     </div>

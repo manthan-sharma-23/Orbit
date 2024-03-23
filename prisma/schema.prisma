@@ -66,7 +66,7 @@ model Team {
   spaceId     String
   members     UserTeam[]
   threads     Thread[]
-  Invite      Invite[]
+  Invites     Invite[]
 }
 
 model UserTeam {
@@ -75,7 +75,7 @@ model UserTeam {
   userId    String
   team      Team     @relation(fields: [teamId], references: [id])
   teamId    String
-  role      String // Define roles for users in the team
+  role      String   @default("member") // Define roles for users in the team
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -88,7 +88,7 @@ model Space {
   createdBy   String?     @default("anonymous")
   image       String?
   UserSpace   UserSpace[]
-  Invite      Invite[]
+  Invites     Invite[]
 }
 
 model UserSpace {
@@ -121,22 +121,6 @@ model ThreadMessage {
   timeStamp DateTime @default(now())
 }
 
-model Task {
-  id          String     @id @default(cuid())
-  title       String
-  description String?
-  status      String     @default("pending")
-  tags        Tag[] // A task can have multiple tags
-  assignedTo  UserTask[] // A task can be assigned to multiple users
-}
-
-model Tag {
-  id    String  @id @default(cuid())
-  name  String
-  color String?
-  tasks Task[] // Many-to-many relationship with tasks
-}
-
 model UserTask {
   id        String   @id @default(cuid())
   user      User     @relation(fields: [userId], references: [id])
@@ -153,11 +137,29 @@ model Invite {
   status  Boolean @default(false)
   Space   Space?  @relation(fields: [spaceId], references: [id])
   spaceId String?
+  mails   Mail[]
+  from    String
   Team    Team?   @relation(fields: [teamId], references: [id])
   teamId  String?
-  Mail    Mail[]
   User    User?   @relation(fields: [userId], references: [id])
   userId  String?
+}
+
+model Task {
+  id          String     @id @default(cuid())
+  title       String
+  description String?
+  status      String     @default("pending")
+  tags        Tag[]      @relation("TaskTags")
+  assignedTo  UserTask[] // A task can be assigned to multiple users
+}
+
+model Tag {
+  id    String  @id @default(cuid())
+  name  String  @unique
+  color String?
+  tasks Task[]  @relation("TaskTags")
+  mails Mail[]  @relation("MailTags")
 }
 
 model Mail {
@@ -166,11 +168,12 @@ model Mail {
   to          String
   from        String
   title       String
-  Description String?
+  description String?
   isInvite    Boolean @default(false)
-  invite      String
+  isRead      Boolean @default(false)
   User        User?   @relation(fields: [userId], references: [id])
   userId      String?
   Invite      Invite? @relation(fields: [inviteId], references: [id])
   inviteId    String?
+  tags        Tag[]   @relation("MailTags")
 }

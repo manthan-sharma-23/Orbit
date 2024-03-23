@@ -161,11 +161,41 @@ export type THREAD_MESSAGE_TYPE = "chat" | "announcement";
 export interface MAIL {
   id?: string;
   data: string;
-  description?: string;
   title: string;
+  description?: string;
   isInvite: boolean;
-  invite?: string;
+  invite?: INVITE;
   from: string;
   to: string;
   userId?: string;
+  User?: USER;
+  isRead: boolean;
+  inviteId?: string;
+  createdAt: Date;
+  tags?: Partial<TAG>[];
+}
+
+export interface INVITE {
+  id?: string;
+  type: INVITE_TYPE;
+  spaceId?: string;
+  Space?: SPACE_SCHEMA;
+  teamId?: string;
+  Team?: TEAM;
+  mails: MAIL[];
+  from?: string;
+  userId?: string;
+  createdAt: Date;
+}
+
+export enum INVITE_TYPE {
+  space = "space",
+  team = "team",
+  friend = "friend",
+}
+
+export interface TAG {
+  id: string;
+  name: string;
+  color: string;
 }

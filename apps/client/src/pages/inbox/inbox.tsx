@@ -5,6 +5,7 @@ import {
 } from "@/components/ui/resizable";
 import { useParams } from "react-router-dom";
 import InboxList from "./inboxList";
+import { MailEdit } from "./mail-edit";
 
 const Inbox = () => {
   const { mailId } = useParams();
@@ -18,7 +19,9 @@ const Inbox = () => {
         {mailId && (
           <>
             <ResizableHandle withHandle />
-            <ResizablePanel minSize={15}>Two</ResizablePanel>
+            <ResizablePanel minSize={15}>
+              <MailEdit />
+            </ResizablePanel>
           </>
         )}
       </ResizablePanelGroup>

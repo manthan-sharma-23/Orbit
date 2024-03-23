@@ -9,6 +9,8 @@ import messageRouter from "./routes/message.routes";
 import teamRouter from "./routes/team.routes";
 import spaceRouter from "./routes/space.routes";
 import threadRouter from "./routes/thread.routes";
+import mailRouter from "./routes/mail.routes";
+import inviteRouter from "./routes/invite.routes";
 
 const router: Router = Router();
 
@@ -24,6 +26,8 @@ router
   .use("/messages", messageRouter)
   .use("/team", teamRouter)
   .use("/space", spaceRouter)
-  .use("/threads", threadRouter);
+  .use("/threads", threadRouter)
+  .use("/mails", mailRouter)
+  .use("/invites", inviteRouter);
 
 export default router;
