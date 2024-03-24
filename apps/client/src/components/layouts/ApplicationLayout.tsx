@@ -8,7 +8,6 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "../ui/resizable";
-import { navoption } from "@/lib/static/bar.icons";
 import _ from "lodash";
 import { useState } from "react";
 import {
@@ -33,6 +32,7 @@ import {
 import { cn } from "@/lib/utils";
 import { ChevronDown } from "lucide-react";
 import { selectedSpaceAtom } from "@/features/store/atoms/spaces/spaceId.atom";
+import { navoption } from "@/lib/static/app/bar.icons";
 
 const ApplicationLayout = () => {
   const { pathname } = useLocation();
@@ -143,9 +143,6 @@ const ApplicationLayout = () => {
                                 )}
                               </TooltipContent>
                             </Tooltip>
-                            {index === 6 && (
-                              <Separator className="my-2 bg-white/60" />
-                            )}
                           </>
                         );
                       })}
@@ -241,9 +238,6 @@ const ApplicationLayout = () => {
                               </p>
                               {link.label && <span>{link.label}</span>}
                             </Link>
-                            {index === 6 && (
-                              <Separator className="my-4 bg-white/50" />
-                            )}
                           </>
                         );
                       })}
