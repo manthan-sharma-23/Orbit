@@ -1,6 +1,6 @@
 import { useGetUser } from "@/features/hooks/root/useGetUser";
 import { userAtom } from "@/features/store/atoms/user.atom";
-import { Link, Outlet, useParams } from "react-router-dom";
+import { Link, Outlet, useLocation, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { Separator } from "../ui/separator";
 import {
@@ -32,11 +32,13 @@ import {
 } from "../ui/tooltip";
 import { cn } from "@/lib/utils";
 import { ChevronDown } from "lucide-react";
+import { selectedSpaceAtom } from "@/features/store/atoms/spaces/spaceId.atom";
 
 const ApplicationLayout = () => {
-  const { path } = useParams();
+  const { pathname } = useLocation();
   const user = useRecoilValue(userAtom);
   const [barCollapse, setBarCollapse] = useState(false);
+  const spaceId = useRecoilValue(selectedSpaceAtom);
   useGetUser();
 
   if (user.loading) {
@@ -46,8 +48,6 @@ const ApplicationLayout = () => {
       </div>
     );
   }
-
-  console.log(barCollapse);
 
   return (
     <div className="h-full w-full ">
@@ -79,7 +79,7 @@ const ApplicationLayout = () => {
                       <DrawerTrigger className="w-full h-auto flex justify-start items-start p-0">
                         <Button
                           variant={"outline"}
-                          className="border-[1px] border-white/65 h-full w-full flex justify-start items-center gap-2 p-2 px-3 bg-black text-white"
+                          className="border-[0px] hover:bg-white/20 border-white/65 h-full w-full flex justify-start items-center gap-2 p-2 px-3 bg-black text-white"
                           size={"lg"}
                         >
                           <Avatar>
@@ -120,8 +120,12 @@ const ApplicationLayout = () => {
                             <Tooltip key={index} delayDuration={0}>
                               <TooltipTrigger asChild>
                                 <Link
-                                  to={"/home/" + link.href}
-                                  className={`text-white h-[2.6rem] w-[2.6rem] rounded-md flex justify-center items-center dark:bg-muted ${path === link.href ? "bg-black text-white" : "hover:bg-black/10"} dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-black`}
+                                  to={
+                                    link.href === "spaces"
+                                      ? "/home/spaces/" + spaceId.id
+                                      : "/home/" + link.href
+                                  }
+                                  className={`text-white h-[2.6rem] w-[2.6rem] rounded-md flex justify-center items-center dark:bg-muted ${pathname.startsWith("/home/" + link.href) ? "bg-black text-white" : "hover:bg-black/10"} dark:text-muted-foreground dark:hover:bg-muted hover:bg-white/20`}
                                 >
                                   <link.icon className="h-[1.3rem] w-[1.3rem]" />
                                   <span className="sr-only">{link.title}</span>
@@ -129,7 +133,7 @@ const ApplicationLayout = () => {
                               </TooltipTrigger>
                               <TooltipContent
                                 side="right"
-                                className="flex items-center gap-4 text-white"
+                                className="flex items-center gap-4 text-black bg-white"
                               >
                                 {link.title}
                                 {link.label && (
@@ -139,7 +143,7 @@ const ApplicationLayout = () => {
                                 )}
                               </TooltipContent>
                             </Tooltip>
-                            {index === 5 && (
+                            {index === 6 && (
                               <Separator className="my-2 bg-white/60" />
                             )}
                           </>
@@ -148,20 +152,23 @@ const ApplicationLayout = () => {
                     </div>
                     <div className="h-[5vh] w-full">
                       <Separator className="bg-white/60" />
-                      <div className="p-4 relative z-20 flex items-center justify-center text-xl font-medium h-[52px] overflow-hidden">
+                      <Link
+                        to={"/home"}
+                        className="p-4 relative z-20 flex items-center justify-center text-xl font-medium cursor-pointer h-[52px] overflow-hidden text-white"
+                      >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 24 24"
                           fill="none"
-                          stroke="inverted"
+                          stroke="currentColor"
                           strokeWidth="2"
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                          className="my-2 h-6 w-6 cursor-pointer"
+                          className="mr-2 h-6 w-6"
                         >
                           <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3" />
                         </svg>
-                      </div>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -221,8 +228,12 @@ const ApplicationLayout = () => {
                           <>
                             <Link
                               key={index}
-                              to={"/home/" + link.href}
-                              className={` w-full flex justify-between items-center p-2 px-4 ${path === link.href ? "bg-white/80 text-black" : "text-white"} rounded-md ${path !== link.href && "hover:bg-white/10"}`}
+                              to={
+                                link.href === "spaces"
+                                  ? "/home/spaces/" + spaceId.id
+                                  : "/home/" + link.href
+                              }
+                              className={` w-full flex justify-between items-center p-2 px-4 ${pathname.startsWith("/home/" + link.href) ? "bg-white/90 text-black" : "text-white"} rounded-md ${!pathname.startsWith("/home/" + link.href) && "hover:bg-white/10"}`}
                             >
                               <p className="flex  justify-start items-center">
                                 <link.icon className="mr-2 h-4 w-4" />
@@ -230,7 +241,7 @@ const ApplicationLayout = () => {
                               </p>
                               {link.label && <span>{link.label}</span>}
                             </Link>
-                            {index === 5 && (
+                            {index === 6 && (
                               <Separator className="my-4 bg-white/50" />
                             )}
                           </>

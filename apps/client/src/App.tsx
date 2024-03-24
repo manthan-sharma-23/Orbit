@@ -9,6 +9,9 @@ import RootLayout from "./components/layouts/RootLayout";
 import Spaces from "./pages/spaces/spaces";
 import { Thread } from "./pages/threads/thread";
 import Inbox from "./pages/inbox/inbox";
+import SpacePannel from "./pages/spaces/spacePannel";
+import Global from "./pages/global/global";
+import GlobalPannel from "./pages/global/pages/globalPannel";
 
 function App() {
   return (
@@ -17,12 +20,20 @@ function App() {
         <Routes>
           <Route path="/" element={<RootLayout />}>
             <Route path="/home" element={<ApplicationLayout />}>
-              <Route path="/home/spaces/" element={<Spaces />} />
-              <Route path="/home/spaces/:spaceId" element={<Spaces />}>
+              <Route path="/home/globe" element={<Global />}>
                 <Route
-                  path="/home/spaces/:spaceId/threads/:threadId"
-                  element={<Thread />}
+                  path="/home/globe/forum/:path"
+                  element={<GlobalPannel />}
                 />
+                <Route path="/home/globe/:path" element={<GlobalPannel />} />
+              </Route>
+              <Route path="/home/spaces/" element={<Spaces />}>
+                <Route path="/home/spaces/:spaceId" element={<SpacePannel />}>
+                  <Route
+                    path="/home/spaces/:spaceId/threads/:threadId"
+                    element={<Thread />}
+                  />
+                </Route>
               </Route>
               <Route path="/home/inbox" element={<Inbox />}>
                 <Route path="/home/inbox/:mailId" element={<Inbox />} />

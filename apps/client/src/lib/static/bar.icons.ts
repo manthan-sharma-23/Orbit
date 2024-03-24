@@ -11,10 +11,18 @@ import {
   MessageCircleMore,
   Pin,
   Circle,
+  LucideEarth,
 } from "lucide-react";
 
 export const navoption = {
   bar: [
+    {
+      title: "Global",
+      label: "",
+      icon: LucideEarth,
+      variant: "default",
+      href: "globe",
+    },
     {
       title: "Inbox",
       label: "128",
