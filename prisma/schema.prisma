@@ -26,6 +26,8 @@ model User {
   userSpace      UserSpace[]
   mails          Mail[]
   invites        Invite[]
+  forums         Forum[]
+  comments       COMMENT[]
 }
 
 model Room {
@@ -178,4 +180,26 @@ model Mail {
   inviteId    String?
   tags        Tag[]    @relation("MailTags")
   createdAt   DateTime @default(now())
+}
+
+model Forum {
+  id         String    @id @default(uuid())
+  forum_type String?   @default("discussions")
+  data       String
+  up_vote    Int?      @default(0)
+  down_vote  Int?      @default(0)
+  User       User      @relation(fields: [userId], references: [id])
+  userId     String
+  comments   COMMENT[]
+  createdAt  DateTime  @default(now())
+}
+
+model COMMENT {
+  id      String  @id @default(cuid())
+  comment String
+  userId  String
+  likes   Int?    @default(0)
+  User    User    @relation(fields: [userId], references: [id])
+  Forum   Forum?  @relation(fields: [forumId], references: [id])
+  forumId String?
 }

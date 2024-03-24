@@ -1,24 +1,35 @@
-import { MessageSquareDot, MessagesSquare, Search, User } from "lucide-react";
+import {
+  MessageSquareDot,
+  MessagesSquare,
+  Search,
+  Sun,
+  User,
+} from "lucide-react";
 
 export const sideIcons = [
   {
     name: "Discussions",
     icon: MessagesSquare,
-    href: "/discussions",
+    href: "discussions",
   },
   {
     name: "Find mates",
     icon: Search,
-    href: "/find",
+    href: "find",
+  },
+  {
+    name: "Events",
+    icon: Sun,
+    href: "events",
   },
   {
     name: "Invites",
     icon: MessageSquareDot,
-    href: "/invites",
+    href: "invites",
   },
   {
     name: "Profile",
     icon: User,
-    href: "/profile",
+    href: "profile",
   },
 ];

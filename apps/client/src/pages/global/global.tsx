@@ -1,13 +1,13 @@
 import { Separator } from "@/components/ui/separator";
 import { forumsList } from "@/lib/static/global/forum/forum.list";
 import { sideIcons } from "@/lib/static/global/options/side.nav";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 
 const Global = () => {
   return (
     <div className="h-full w-full flex flex-col bg-[#0F0F0F] text-white">
       <div className="flex h-[8vh] justify-start px-3 items-center bg-transparent">
-        <p className="font-mono font-normal text-xl bg-transparent tracking-tight">
+        <p className="font-mono font-normal text-xl bg-transparent tracking-tight bg-white text-black ml-4 px-3 py-1">
           ORBIT GLOBAL
         </p>
       </div>
@@ -25,14 +25,16 @@ const Global = () => {
 };
 
 const SideBar = () => {
+  const { pathname } = useLocation();
+
   return (
     <div className="h-full w-full flex flex-col justify-start items-center gap-4">
       <div className="my-10 w-full px-2 gap-1 flex flex-col text-white/70">
         {sideIcons.map((ico) => {
           return (
             <Link
-              to={`/home/globe${ico.href}`}
-              className="flex justify-start h-8 rounded-lg items-center cursor-pointer border-0 w-full gap-2 pl-5 hover:bg-[#1C1C1C] hover:text-white/90"
+              to={`/home/globe/${ico.href}`}
+              className={`flex justify-start h-8 rounded-lg items-center cursor-pointer border-0 w-full gap-2 pl-5 hover:bg-[#1C1C1C] hover:text-white/90 ${pathname.startsWith(`/home/globe/${ico.href}`) && "bg-[#1C1C1C] text-white/90"}`}
             >
               <ico.icon className="p-[2.5px]" />
               <p className="font-sans">{ico.name}</p>
@@ -51,7 +53,7 @@ const SideBar = () => {
           return (
             <Link
               to={"/home/globe/forum/" + forum.href}
-              className="pl-4 flex text-white/60 justify-start h-8 rounded-lg items-center cursor-pointer border-0 w-full gap-2 hover:bg-[#1C1C1C] hover:text-white/90"
+              className={`pl-4 flex text-white/60 justify-start h-8 rounded-lg items-center cursor-pointer border-0 w-full gap-2 hover:bg-[#1C1C1C] hover:text-white/90 ${pathname.startsWith(`/home/globe/forum/${forum.href}`) && "bg-[#1C1C1C] text-white/90"}`}
             >
               <div
                 className={`h-2 w-2 rotate-45`}

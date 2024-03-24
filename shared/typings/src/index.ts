@@ -199,3 +199,16 @@ export interface TAG {
   name: string;
   color: string;
 }
+
+export interface FORUM {
+  id?: string;
+  forum_type: FORUM_TYPE;
+}
+
+export enum FORUM_TYPE {
+  DISCUSSIONS = "discussions",
+  PUBLIC_DISCUSSIONS = "public_discussions",
+  PUBLIC_IDEAS = "product_ideas",
+  COLLABORATIONS = "collaborations",
+  TECHNICAL_QUESTIONS = "technical_questions",
+}

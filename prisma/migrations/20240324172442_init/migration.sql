@@ -1,0 +1,38 @@
+-- AlterTable
+ALTER TABLE "Invite" ADD COLUMN     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP;
+
+-- AlterTable
+ALTER TABLE "Mail" ADD COLUMN     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP;
+
+-- CreateTable
+CREATE TABLE "Forum" (
+    "id" TEXT NOT NULL,
+    "forum_type" TEXT DEFAULT 'discussions',
+    "data" TEXT NOT NULL,
+    "up_vote" INTEGER DEFAULT 0,
+    "down_vote" INTEGER DEFAULT 0,
+    "userId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Forum_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "COMMENT" (
+    "id" TEXT NOT NULL,
+    "comment" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "likes" INTEGER DEFAULT 0,
+    "forumId" TEXT,
+
+    CONSTRAINT "COMMENT_pkey" PRIMARY KEY ("id")
+);
+
+-- AddForeignKey
+ALTER TABLE "Forum" ADD CONSTRAINT "Forum_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "COMMENT" ADD CONSTRAINT "COMMENT_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "COMMENT" ADD CONSTRAINT "COMMENT_forumId_fkey" FOREIGN KEY ("forumId") REFERENCES "Forum"("id") ON DELETE SET NULL ON UPDATE CASCADE;
