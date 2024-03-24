@@ -79,15 +79,22 @@ const MessageBundleTile = ({
           </div>
         )}
       </div>
-      <div className="flex flex-col w-auto ">
+      <div className="flex flex-col w-auto gap-0">
         <span
-          className={`font-medium text-black/40  ${isMe ? "text-right" : "text-left"} `}
+          className={`font-medium text-black/60 tracking-tight ${isMe ? "text-right" : "text-left"} `}
         >
           {isMe ? "You" : bundleInfo.username}
         </span>
-        {messages.map((message, index) => (
-          <MessageTile key={index} message={message} isMe={isMe} />
-        ))}
+        <div className="flex flex-col  gap-0">
+          {messages.map((message, index) => (
+            <MessageTile
+              key={index}
+              message={message}
+              isMe={isMe}
+              index={index}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -96,16 +103,20 @@ const MessageBundleTile = ({
 const MessageTile = ({
   message,
   isMe,
+  index,
 }: {
   message: THREAD_MESSAGE_SCHEMA;
   isMe: boolean;
+  index: number;
 }) => {
   const time = moment(message.timeStamp).format("LT");
   return (
     <div
-      className={`h-auto w-full ${isMe ? "bg-[#f0f0f1] text-black" : "bg-black text-white"} font-medium  px-3 py-1 rounded mb-[1px]`}
+      className={`h-auto w-full border-0 font-medium rounded flex ${isMe ? "justify-end" : "justify-start"} items-center `}
     >
-      <div className="min-w-[7rem] h-auto flex flex-col">
+      <div
+        className={`mb-[2px] ${index === 0 && (isMe ? "rounded-tr-none" : "rounded-tl-none")} rounded-xl px-3 py-1 min-w-auto h-auto  flex-col inline-block ${isMe ? "bg-[#f0f0f1] text-black" : "bg-black text-white"}`}
+      >
         <p className="h-auto w-auto mr-5">{message.data}</p>
         <p className="h-[2rem] w-auto text-xs flex justify-end items-end ">
           {time}

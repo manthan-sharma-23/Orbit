@@ -17,6 +17,7 @@ function App() {
         <Routes>
           <Route path="/" element={<RootLayout />}>
             <Route path="/home" element={<ApplicationLayout />}>
+              <Route path="/home/spaces/" element={<Spaces />} />
               <Route path="/home/spaces/:spaceId" element={<Spaces />}>
                 <Route
                   path="/home/spaces/:spaceId/threads/:threadId"

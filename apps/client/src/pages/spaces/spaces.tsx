@@ -15,7 +15,7 @@ import { PlusIcon } from "lucide-react";
 import { useGetUserSpaces } from "@/features/hooks/spaces/useGetUserSpaces";
 import Loading from "@/components/ui/Loading";
 import { getRandomNumberWithLeadingZeros } from "@/lib/utils/rnad";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import SpaceInfoPannel from "./spaceInfoPannel";
 import { selectedSpaceAtom } from "@/features/store/atoms/spaces/spaceId.atom";
 import {
@@ -49,6 +49,8 @@ const Spaces = () => {
       </div>
     );
   }
+
+  console.log(spaces[0]);
   return (
     <div className="h-full w-full p-0">
       <ResizablePanelGroup direction="horizontal">
@@ -63,6 +65,7 @@ const Spaces = () => {
               onValueChange={(id) => {
                 setSelectedSpace({ id });
               }}
+              // defaultValue={spaces[0]}
             >
               <SelectTrigger className="w-[80%] h-[6vh] py-3 border-[1px] border-black/30  ">
                 <SelectValue defaultValue={" "} defaultChecked={false} />

@@ -22,11 +22,7 @@ import {
 import { Plus } from "lucide-react";
 import { Icons } from "@/components/ui/Icons";
 
-const CreateThread = ({
-  teamId,
-}: {
-  teamId: string;
-}) => {
+const CreateThread = ({ teamId }: { teamId: string }) => {
   const [threadName, setThreadName] = useState<string | null>(null);
   const [typeOfChat, setTypeOfChat] = useState<string>("chat");
   const [loading, setLoading] = useState(false);
@@ -44,7 +40,6 @@ const CreateThread = ({
       type: typeOfChat,
     })
       .then(() => {
-
         setLoading(false);
       })
       .catch(() => {

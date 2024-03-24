@@ -27,7 +27,7 @@ export const MailEdit = () => {
     <div className="h-full w-full flex flex-col">
       <div className="h-[8vh] w-full flex justify-between items-center px-2">
         <span className="flex justify-start items-center gap-2">
-          {mailEditBarIcons1.map((Ico, index) => (
+          {mailEditBarIcons1.map((Ico) => (
             <>
               <TooltipProvider>
                 <Tooltip>
@@ -43,7 +43,7 @@ export const MailEdit = () => {
           ))}
         </span>
         <span className="flex justify-start items-center gap-2">
-          {mailEditBarIcons2.map((Ico, index) => (
+          {mailEditBarIcons2.map((Ico) => (
             <>
               <TooltipProvider>
                 <Tooltip>
