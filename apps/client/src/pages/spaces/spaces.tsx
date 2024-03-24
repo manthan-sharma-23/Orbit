@@ -1,9 +1,8 @@
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable";
+import { Outlet } from "react-router-dom";
+
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import { TypographyH3 } from "@/components/ui/typography/h3";
 import {
   Select,
   SelectContent,
@@ -11,118 +10,60 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { PlusIcon } from "lucide-react";
 import { useGetUserSpaces } from "@/features/hooks/spaces/useGetUserSpaces";
-import Loading from "@/components/ui/Loading";
-import { getRandomNumberWithLeadingZeros } from "@/lib/utils/rnad";
-import { useRecoilState } from "recoil";
-import SpaceInfoPannel from "./spaceInfoPannel";
-import { selectedSpaceAtom } from "@/features/store/atoms/spaces/spaceId.atom";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import { Outlet, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { TypographyH2 } from "@/components/ui/typography/h2";
 
 const Spaces = () => {
-  const { loading, spaces } = useGetUserSpaces();
-  const [selectedSpace, setSelectedSpace] = useRecoilState(selectedSpaceAtom);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    navigate(`/home/spaces/${selectedSpace.id}`);
-  }, [selectedSpace]);
-
-  if (loading) {
-    return (
-      <div className="h-full w-full">
-        <Loading />
-      </div>
-    );
-  }
-
-  console.log(spaces[0]);
   return (
-    <div className="h-full w-full p-0">
-      <ResizablePanelGroup direction="horizontal">
-        <ResizablePanel
-          minSize={20}
-          defaultSize={20}
-          maxSize={20}
-          className="p-0 border-0 flex flex-col"
-        >
-          <nav className="flex justify-start items-center p-2 h-[8vh] overflow-hidden gap-3">
-            <Select
-              onValueChange={(id) => {
-                setSelectedSpace({ id });
-              }}
-              // defaultValue={spaces[0]}
-            >
-              <SelectTrigger className="w-[80%] h-[6vh] py-3 border-[1px] border-black/30  ">
-                <SelectValue defaultValue={" "} defaultChecked={false} />
-              </SelectTrigger>
-              <SelectContent>
-                {spaces.map((space, index) => (
-                  <SelectItem value={space.space.id} key={index}>
-                    <div className="flex justify-start items-center w-auto">
-                      <img
-                        src={
-                          space.space.image ||
-                          `/channel_icons/${getRandomNumberWithLeadingZeros(4)}.jpg`
-                        }
-                        className="h-[4vh] w-[4vh] rounded-full border-[1px] border-black relative z-20"
-                      />
-                      <p className="w-auto h-[4vh] flex justify-start items-center ml-3 text-lg font-medium">
-                        {space.space.name}
-                      </p>
-                    </div>
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="w-[20%] h-[6vh] border-[1px] border-black/30"
-                >
-                  <PlusIcon />
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    This action cannot be undone. This will permanently delete
-                    your account and remove your data from our servers.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction>Continue</AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          </nav>
-          <Separator className="bg-black/10" />
-          <section className="h-[92vh]">
-            <SpaceInfoPannel />
-          </section>
-        </ResizablePanel>
-        <ResizableHandle withHandle className="border-0 m-0" />
-        <ResizablePanel className=" p-0 m-0 h-full w-full">
-          <Outlet />
-        </ResizablePanel>
-      </ResizablePanelGroup>
+    <div className="h-full w-full p-0 bg-black text-white">
+      <div className=" h-[8vh] w-full flex justify-between items-center overflow-hidden px-3 m-0">
+        <div>
+          <TypographyH2
+            text="Spaces"
+            className=" tracking-wide  text-white/70 cursor-pointer hover:text-white"
+          />
+        </div>
+        <div className="">
+          <SpaceSelect />
+        </div>
+      </div>
+      <Separator className="bg-white/50 m-0 p-0" />
+
+      <div className="h-[92vh] w-full"></div>
+    </div>
+  );
+};
+
+const SpaceSelect = () => {
+  const { spaces } = useGetUserSpaces();
+  console.log();
+  return (
+    <div>
+      <Select defaultValue={" "} defaultOpen>
+        <SelectTrigger className="min-w-[14rem] h-[2.5rem] border-white/50">
+          <SelectValue placeholder="Select a Space" />
+        </SelectTrigger>
+        <SelectContent className="bg-black border-white/40 " position="popper">
+          {spaces &&
+            spaces.map((space) => (
+              <SelectItem
+                value={space.space.id}
+                className="flex justify-start items-center gap-2 bg-black text-white hover:bg-black cursor-pointer rounded-lg "
+              >
+                <div className="flex justify-start items-center px-2 gap-2 text-lg text-white/70">
+                  <p className="h-4 w-4 rounded-full overflow-hidden inline-block">
+                    {space.space.image ? (
+                      <img src={space.space.image} />
+                    ) : (
+                      <p className=" h-full w-full bg-violet-400" />
+                    )}
+                  </p>
+                  <div className="mr-5">{space.space.name}</div>
+                </div>
+              </SelectItem>
+            ))}
+        </SelectContent>
+      </Select>
     </div>
   );
 };

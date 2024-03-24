@@ -132,17 +132,18 @@ model UserTask {
 }
 
 model Invite {
-  id      String  @id @default(uuid())
-  type    String  @default("space")
-  status  Boolean @default(false)
-  Space   Space?  @relation(fields: [spaceId], references: [id])
-  spaceId String?
-  mails   Mail[]
-  from    String
-  Team    Team?   @relation(fields: [teamId], references: [id])
-  teamId  String?
-  User    User?   @relation(fields: [userId], references: [id])
-  userId  String?
+  id        String   @id @default(uuid())
+  type      String   @default("space")
+  status    Boolean  @default(false)
+  Space     Space?   @relation(fields: [spaceId], references: [id])
+  spaceId   String?
+  mails     Mail[]
+  from      String
+  Team      Team?    @relation(fields: [teamId], references: [id])
+  teamId    String?
+  User      User?    @relation(fields: [userId], references: [id])
+  userId    String?
+  createdAt DateTime @default(now())
 }
 
 model Task {
@@ -163,17 +164,18 @@ model Tag {
 }
 
 model Mail {
-  id          String  @id @default(uuid())
+  id          String   @id @default(uuid())
   data        String
   to          String
   from        String
   title       String
   description String?
-  isInvite    Boolean @default(false)
-  isRead      Boolean @default(false)
-  User        User?   @relation(fields: [userId], references: [id])
+  isInvite    Boolean  @default(false)
+  isRead      Boolean  @default(false)
+  User        User?    @relation(fields: [userId], references: [id])
   userId      String?
-  Invite      Invite? @relation(fields: [inviteId], references: [id])
+  Invite      Invite?  @relation(fields: [inviteId], references: [id])
   inviteId    String?
-  tags        Tag[]   @relation("MailTags")
+  tags        Tag[]    @relation("MailTags")
+  createdAt   DateTime @default(now())
 }

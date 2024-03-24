@@ -4,7 +4,7 @@ import { Toaster } from "../ui/toaster";
 
 const RootLayout = () => {
   return (
-    <div className="h-full w-full">
+    <div className="h-full w-full ">
       <Outlet />
       <Toaster />
     </div>
