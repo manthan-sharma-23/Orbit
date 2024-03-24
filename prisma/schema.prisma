@@ -185,6 +185,7 @@ model Mail {
 model Forum {
   id         String    @id @default(uuid())
   forum_type String?   @default("discussions")
+  title      String?
   data       String
   up_vote    Int?      @default(0)
   down_vote  Int?      @default(0)
@@ -195,11 +196,12 @@ model Forum {
 }
 
 model COMMENT {
-  id      String  @id @default(cuid())
-  comment String
-  userId  String
-  likes   Int?    @default(0)
-  User    User    @relation(fields: [userId], references: [id])
-  Forum   Forum?  @relation(fields: [forumId], references: [id])
-  forumId String?
+  id        String   @id @default(cuid())
+  comment   String
+  userId    String
+  likes     Int?     @default(0)
+  User      User     @relation(fields: [userId], references: [id])
+  Forum     Forum?   @relation(fields: [forumId], references: [id])
+  forumId   String?
+  createdAt DateTime @default(now())
 }

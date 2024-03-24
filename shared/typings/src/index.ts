@@ -203,6 +203,22 @@ export interface TAG {
 export interface FORUM {
   id?: string;
   forum_type: FORUM_TYPE;
+  title?: string;
+  data: string;
+  userId: string;
+  User?: USER;
+  comments?: COMMENT[];
+  createdAt: Date;
+}
+
+export interface COMMENT {
+  id?: string;
+  comment: string;
+  userId: string;
+  User?: USER;
+  forumId: string;
+  Forum?: FORUM;
+  createdAt: Date;
 }
 
 export enum FORUM_TYPE {
