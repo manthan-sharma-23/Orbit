@@ -1,17 +1,30 @@
 import { Separator } from "@/components/ui/separator";
 import { forumsList } from "@/lib/static/global/forum/forum.list";
 import { sideIcons } from "@/lib/static/global/options/side.nav";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 
 const Global = () => {
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (
+      pathname === "/home/globe" ||
+      pathname === "/home/globe/" ||
+      pathname === "/home/globe?"
+    ) {
+      navigate("/home/globe/forum");
+    }
+  }, []);
   return (
     <div className="h-full w-full flex flex-col bg-[#0F0F0F] text-white">
       <div className="flex h-[8vh] justify-start px-3 items-center bg-transparent">
-        <p className="font-mono font-normal text-xl bg-transparent tracking-tight bg-white text-black ml-4 px-3 py-1">
+        <p className="font-mono font-normal text-xl  tracking-tight bg-white/80 text-black ml-4 px-3 py-1">
           ORBIT GLOBAL
         </p>
       </div>
-      <Separator className="bg-white/50" />
+      <Separator className="bg-white/10" />
       <div className=" h-[92vh] w-full text-white flex">
         <div className="w-[25%] h-full">
           <SideBar />

@@ -209,6 +209,8 @@ export interface FORUM {
   User?: USER;
   comments?: COMMENT[];
   createdAt: Date;
+  up_vote?: number;
+  down_vote?: number;
 }
 
 export interface COMMENT {

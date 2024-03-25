@@ -13,6 +13,7 @@ import SpacePannel from "./pages/spaces/spacePannel";
 import Global from "./pages/global/global";
 import GlobalPannel from "./pages/global/pages/globalPannel";
 import ForumsPage from "./pages/global/pages/forumsPage";
+import ForumPannel from "./pages/global/pages/forumPannel";
 
 function App() {
   return (
@@ -25,6 +26,10 @@ function App() {
                 <Route path="/home/globe/forum/" element={<ForumsPage />}>
                   <Route
                     path="/home/globe/forum/:path"
+                    element={<GlobalPannel />}
+                  />
+                  <Route
+                    path="/home/globe/forum/:path/:forumId"
                     element={<GlobalPannel />}
                   />
                 </Route>

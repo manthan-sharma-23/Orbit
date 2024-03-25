@@ -37,7 +37,7 @@ import { navoption } from "@/lib/static/app/bar.icons";
 const ApplicationLayout = () => {
   const { pathname } = useLocation();
   const user = useRecoilValue(userAtom);
-  const [barCollapse, setBarCollapse] = useState(false);
+  const [barCollapse, setBarCollapse] = useState(true);
   const spaceId = useRecoilValue(selectedSpaceAtom);
   useGetUser();
 
@@ -111,7 +111,7 @@ const ApplicationLayout = () => {
                       </DrawerContent>
                     </Drawer>
                   </div>
-                  <Separator className="mb-4 bg-white/60" />
+                  <Separator className="mb-4 bg-white/10" />
                   <div className="flex flex-col items-start justify-between h-[92vh] pb-6">
                     <div className="h-full w-full flex flex-col justify-start items-center p-0 gap-1">
                       {navoption.bar.map((link, index) => {
@@ -125,7 +125,7 @@ const ApplicationLayout = () => {
                                       ? "/home/spaces/" + spaceId.id
                                       : "/home/" + link.href
                                   }
-                                  className={`text-white h-[2.6rem] w-[2.6rem] rounded-md flex justify-center items-center dark:bg-muted ${pathname.startsWith("/home/" + link.href) ? "bg-black text-white" : "hover:bg-black/10"} dark:text-muted-foreground dark:hover:bg-muted hover:bg-white/20`}
+                                  className={`text-white h-[2.6rem] w-[2.6rem] rounded-md flex justify-center items-center dark:bg-muted ${pathname.startsWith("/home/" + link.href) ? "bg-[#1C1C1C] text-white" : "hover:bg-black/10"} dark:text-muted-foreground dark:hover:bg-muted hover:bg-white/20`}
                                 >
                                   <link.icon className="h-[1.3rem] w-[1.3rem]" />
                                   <span className="sr-only">{link.title}</span>
@@ -148,7 +148,7 @@ const ApplicationLayout = () => {
                       })}
                     </div>
                     <div className="h-[5vh] w-full">
-                      <Separator className="bg-white/60" />
+                      <Separator className="bg-white/10" />
                       <Link
                         to={"/home"}
                         className="p-4 relative z-20 flex items-center justify-center text-xl font-medium cursor-pointer h-[52px] overflow-hidden text-white"
@@ -217,7 +217,7 @@ const ApplicationLayout = () => {
                       </DrawerContent>
                     </Drawer>
                   </div>
-                  <Separator className="mb-4 bg-white/50 " />
+                  <Separator className="mb-4 bg-white/10 " />
                   <div className="flex flex-col items-start justify-between h-[92vh] pb-6">
                     <div className="h-full w-full flex flex-col justify-start items-center p-2 gap-1">
                       {navoption.bar.map((link, index) => {
@@ -230,7 +230,7 @@ const ApplicationLayout = () => {
                                   ? "/home/spaces/" + spaceId.id
                                   : "/home/" + link.href
                               }
-                              className={` w-full flex justify-between items-center p-2 px-4 ${pathname.startsWith("/home/" + link.href) ? "bg-white/90 text-black" : "text-white"} rounded-md ${!pathname.startsWith("/home/" + link.href) && "hover:bg-white/10"}`}
+                              className={` w-full flex justify-between items-center p-2 px-4 ${pathname.startsWith("/home/" + link.href) ? "bg-[#1C1C1C] text-white" : "text-white"} rounded-md ${!pathname.startsWith("/home/" + link.href) && "hover:bg-white/10"}`}
                             >
                               <p className="flex  justify-start items-center">
                                 <link.icon className="mr-2 h-4 w-4" />
@@ -243,7 +243,7 @@ const ApplicationLayout = () => {
                       })}
                     </div>
                     <div className="h-[5vh] w-full">
-                      <Separator className="bg-white/60" />
+                      <Separator className="bg-white/10" />
                       <div className="p-4 relative z-20 flex items-center justify-center text-xl font-medium h-[52px] overflow-hidden text-white">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -266,7 +266,11 @@ const ApplicationLayout = () => {
             )}
           </ResizablePanel>
         </TooltipProvider>
-        <ResizableHandle withHandle className="bg-black/50" />
+        <ResizableHandle
+          withHandle
+          color="#272727"
+          className="bg-black/10 text-white/20 border-white/20"
+        />
         <ResizablePanel defaultSize={82}>
           <Outlet />
         </ResizablePanel>

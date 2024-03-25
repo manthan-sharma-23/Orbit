@@ -11,6 +11,7 @@ import spaceRouter from "./routes/space.routes";
 import threadRouter from "./routes/thread.routes";
 import mailRouter from "./routes/mail.routes";
 import inviteRouter from "./routes/invite.routes";
+import forumRouter from "./routes/forum.routes";
 
 const router: Router = Router();
 
@@ -28,6 +29,7 @@ router
   .use("/space", spaceRouter)
   .use("/threads", threadRouter)
   .use("/mails", mailRouter)
-  .use("/invites", inviteRouter);
+  .use("/invites", inviteRouter)
+  .use("/forums", forumRouter);
 
 export default router;

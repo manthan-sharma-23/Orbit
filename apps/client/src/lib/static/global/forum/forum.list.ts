@@ -1,22 +1,26 @@
 export const forumsList = [
   {
     name: "Public Discussion",
-    color: "#7D66D9",
+    color: "#849DFE",
     href: "public_discussions",
+    dark: "#131620",
   },
   {
     name: "Product Ideas",
-    color: "#E54666",
+    color: "#D68333",
     href: "product_ideas",
+    dark: "#1F1206",
   },
   {
     name: "Collaborations",
-    color: "#FFD60A",
+    color: "#64C9A5",
     href: "collaborations",
+    dark: "#081917",
   },
   {
     name: "Technical Questions",
-    color: "#3DD68C",
+    color: "#D867D8",
     href: "technical_questions",
+    dark: "#1F121B",
   },
 ];
