@@ -12,6 +12,7 @@ import Inbox from "./pages/inbox/inbox";
 import SpacePannel from "./pages/spaces/spacePannel";
 import Global from "./pages/global/global";
 import GlobalPannel from "./pages/global/pages/globalPannel";
+import ForumsPage from "./pages/global/pages/forumsPage";
 
 function App() {
   return (
@@ -21,10 +22,12 @@ function App() {
           <Route path="/" element={<RootLayout />}>
             <Route path="/home" element={<ApplicationLayout />}>
               <Route path="/home/globe" element={<Global />}>
-                <Route
-                  path="/home/globe/forum/:path"
-                  element={<GlobalPannel />}
-                />
+                <Route path="/home/globe/forum/" element={<ForumsPage />}>
+                  <Route
+                    path="/home/globe/forum/:path"
+                    element={<GlobalPannel />}
+                  />
+                </Route>
                 <Route path="/home/globe/:path" element={<GlobalPannel />} />
               </Route>
               <Route path="/home/spaces/" element={<Spaces />}>

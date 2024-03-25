@@ -10,7 +10,7 @@ export const sideIcons = [
   {
     name: "Discussions",
     icon: MessagesSquare,
-    href: "discussions",
+    href: "forum",
   },
   {
     name: "Find mates",
