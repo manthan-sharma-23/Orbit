@@ -79,11 +79,14 @@ const ApplicationLayout = () => {
                       <DrawerTrigger className="w-full h-auto flex justify-start items-start p-0">
                         <Button
                           variant={"outline"}
-                          className="border-[0px] hover:bg-white/20 border-white/65 h-full w-full flex justify-start items-center gap-2 p-2 px-3 bg-black text-white"
+                          className="border-[0px] hover:bg-white/5 border-white/65 h-full w-full flex justify-start items-center gap-2 p-2 px-3 bg-black text-white"
                           size={"lg"}
                         >
-                          <Avatar>
-                            <AvatarImage src="/avatars/02.png" />
+                          <Avatar className="rounded-none border-[2px] border-white/10 h-[3rem] w-[3.2rem] relative right-1">
+                            <AvatarImage
+                              src={user.user?.image}
+                              className="rounded-none"
+                            />
                             <AvatarFallback>CN</AvatarFallback>
                           </Avatar>
                         </Button>
@@ -177,12 +180,15 @@ const ApplicationLayout = () => {
                     <Drawer>
                       <DrawerTrigger className="w-full h-auto flex justify-start items-start p-0">
                         <Button
-                          variant={"ghost"}
-                          className=" border-white/60 h-full w-full flex justify-start items-center gap-2 p-2 px-3 bg-black text-white/80 hover:bg-white/20 hover:text-white"
+                          variant={"outline"}
+                          className="border-[0px] hover:text-white hover:bg-white/5 border-white/65 h-full w-full flex justify-start items-center gap-2 p-2 px-3 bg-black text-white"
                           size={"lg"}
                         >
-                          <Avatar>
-                            <AvatarImage src="/avatars/02.png" />
+                          <Avatar className="rounded-none border-[2px] border-white/10 h-[3rem] w-[3.2rem] relative right-1">
+                            <AvatarImage
+                              src={user.user?.image}
+                              className="rounded-none"
+                            />
                             <AvatarFallback>CN</AvatarFallback>
                           </Avatar>
                           <TypographySmall

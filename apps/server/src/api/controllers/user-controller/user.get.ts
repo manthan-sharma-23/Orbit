@@ -6,7 +6,6 @@ import {
 } from "../../../utils/static/codes.err";
 import { ProtectedRequest } from "../../../utils/types";
 import { db } from "../../../utils/db";
-import { OUTPUT_GET_USER, USER } from "typings";
 
 const getUser = async (req: ProtectedRequest, res: Response) => {
   try {
@@ -21,12 +20,8 @@ const getUser = async (req: ProtectedRequest, res: Response) => {
     });
 
     if (!user) return res.status(DONT_EXISTS.code).json(DONT_EXISTS.action);
-    const output: OUTPUT_GET_USER = {
-      ...USER_LOGGED_IN_SUCCESSFULLY.action,
-      user,
-    };
 
-    return res.status(USER_LOGGED_IN_SUCCESSFULLY.code).json(output);
+    return res.status(USER_LOGGED_IN_SUCCESSFULLY.code).json({ user });
   } catch (err) {
     return res
       .status(INTERNAL_SERVER_ERROR.code)

@@ -20,6 +20,17 @@ export type USER = {
   image?: any;
   emailVerified?: Date;
   id?: string;
+  username: string;
+  job: string;
+  about: string;
+  country: string;
+  roles: string[];
+  interested_in: string[];
+  view: string;
+  status: string;
+  github?: string;
+  twitter?: string;
+  linkedIn?: string;
 };
 
 export type FRIEND = {

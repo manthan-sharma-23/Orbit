@@ -11,6 +11,7 @@ model User {
   id             String          @id @default(cuid())
   name           String?
   email          String?         @unique
+  username       String?         @unique
   password       String?
   emailVerified  DateTime?
   image          String?
@@ -22,6 +23,9 @@ model User {
   country        String?         @default("Anonymous")
   status         String?         @default("available")
   view           String?         @default("public")
+  github         String?
+  twitter        String?
+  linkedIn       String?
   rooms          Room[] // A user can be part of multiple rooms
   userMessages   UserMessage[] // A user can send multiple messages
   threadMessages ThreadMessage[]

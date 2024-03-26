@@ -12,6 +12,7 @@ import { INPUT_LOGIN_FORM, OUTPUT_LOGIN_FORM } from "typings";
 import { db } from "../../../utils/db";
 import { SECRET_KEY } from "../../../utils/constants/config";
 import { z } from "zod";
+import { getProfilePicture } from "../../../utils/helper/getRandomImage";
 
 export default async function RegisterUser(req: Request, res: Response) {
   try {
@@ -35,12 +36,16 @@ export default async function RegisterUser(req: Request, res: Response) {
 
     const salt = await bcrypt.genSalt(15);
     const hashedPassword = await bcrypt.hash(password, salt);
+    const image = getProfilePicture();
+    const username = "@" + email.split("@")[0];
 
     user = await db.user.create({
       data: {
         name,
         email,
         password: hashedPassword,
+        image,
+        username,
       },
     });
 
