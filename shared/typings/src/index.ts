@@ -210,6 +210,7 @@ export interface FORUM {
   comments?: COMMENT[];
   createdAt: Date;
   up_vote?: number;
+  UserForums: USER_FORUM[];
   down_vote?: number;
 }
 
@@ -229,4 +230,20 @@ export enum FORUM_TYPE {
   PUBLIC_IDEAS = "product_ideas",
   COLLABORATIONS = "collaborations",
   TECHNICAL_QUESTIONS = "technical_questions",
+}
+
+export enum FORUM_INTERACTION_OPTIONS {
+  up = "up",
+  down = "down",
+  bookmark_undo = "bookmark_undo",
+  bookmark = "bookmark",
+}
+
+export interface USER_FORUM {
+  id?: string;
+  isBookmarked: boolean;
+  isUpVoted: boolean;
+  isDownVoted: boolean;
+  userId?: string;
+  forumId?: string;
 }

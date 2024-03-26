@@ -27,7 +27,8 @@ model User {
   mails          Mail[]
   invites        Invite[]
   forums         Forum[]
-  comments       COMMENT[]
+  useForums      UserForum[]
+  comments       Comment[]
 }
 
 model Room {
@@ -183,19 +184,32 @@ model Mail {
 }
 
 model Forum {
-  id         String    @id @default(uuid())
-  forum_type String?   @default("discussions")
+  id         String      @id @default(uuid())
+  forum_type String?     @default("discussions")
   title      String?
   data       String
-  up_vote    Int?      @default(0)
-  down_vote  Int?      @default(0)
-  User       User      @relation(fields: [userId], references: [id])
+  up_vote    Int?        @default(0)
+  down_vote  Int?        @default(0)
+  User       User        @relation(fields: [userId], references: [id])
   userId     String
-  comments   COMMENT[]
-  createdAt  DateTime  @default(now())
+  comments   Comment[]
+  UserForums UserForum[]
+  isActive   Boolean     @default(true)
+  createdAt  DateTime    @default(now())
 }
 
-model COMMENT {
+model UserForum {
+  id           String  @id @default(uuid())
+  User         User?   @relation(fields: [userId], references: [id])
+  userId       String
+  Forum        Forum?  @relation(fields: [forumId], references: [id])
+  forumId      String
+  isBookmarked Boolean @default(false)
+  isUpVoted    Boolean @default(false)
+  isDownVoted  Boolean @default(false)
+}
+
+model Comment {
   id        String   @id @default(cuid())
   comment   String
   userId    String

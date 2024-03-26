@@ -17,7 +17,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { createForum } from "@/features/funcs/forums/createForum";
 import { FORUM_TYPE } from "@/lib/types/type";
-import React, { useCallback, useState } from "react";
+import { useState } from "react";
 
 interface forumInput {
   title: string;
@@ -38,7 +38,7 @@ const CreateForum = () => {
 
     setLoading(true);
     createForum(forumDetails)
-      .then((_data) => {
+      .then(() => {
         setLoading(false);
       })
       .catch((error) => {

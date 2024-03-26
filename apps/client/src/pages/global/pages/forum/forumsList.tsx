@@ -3,7 +3,6 @@ import { Separator } from "@/components/ui/separator";
 import { useGetForums } from "@/features/hooks/forums/useGetForums";
 import { forumsList } from "@/lib/static/global/forum/forum.list";
 import _ from "lodash";
-import { Bookmark } from "lucide-react";
 import moment from "moment";
 import React from "react";
 import { FORUM } from "typings";
@@ -15,9 +14,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import ForumPannel from "./forumPannel";
 
 const ForumsList = () => {
-  const { path, forumId } = useParams();
+  const { forumId } = useParams();
 
-  const { loading, forums } = useGetForums({ forum_type: path });
+  const { loading, forums } = useGetForums();
+
+  console.log("hey");
 
   if (forumId) {
     return <ForumPannel />;
@@ -33,8 +34,6 @@ const ForumsList = () => {
 
   return (
     <div className="h-full w-full border-0 flex flex-col justify-start items-center mt-3 gap-3">
-      {forums && forums.map((forum) => <Forum forum={forum} />)}
-      {forums && forums.map((forum) => <Forum forum={forum} />)}
       {forums && forums.map((forum) => <Forum forum={forum} />)}
     </div>
   );
