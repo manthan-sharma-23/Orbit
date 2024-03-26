@@ -11,6 +11,7 @@ export const getForumById = async (req: ProtectedRequest, res: Response) => {
     const { forumId } = req.params;
     const userId = req.user;
 
+    console.log(forumId, userId);
     const fetchForumQuery = await db.forum.findUniqueOrThrow({
       where: {
         id: forumId,

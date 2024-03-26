@@ -15,6 +15,8 @@ import GlobalPannel from "./pages/global/pages/globalPannel";
 import ForumsPage from "./pages/global/pages/forum/forumsPage";
 import ForumPannel from "./pages/global/pages/forum/forumPannel";
 import ForumsList from "./pages/global/pages/forum/forumsList";
+import FindMatesPage from "./pages/global/pages/find_users/findMatesPage";
+import ProfilePage from "./pages/global/pages/profile/profilePage";
 
 function App() {
   return (
@@ -34,6 +36,8 @@ function App() {
                     element={<ForumPannel />}
                   />
                 </Route>
+                <Route path="/home/globe/find" element={<FindMatesPage />} />
+                <Route path="/home/globe/profile" element={<ProfilePage />} />
                 <Route path="/home/globe/:path" element={<GlobalPannel />} />
               </Route>
               <Route path="/home/spaces/" element={<Spaces />}>

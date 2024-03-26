@@ -4,14 +4,21 @@ import { useGetForums } from "@/features/hooks/forums/useGetForums";
 import { forumsList } from "@/lib/static/global/forum/forum.list";
 import _ from "lodash";
 import moment from "moment";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FORUM } from "typings";
-import { FaRegBookmark } from "react-icons/fa6";
-import { BiShare, BiUpvote } from "react-icons/bi";
+import { FaBookmark, FaRegBookmark } from "react-icons/fa6";
+import {
+  BiShare,
+  BiSolidDownvote,
+  BiSolidUpvote,
+  BiUpvote,
+} from "react-icons/bi";
 import { BiDownvote } from "react-icons/bi";
 import { BiComment } from "react-icons/bi";
 import { useNavigate, useParams } from "react-router-dom";
 import ForumPannel from "./forumPannel";
+import { voteForum } from "@/features/funcs/forums/vote/voteForum";
+import { FORUM_INTERACTION_OPTIONS } from "@/lib/types/type";
 
 const ForumsList = () => {
   const { forumId } = useParams();
@@ -39,8 +46,19 @@ const ForumsList = () => {
   );
 };
 
+interface Vote {
+  isUpVoted: boolean;
+  isDownVoted: boolean;
+  isBookmarked: boolean;
+}
+
 const Forum = ({ forum }: { forum: FORUM }) => {
   const navigate = useNavigate();
+  const [detail, setDetails] = useState<Vote>({
+    isUpVoted: false,
+    isDownVoted: false,
+    isBookmarked: false,
+  });
   const matchedForum = forumsList.find(
     (item) => item.href === forum.forum_type
   );
@@ -48,16 +66,68 @@ const Forum = ({ forum }: { forum: FORUM }) => {
   const dark = matchedForum ? matchedForum.dark : "";
   const forumTypeName = matchedForum ? matchedForum.name : "";
   const timeFromNow = moment(forum.createdAt).fromNow(false);
+
+  useEffect(() => {
+    if (forum.UserForums.length > 0) {
+      setDetails({
+        isUpVoted: forum.UserForums[0].isUpVoted,
+        isDownVoted: forum.UserForums[0].isDownVoted,
+        isBookmarked: forum.UserForums[0].isBookmarked,
+      });
+    }
+  }, []);
+
+  const handleUpVote = (action: boolean) => {
+    setDetails((v) => ({ ...v, isUpVoted: action }));
+    if (action === true) {
+      voteForum({
+        forumId: forum.id!,
+        vote_type: FORUM_INTERACTION_OPTIONS.up,
+      });
+    } else {
+      voteForum({
+        forumId: forum.id!,
+      });
+    }
+  };
+  const handleDownVote = (action: boolean) => {
+    setDetails((v) => ({ ...v, isDownVoted: action }));
+    if (action === true) {
+      voteForum({
+        forumId: forum.id!,
+        vote_type: FORUM_INTERACTION_OPTIONS.down,
+      });
+    } else {
+      voteForum({
+        forumId: forum.id!,
+      });
+    }
+  };
+  const handleBookmark = (action: boolean) => {
+    setDetails((v) => ({ ...v, isBookmarked: action }));
+    if (action === true) {
+      voteForum({
+        forumId: forum.id!,
+        vote_type: FORUM_INTERACTION_OPTIONS.bookmark,
+      });
+    } else {
+      voteForum({
+        forumId: forum.id!,
+        vote_type: FORUM_INTERACTION_OPTIONS.bookmark_undo,
+      });
+    }
+  };
+
+  const navigateToForum = () => {
+    navigate(`/home/globe/forum/${forum.forum_type}/${forum.id}`);
+  };
   return (
     <>
       <div
-        onClick={() =>
-          navigate(`/home/globe/forum/${forum.forum_type}/${forum.id}`)
-        }
         key={forum.id} // Assuming forum has an id, replace with unique key if available
-        className="hover:bg-white/10 rounded-sm min-h-[25vh] w-full pl-5 p-3 cursor-pointer font-mono flex flex-col"
+        className="hover:bg-white/10 rounded-sm min-h-[25vh] w-full pl-5 p-3  font-mono flex flex-col"
       >
-        <div className="w-auto">
+        <div className="w-auto" onClick={navigateToForum}>
           <span
             className="inline-flex h-8 items-center gap-2 font-mono rounded-md px-4 pt-1 mb-2"
             style={{ border: "1px solid " + color, backgroundColor: dark }}
@@ -74,7 +144,9 @@ const Forum = ({ forum }: { forum: FORUM }) => {
             </p>
           </span>
         </div>
-        <p className="text-xl">/// {forum.title}</p>
+        <p className="text-xl cursor-pointer" onClick={navigateToForum}>
+          /// {forum.title}
+        </p>
         <div className="text-[.8rem] flex justify-between items-center text-white/80 tracking-wide">
           <div className="flex justify-center items-center gap-2">
             {forum.User?.image ? (
@@ -97,11 +169,19 @@ const Forum = ({ forum }: { forum: FORUM }) => {
         <div className="flex justify-between items-center text-xl gap-3 text-white/70">
           <span className="flex gap-3 text-xl ">
             <div className="flex justify-center items-center gap-2">
-              <BiUpvote />
+              {detail.isUpVoted ? (
+                <BiSolidUpvote onClick={() => handleUpVote(false)} />
+              ) : (
+                <BiUpvote onClick={() => handleUpVote(true)} />
+              )}
               <p>{forum.up_vote}</p>
             </div>
             <div className="flex justify-center items-center gap-2">
-              <BiDownvote />
+              {detail.isDownVoted ? (
+                <BiSolidDownvote onClick={() => handleDownVote(false)} />
+              ) : (
+                <BiDownvote onClick={() => handleDownVote(true)} />
+              )}
               <p>{forum.down_vote}</p>
             </div>
             <div className="flex justify-center items-center gap-2">
@@ -110,7 +190,11 @@ const Forum = ({ forum }: { forum: FORUM }) => {
             </div>
           </span>
           <span className="flex gap-5 text-xl">
-            <FaRegBookmark />
+            {detail.isBookmarked ? (
+              <FaBookmark onClick={() => handleBookmark(false)} />
+            ) : (
+              <FaRegBookmark onClick={() => handleBookmark(true)} />
+            )}
             <BiShare />
           </span>
         </div>

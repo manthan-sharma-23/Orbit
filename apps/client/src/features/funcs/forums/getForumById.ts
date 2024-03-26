@@ -3,7 +3,12 @@ import { FORUM } from "typings";
 
 export const getForumById = async ({ forumId }: { forumId: string }) => {
   try {
-    const response = await fetch(`${SERVER_URL}/api/forums/${forumId}`);
+    const response = await fetch(`${SERVER_URL}/api/forums/${forumId}`, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
 
     if (!response.ok) return null;
 

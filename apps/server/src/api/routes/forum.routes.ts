@@ -11,7 +11,7 @@ const router: Router = Router();
 
 router
   .post("/create", authUser, createForum)
-  .get("/all", getForums)
+  .get("/all", authUser, getForums)
   .put("/vote/:forumId", authUser, voteForum)
   .post("/comment", authUser, createCommentToForum)
   .get("/:forumId", authUser, getForumById);

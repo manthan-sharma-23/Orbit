@@ -6,10 +6,12 @@ import {
   UNAUTHORIZED_ACCESS,
 } from "../../../utils/static/codes.err";
 import { db } from "../../../utils/db";
+import { ProtectedRequest } from "../../../utils/types";
 
-export const getForums = async (req: Request, res: Response) => {
+export const getForums = async (req: ProtectedRequest, res: Response) => {
   try {
     const forum_type = req.headers["forum_type"];
+    const userId = req.user;
 
     let getForumsQuery: any;
 
@@ -23,6 +25,11 @@ export const getForums = async (req: Request, res: Response) => {
           createdAt: "desc",
         },
         include: {
+          UserForums: {
+            where: {
+              userId,
+            },
+          },
           User: {
             select: {
               id: true,
@@ -43,6 +50,11 @@ export const getForums = async (req: Request, res: Response) => {
           createdAt: "desc",
         },
         include: {
+          UserForums: {
+            where: {
+              userId,
+            },
+          },
           User: {
             select: {
               name: true,

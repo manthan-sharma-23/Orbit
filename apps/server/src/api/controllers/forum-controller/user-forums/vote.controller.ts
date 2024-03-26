@@ -15,22 +15,73 @@ export const voteForum = async (req: ProtectedRequest, res: Response) => {
     const userId = req.user;
     const { forumId } = req.params;
     const type = req.headers["vote_type"];
-    let query: Partial<Vote> = {
-      isUpVoted: false,
-      isDownVoted: false,
-      isBookmarked: false,
-    };
+
+    if (!userId || !forumId || !type) return res.sendStatus(400); // Bad request if missing parameters
+
+    const existingUserForum = await db.userForum.findFirst({
+      where: {
+        userId,
+        forumId,
+      },
+    });
+
+    let update_query: any = {};
+    let query: Partial<Vote> = {};
 
     if (type === FORUM_INTERACTION_OPTIONS.up) {
-      query = {
-        isUpVoted: true,
-        isDownVoted: false,
-      };
+      if (existingUserForum?.isUpVoted) {
+        query = {
+          isUpVoted: false,
+          isDownVoted: false,
+        };
+        update_query = {
+          up_vote: {
+            decrement: 1,
+          },
+        };
+      } else {
+        query = {
+          isUpVoted: true,
+          isDownVoted: false,
+        };
+        update_query = {
+          up_vote: {
+            increment: 1,
+          },
+        };
+        if (existingUserForum?.isDownVoted) {
+          update_query.down_vote = {
+            decrement: 1,
+          };
+        }
+      }
     } else if (type === FORUM_INTERACTION_OPTIONS.down) {
-      query = {
-        isDownVoted: true,
-        isUpVoted: false,
-      };
+      if (existingUserForum?.isDownVoted) {
+        query = {
+          isUpVoted: false,
+          isDownVoted: false,
+        };
+        update_query = {
+          down_vote: {
+            decrement: 1,
+          },
+        };
+      } else {
+        query = {
+          isDownVoted: true,
+          isUpVoted: false,
+        };
+        update_query = {
+          down_vote: {
+            increment: 1,
+          },
+        };
+        if (existingUserForum?.isUpVoted) {
+          update_query.up_vote = {
+            decrement: 1,
+          };
+        }
+      }
     } else if (type === FORUM_INTERACTION_OPTIONS.bookmark) {
       query = {
         isBookmarked: true,
@@ -40,43 +91,24 @@ export const voteForum = async (req: ProtectedRequest, res: Response) => {
         isBookmarked: false,
       };
     } else {
-      query = {
-        isDownVoted: false,
-        isUpVoted: false,
-      };
+      return res.sendStatus(400); // Bad request if unknown interaction type
     }
 
-    if (!userId || !forumId) throw Error;
-
-    // Update Forum with up_vote increment
-    const updateForum = await db.forum.update({
+    // Update Forum with up_vote or down_vote increment/decrement based on type
+    await db.forum.update({
       where: {
         id: forumId,
       },
-      data: {
-        up_vote: {
-          increment: 1,
-        },
-      },
+      data: update_query,
     });
 
-    // Check if the UserForum entry exists
-    const existingUserForum = await db.userForum.findFirst({
-      where: {
-        userId: userId,
-        forumId: forumId,
-      },
-    });
-
-    // Upsert UserForum entry to indicate upvote
+    // Update UserForum entry to indicate vote or bookmark
     if (existingUserForum) {
       await db.userForum.update({
         where: {
           id: existingUserForum.id,
         },
-        data: {
-          ...query,
-        },
+        data: query,
       });
     } else {
       await db.userForum.create({

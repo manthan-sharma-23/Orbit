@@ -13,3 +13,10 @@ export enum FORUM_TYPE {
   COLLABORATIONS = "collaborations",
   TECHNICAL_QUESTIONS = "technical_questions",
 }
+
+export enum FORUM_INTERACTION_OPTIONS {
+  up = "up",
+  down = "down",
+  bookmark_undo = "bookmark_undo",
+  bookmark = "bookmark",
+}

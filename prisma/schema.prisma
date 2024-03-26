@@ -14,7 +14,12 @@ model User {
   password       String?
   emailVerified  DateTime?
   image          String?
+  job            String?         @default("-")
+  roles          String[]
+  about          String?
+  interested_in  String[]
   theme          String?
+  country        String?         @default("Anonymous")
   status         String?         @default("available")
   view           String?         @default("public")
   rooms          Room[] // A user can be part of multiple rooms
