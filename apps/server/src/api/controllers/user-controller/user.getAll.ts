@@ -18,6 +18,9 @@ const getAllUsers = async (req: ProtectedRequest, res: Response) => {
       where: {
         view: "public",
       },
+      orderBy: {
+        updatedAt: "desc",
+      },
     });
 
     if (!user) return res.sendStatus(RESOURCE_NOT_FOUND.code);

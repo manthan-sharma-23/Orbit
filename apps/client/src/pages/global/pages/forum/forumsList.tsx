@@ -19,13 +19,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import ForumPannel from "./forumPannel";
 import { voteForum } from "@/features/funcs/forums/vote/voteForum";
 import { FORUM_INTERACTION_OPTIONS } from "@/lib/types/type";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const ForumsList = () => {
   const { forumId } = useParams();
 
   const { loading, forums } = useGetForums();
-
-  console.log("hey");
 
   if (forumId) {
     return <ForumPannel />;
@@ -137,20 +136,27 @@ const Forum = ({ forum }: { forum: FORUM }) => {
               style={{ backgroundColor: color }}
             />
             <p
-              style={{ color }}
+              style={{ color, fontFamily: ' "Kode Mono", monospace' }}
               className="w-auto text-xs font-mono tracking-wide my-2"
             >
               {_.upperCase(forumTypeName)}
             </p>
           </span>
         </div>
-        <p className="text-xl cursor-pointer" onClick={navigateToForum}>
-          /// {forum.title}
+        <p
+          className="text-xl cursor-pointer mb-1"
+          style={{ fontFamily: ' "Kode Mono", monospace' }}
+          onClick={navigateToForum}
+        >
+          &#47;&#47;&#47; {forum.title}
         </p>
         <div className="text-[.8rem] flex justify-between items-center text-white/80 tracking-wide">
           <div className="flex justify-center items-center gap-2">
             {forum.User?.image ? (
-              <img />
+              <Avatar className="h-5 w-5">
+                <AvatarImage src={forum.User.image} alt="avatar" />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
             ) : (
               <div className="w-5 h-5 rounded-full bg-white/85 text-black flex justify-center items-center font-medium font-sans p-2">
                 {forum.User?.name?.split("")[0]}

@@ -39,7 +39,6 @@ const acceptFriend = async (req: ProtectedRequest, res: Response) => {
 
     const room: ROOM = await db.room.create({
       data: {
-        type: ROOM_TYPE.person,
         users: {
           connect: roomers.map((id) => ({ id })),
         },

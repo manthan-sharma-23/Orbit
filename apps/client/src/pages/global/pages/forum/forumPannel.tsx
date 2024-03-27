@@ -13,6 +13,7 @@ import React, { useState } from "react";
 import { BiComment, BiDownvote, BiShare, BiUpvote } from "react-icons/bi";
 import { FaRegBookmark } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const ForumPannel = () => {
   const { loading, forum } = useGetForum();
@@ -83,13 +84,19 @@ const ForumPannel = () => {
         <div className="mb-2 text-[.8rem] flex justify-between gap-5 items-center text-white/80 tracking-wide">
           <div className="flex justify-between items-center gap-2">
             {forum.User?.image ? (
-              <img />
+              <Avatar className="h-7 w-7">
+                <AvatarImage
+                  src={forum.User.image}
+                  alt="avatar"
+                />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
             ) : (
               <div className="w-6 h-6 rounded-full bg-white/85 text-black flex justify-center items-center font-medium font-sans p-2">
                 {forum.User?.name?.split("")[0]}
               </div>
             )}
-            <div className="">{forum.User?.name}</div>
+            <div className="text-[1rem] ml-2">{forum.User?.name}</div>
             <div className="text-sm text-white/60 ml-2 underline">
               {forum.User?.email?.split("@")[0]}
             </div>

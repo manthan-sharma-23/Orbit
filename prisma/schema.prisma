@@ -20,7 +20,7 @@ model User {
   about          String?
   skills         String[]        @default([])
   languages      String[]        @default([])
-  theme          String?
+  theme          String?         @default("default")
   country        String?         @default("Anonymous")
   status         String?         @default("available")
   view           String?         @default("public")
@@ -29,6 +29,8 @@ model User {
   linkedIn       String?
   stage          String?         @default("professional")
   workEx         Int?            @default(0)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
   rooms          Room[] // A user can be part of multiple rooms
   userMessages   UserMessage[] // A user can send multiple messages
   threadMessages ThreadMessage[]
@@ -46,7 +48,6 @@ model User {
 model Room {
   id       String        @id @default(cuid())
   createAt DateTime      @default(now())
-  type     String        @default("person")
   users    User[] // A room can have multiple users
   messages UserMessage[] // A room can have multiple messages
 }

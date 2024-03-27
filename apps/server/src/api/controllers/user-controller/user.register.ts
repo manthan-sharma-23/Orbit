@@ -47,6 +47,8 @@ export default async function RegisterUser(req: Request, res: Response) {
         password: hashedPassword,
         image,
         username,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
     });
 

@@ -34,6 +34,7 @@ export type USER = {
   stage?: string;
   languages: string[];
   workEx?: number;
+  createdAt: Date;
 };
 
 export type FRIEND = {

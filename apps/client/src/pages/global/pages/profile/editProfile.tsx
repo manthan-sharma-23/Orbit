@@ -128,7 +128,9 @@ const EditProfile = () => {
       <ScrollArea className="h-full w-full">
         <div className="w-[70%] h-full">
           <div className="h-auto px-2 py-2 rounded-sm w-full flex text-xl gap-3 mb-2 bg-white/5">
-            <p className="font-bold text-white/85">/// EDIT PROFILE</p>
+            <p className="font-bold text-white/85">
+              &#47;&#47;&#47; EDIT PROFILE
+            </p>
             <p className="text-white/10">
               ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
             </p>
@@ -374,7 +376,7 @@ const EditProfile = () => {
                 <Input
                   className="h-full border-[.6px] border-white/40 focus-visible:ring-[2.5px] focus-within:border-[#849DFE] focus-visible:ring-[#131620] bg-white/5  rounded-sm "
                   placeholder="Enter your LinkedIn Profile Url"
-                  value={user?.linkedIn}
+                  value={userUpdationDetails?.linkedIn}
                   onChange={(e) => {
                     setUserUpdationDetails((v) => ({
                       ...v,

@@ -11,14 +11,13 @@ export const updateUserInfo = async (req: ProtectedRequest, res: Response) => {
     const userId = req.user;
     const updates = req.body;
 
-    console.log(updates);
-
     const UpdateUserQuery = await db.user.update({
       where: {
         id: userId,
       },
       data: {
         ...updates,
+        updatedAt: new Date(),
       },
     });
 
