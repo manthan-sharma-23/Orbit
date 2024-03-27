@@ -11,7 +11,25 @@ import { BiDotsVertical } from "react-icons/bi";
 import { useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { MESSAGE, TEXT } from "typings";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import "@/lib/styles/scorllBar.css";
+import { IoTrashOutline } from "react-icons/io5";
+import { MdOutlineInfo } from "react-icons/md";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import UserInteract from "../global/pages/find_users/user_interact";
 
 const ChatMessages = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -96,24 +114,52 @@ const ChatMessages = () => {
   return (
     <div className="text-white h-full w-full px-3">
       <div className="h-[10%] w-full bg-white/5 rounded-t-md flex justify-between items-center">
-        <div className="h-full w-[80%]">
-          <div
-            style={{ fontFamily: ' "Kode Mono", monospace' }}
-            className="mb-2 rounded-l-md w-full h-full flex justify-start  items-center px-6 cursor-pointer gap-4"
+        <Dialog>
+          <DialogTrigger className="h-full w-[80%]">
+            <div className="h-full w-full">
+              <div
+                style={{ fontFamily: ' "Kode Mono", monospace' }}
+                className="mb-2 rounded-l-md w-full h-full flex justify-start  items-center px-6 cursor-pointer gap-4"
+              >
+                <div className="overflow-hidden h-[3rem] rounded-full">
+                  <img src={friend.image} className="bg-black h-full " />
+                </div>
+                <div className="gap-2 text-white/65 text-sm flex flex-col items-start justify-center h-full">
+                  <p className="text-[1.3rem] text-white/80 font-semibold flex w-auto">
+                    {friend.name}
+                  </p>
+                  <p>@{friend.username}</p>
+                </div>
+              </div>
+            </div>
+          </DialogTrigger>
+          <DialogContent
+            style={{
+              fontFamily: '"Kode Mono", monospace',
+              borderRadius: "2px",
+            }}
+            className="bg-[#0F0F0F] text-white border-none p-0 border-white/50"
           >
-            <div className="overflow-hidden h-[3rem] rounded-full">
-              <img src={friend.image} className="bg-black h-full " />
-            </div>
-            <div className="gap-2 text-white/65 text-sm flex flex-col items-start justify-center h-full">
-              <p className="text-[1.3rem] text-white/80 font-semibold">
-                {friend.name}
-              </p>
-              <p>@{friend.username}</p>
-            </div>
-          </div>
-        </div>
+            <UserInteract user={friend} />
+            <DialogHeader className="h-0 w-0"></DialogHeader>
+            <DialogDescription className="h-0 w-0"></DialogDescription>
+          </DialogContent>
+        </Dialog>
         <div className="h-full w-[20%] flex justify-end px-6 text-3xl text-white/35 items-center">
-          <BiDotsVertical className="cursor-pointer" />
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <BiDotsVertical className="cursor-pointer focus:border-none focus-within:border-none focus-visible:border-none" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="bg-[#0F0F0F] text-white/80 border-[1px] border-white/10">
+              <DropdownMenuItem className="cursor-pointer text-blue-600 flex gap-3 text-[1rem]">
+                <MdOutlineInfo /> Profile
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer text-red-600 flex hover:text-red-600 gap-3 text-[1rem]">
+                <IoTrashOutline />
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
       <div className="h-[70%] w-full  rounded-t-md py-1">

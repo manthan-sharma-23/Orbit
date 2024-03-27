@@ -1,16 +1,36 @@
+import Loading from "@/components/ui/Loading";
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import { getARoom } from "@/features/funcs/rooms/messages/getARoom";
 import _ from "lodash";
-import React from "react";
+import React, { useState } from "react";
 import { FaGithub, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
 import { IoLocationSharp } from "react-icons/io5";
 import { MdOutlineWork } from "react-icons/md";
 import { SlGlobe } from "react-icons/sl";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { USER } from "typings";
 
 const UserInteract = ({ user }: { user: USER }) => {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
+  const handleMessageTab = () => {
+    if (user.id) {
+      setLoading(true);
+      getARoom({ friendId: user.id })
+        .then((data) => {
+          navigate(`/home/chat/${data?.id}`);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
+    }
+  };
+
   return (
     <div className="h-[90vh] w-full  p-2 px-4 flex flex-col">
       <div className="px-1 h-[20%] w-full  mt-8 flex justify-between flex-row-reverse items-center gap-3">
@@ -38,8 +58,12 @@ const UserInteract = ({ user }: { user: USER }) => {
         </div>
       </div>
       <div className="h-auto w-auto my-1 flex gap-3">
-        <Button className="hover:text-white/90 hover:bg-transparent bg-white/80 w-1/2 text-[1.2rem] text-black flex justify-center items-center">
-          MESSAGE
+        <Button
+          disabled={loading}
+          onClick={handleMessageTab}
+          className="hover:text-white/90 hover:bg-transparent bg-white/80 w-1/2 text-[1.2rem] text-black flex justify-center items-center"
+        >
+          {loading ? <Loading /> : "MESSAGE"}
         </Button>
         <Button className="hover:text-white/90 hover:bg-transparent bg-white/80 w-1/2 text-[1.2rem] text-black flex justify-center items-center">
           ADD FRIEND
