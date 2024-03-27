@@ -35,6 +35,7 @@ export type USER = {
   languages: string[];
   workEx?: number;
   createdAt: Date;
+  updatedAt: Date;
 };
 
 export type FRIEND = {
@@ -67,8 +68,9 @@ export type MESSAGE_TYPE = "INFO" | "JOIN" | "MESSAGE";
 export type ROOM = {
   id: string;
   name?: string;
-  users?: USER[];
+  users: USER[];
   createdAt: Date;
+  messages: TEXT[];
 };
 
 export type FRIEND_REQUEST = {
@@ -100,7 +102,7 @@ export type MESSAGE = {
 
 export type TEXT = {
   sendAt: Date;
-  userId?: string;
+  userId: string;
   text: string;
 };
 

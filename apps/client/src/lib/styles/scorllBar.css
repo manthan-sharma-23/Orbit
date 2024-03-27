@@ -1,8 +1,7 @@
 .scroll_container {
-  background-color: white;
-  overflow-y: auto; /* Enable vertical scrolling */
+  overflow-y: scroll; /* Enable vertical scrolling */
   scrollbar-width: thin; /* Reduce scrollbar thickness (optional) */
-  scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0); /* Customize scrollbar color (optional) */
+  scrollbar-color: rgba(204, 200, 200, 0.145) rgba(0, 0, 0, 0); /* Customize scrollbar color (optional) */
 }
 
 .scroll_container::-webkit-scrollbar {
@@ -13,11 +12,11 @@
 
 .scroll_container::-webkit-scrollbar-thumb {
   /* Style the scrollbar thumb */
-  background-color: rgba(0, 0, 0, 0.2); /* Set scrollbar thumb color */
-  border-radius: 6px; /* Add rounded corners */
+  background-color: rgb(209, 209, 209); /* Set scrollbar thumb color */
+  border-radius: 10px; /* Add rounded corners */
 }
 
 .scroll_container::-webkit-scrollbar-thumb:hover {
   /* Style the scrollbar thumb on hover */
-  background-color: rgba(0, 0, 0, 0.3); /* Slightly darken on hover */
+  background-color: rgb(215, 215, 215); /* Slightly darken on hover */
 }

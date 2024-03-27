@@ -27,7 +27,7 @@ export const authUser = (
         .json(RESOURCE_NOT_FOUND.action);
 
     req.user = payload.userId;
-    
+
     next();
   } catch (error) {
     return res

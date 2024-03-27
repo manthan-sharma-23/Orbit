@@ -26,7 +26,6 @@ export default class SocketService {
 
       socket.on("close", () => {
         this._users.delete(socketId);
-        console.log(this._users);
       });
     });
     wss.on("close", () => {

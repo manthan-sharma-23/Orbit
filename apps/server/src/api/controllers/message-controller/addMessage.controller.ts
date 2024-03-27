@@ -39,6 +39,7 @@ export const sendMessageToDB = async (req: ProtectedRequest, res: Response) => {
       .status(MESSAGE_SENT_SUCCESSFULLY.code)
       .json({ ...MESSAGE_SENT_SUCCESSFULLY.action, message: response });
   } catch (error) {
+    console.log(error);
     return res
       .status(INTERNAL_SERVER_ERROR.code)
       .json(INTERNAL_SERVER_ERROR.action);

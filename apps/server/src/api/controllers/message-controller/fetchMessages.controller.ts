@@ -3,22 +3,25 @@ import { ProtectedRequest } from "../../../utils/types";
 import { INTERNAL_SERVER_ERROR } from "../../../utils/static/codes.err";
 import { db } from "../../../utils/db";
 import { TEXT } from "typings";
-import redis from "../../../services/redis/redis.client";
 
 export const fetchMessages = async (req: ProtectedRequest, res: Response) => {
   try {
+    const { userId } = req.params;
     const { roomId } = req.params;
-    const messages: TEXT[] = await db.userMessage.findMany({
+    console.log(roomId);
+    const messages = await db.room.findUniqueOrThrow({
       where: {
-        roomId,
+        id: roomId,
       },
-      select: {
-        sendAt: true,
-        userId: true,
-        text: true,
+      include: {
+        messages: true,
+        users: true,
       },
     });
-    return res.json(messages);
+
+    if (!messages || messages.length === 0) return res.sendStatus(304);
+
+    return res.status(200).json(messages);
   } catch (error) {
     console.error("Error fetching messages:", error);
     return res

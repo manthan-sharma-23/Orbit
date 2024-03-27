@@ -37,6 +37,7 @@
     "@types/morgan": "^1.9.9",
     "@types/ws": "^8.5.10",
     "core": "link:@types/@dicebear/core",
+    "tsc-watch": "6.1.0",
     "types@workspace": "link:@types/@package/types@workspace",
     "typescript": "^5.3.3"
   }

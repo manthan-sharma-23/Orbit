@@ -135,9 +135,9 @@ export const getProfilePicture = (): string => {
   const randomIndex = Math.floor(Math.random() * imgIcons.length);
   // Get the name at the random index
   const ImageName = imgIcons[randomIndex];
-  const hexCode = generateRandomHexCode();
+  const hexCode = generateRandomHexCode().slice(1);
   // Construct the URL using the selected ImageName
-  const url = `https://api.dicebear.com/8.x/identicon/svg?seed=${ImageName}&rowColor-${hexCode}&backgroundColor[]`;
+  const url = `https://api.dicebear.com/8.x/identicon/svg?seed=${ImageName}&rowColor=${hexCode}&backgroundColor[]`;
 
   return url;
 };

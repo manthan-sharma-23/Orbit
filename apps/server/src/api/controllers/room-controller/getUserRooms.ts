@@ -17,23 +17,31 @@ export const getUserRooms = async (req: ProtectedRequest, res: Response) => {
         .status(INVALID_CREDENTIALS.code)
         .json(INVALID_CREDENTIALS.action);
 
-    const rooms = await db.user.findFirst({
+    const rooms = await db.room.findMany({
       where: {
-        id: userId,
+        users: {
+          some: {
+            id: userId,
+          },
+        },
       },
       include: {
-        rooms: true,
+        users: {
+          where: {
+            NOT: {
+              id: userId,
+            },
+          },
+        },
       },
     });
 
-    if (!rooms)
+    if (!rooms || rooms.length === 0)
       return res
         .status(RESOURCE_NOT_FOUND.code)
         .json(RESOURCE_NOT_FOUND.action);
 
-    return res
-      .status(RESOURCE_FOUND_SUCCESSFULLY.code)
-      .json({ ...RESOURCE_FOUND_SUCCESSFULLY.action, rooms: rooms.rooms });
+    return res.status(RESOURCE_FOUND_SUCCESSFULLY.code).json(rooms);
   } catch (error) {
     return res
       .status(INTERNAL_SERVER_ERROR.code)
