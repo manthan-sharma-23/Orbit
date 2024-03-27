@@ -18,6 +18,7 @@ import ForumsList from "./pages/global/pages/forum/forumsList";
 import FindMatesPage from "./pages/global/pages/find_users/findMatesPage";
 import ProfilePage from "./pages/global/pages/profile/profilePage";
 import EditProfile from "./pages/global/pages/profile/editProfile";
+import ChatPage from "./pages/chat/chatPage";
 
 function App() {
   return (
@@ -26,6 +27,10 @@ function App() {
         <Routes>
           <Route path="/" element={<RootLayout />}>
             <Route path="/home" element={<ApplicationLayout />}>
+              <Route path="/home/chat" element={<ChatPage />}>
+                <Route path="/home/chat" element={<ChatPage />} />
+                <Route path="/home/chat/:friendUserId" element={<ChatPage />} />
+              </Route>
               <Route path="/home/globe" element={<Global />}>
                 <Route path="/home/globe/forum/" element={<ForumsPage />}>
                   <Route

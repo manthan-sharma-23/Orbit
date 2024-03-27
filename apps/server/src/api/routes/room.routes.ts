@@ -5,7 +5,7 @@ import { getUserRooms } from "../controllers/room-controller/getUserRooms";
 
 const router: Router = Router();
 
+router.get("/:friendUserId", authUser, getRoom);
 router.get("/", authUser, getUserRooms);
-router.get("/:roomId", authUser, getRoom);
 
 export default router;

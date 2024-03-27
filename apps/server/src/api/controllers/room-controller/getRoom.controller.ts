@@ -11,28 +11,41 @@ import { db } from "../../../utils/db";
 const getRoom = async (req: ProtectedRequest, res: Response) => {
   try {
     const userId = req.user;
-    const { roomId } = req.params;
+    const { friendUserId } = req.params;
 
-    if (!userId || !roomId)
+    if (!userId || !friendUserId)
       return res
         .status(INVALID_CREDENTIALS.code)
         .json(INVALID_CREDENTIALS.action);
 
-    const room = await db.room.findFirst({
+    let room;
+
+    room = await db.room.findFirst({
       where: {
-        id: roomId,
+        AND: [
+          { users: { some: { id: userId } } },
+          { users: { some: { id: friendUserId } } },
+        ],
       },
       include: {
         users: true,
       },
     });
 
-    if (!room)
-      return res.status(CONFLICT_DETECTED.code).json(CONFLICT_DETECTED.action);
+    if (!room) {
+      room = await db.room.create({
+        data: {
+          users: {
+            connect: [{ id: userId }, { id: friendUserId }],
+          },
+        },
+        include: {
+          users: true,
+        },
+      });
+    }
 
-    return res
-      .status(RESOURCE_FOUND_SUCCESSFULLY.code)
-      .json({ ...RESOURCE_FOUND_SUCCESSFULLY.action, room });
+    return res.status(RESOURCE_FOUND_SUCCESSFULLY.code).json(room);
   } catch (error) {
     return res
       .status(INTERNAL_SERVER_ERROR.code)

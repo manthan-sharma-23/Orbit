@@ -42,7 +42,7 @@ export const navoption = {
       label: "27",
       icon: MessageCircleMore,
       variant: "ghost",
-      href: "messages",
+      href: "chat",
     },
     {
       title: "Spaces",
