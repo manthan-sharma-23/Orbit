@@ -25,12 +25,15 @@ export type USER = {
   about: string;
   country: string;
   roles: string[];
-  interested_in: string[];
+  skills: string[];
   view: string;
   status: string;
   github?: string;
   twitter?: string;
   linkedIn?: string;
+  stage?: string;
+  languages: string[];
+  workEx?: number;
 };
 
 export type FRIEND = {

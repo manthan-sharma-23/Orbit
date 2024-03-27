@@ -18,8 +18,9 @@ export default async function RegisterUser(req: Request, res: Response) {
   try {
     const { name, email, password } = req.body as INPUT_LOGIN_FORM;
 
-    await INPUT_LOGIN_FORM.parse(req.body);
+    // await INPUT_LOGIN_FORM.parse(req.body);
 
+    console.log(name, email, password);
     if (!email || !password)
       return res.status(INVALID_INPUTS.code).json(INVALID_INPUTS.action);
 
@@ -37,7 +38,7 @@ export default async function RegisterUser(req: Request, res: Response) {
     const salt = await bcrypt.genSalt(15);
     const hashedPassword = await bcrypt.hash(password, salt);
     const image = getProfilePicture();
-    const username = "@" + email.split("@")[0];
+    const username = email.split("@")[0];
 
     user = await db.user.create({
       data: {

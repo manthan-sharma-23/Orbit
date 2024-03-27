@@ -15,10 +15,11 @@ model User {
   password       String?
   emailVerified  DateTime?
   image          String?
-  job            String?         @default("-")
-  roles          String[]
+  job            String?         @default("Human")
+  roles          String[]        @default([])
   about          String?
-  interested_in  String[]
+  skills         String[]        @default([])
+  languages      String[]        @default([])
   theme          String?
   country        String?         @default("Anonymous")
   status         String?         @default("available")
@@ -26,6 +27,8 @@ model User {
   github         String?
   twitter        String?
   linkedIn       String?
+  stage          String?         @default("professional")
+  workEx         Int?            @default(0)
   rooms          Room[] // A user can be part of multiple rooms
   userMessages   UserMessage[] // A user can send multiple messages
   threadMessages ThreadMessage[]

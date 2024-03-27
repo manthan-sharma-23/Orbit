@@ -32,4 +32,6 @@ export const useGetUser = () => {
         console.log(err);
       });
   }, []);
+
+  return user;
 };

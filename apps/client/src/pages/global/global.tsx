@@ -20,7 +20,10 @@ const Global = () => {
   return (
     <div className="h-full w-full flex flex-col bg-[#0F0F0F] text-white">
       <div className="flex h-[8vh] justify-start px-3 items-center bg-transparent">
-        <p className="font-mono font-normal text-xl  tracking-tight bg-white/80 text-black ml-4 px-3 py-1">
+        <p
+          className="font-mono font-normal text-xl  tracking-tight bg-white/80 text-black ml-4 px-3 py-1"
+          style={{ fontFamily: ' "Kode Mono", monospace' }}
+        >
           ORBIT GLOBAL
         </p>
       </div>
