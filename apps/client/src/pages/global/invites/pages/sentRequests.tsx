@@ -51,7 +51,7 @@ const SentRequests = () => {
         <div className="h-full w-full flex flex-col gap-2">
           {pendingRequests.map((request) => (
             <div className="text-white h-[4rem] p-2 px-4 rounded-md bg-white/5 flex justify-between items-center">
-              <User id={request.senderId} />
+              <User id={request.receiverId} />
               <div className="w-auto flex gap-3 text-[.9rem] justify-center items-center">
                 <p className="text-white/60">
                   Sent {moment(request.createdAt).fromNow()}

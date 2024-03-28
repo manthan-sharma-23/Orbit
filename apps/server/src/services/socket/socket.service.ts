@@ -2,7 +2,13 @@ import http from "http";
 import { MESSAGE } from "typings";
 import { WebSocket, WebSocketServer } from "ws";
 import { SocketUserMap } from "../../utils/types";
+import client from "../redis/redis.client";
+import RedisClient from "../redis/redis.service";
+import { MESSAGE_CHANNEL, REDIS_PORT } from "../../utils/constants/config";
 
+const publisher = new RedisClient(REDIS_PORT).client;
+const subscriber = new RedisClient(REDIS_PORT).client;
+subscriber.subscribe(MESSAGE_CHANNEL);
 export default class SocketService {
   private _wss: WebSocketServer;
   private _counter: number = 0;
@@ -17,11 +23,16 @@ export default class SocketService {
     wss.on("connection", (socket) => {
       const socketId = this._counter++;
       socket.on("message", (msg) => {
-        if (msg.toString() !== this._prev_message) {
-          const message: MESSAGE = JSON.parse(msg.toString());
-          this._ManageMessageEvent({ socketId, socket, message });
-          this._prev_message = msg.toString();
-        }
+        publisher.publish(MESSAGE_CHANNEL, msg.toString());
+
+        subscriber.on("message", (MESSAGE_CHANNEL, msg) => {
+          if (msg !== this._prev_message) {
+            const message: MESSAGE = JSON.parse(msg);
+
+            this._ManageMessageEvent({ socketId, socket, message });
+            this._prev_message = msg;
+          }
+        });
       });
 
       socket.on("close", () => {
@@ -61,9 +72,13 @@ export default class SocketService {
     if (message.type === "MESSAGE" && message.payload.roomId) {
       this._users.forEach((user) => {
         if (user.roomId === message.payload.roomId) {
+          // console.log(message);
           user.socket.send(JSON.stringify(message));
         }
       });
+    }
+
+    if (message.type === "SPACE") {
     }
   }
 

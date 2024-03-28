@@ -29,6 +29,7 @@ export const useChatWebSocket = () => {
 
       wsInstance.addEventListener("message", (msg) => {
         const message: MESSAGE = JSON.parse(msg.data);
+        console.log(message);
         if (message.type === "MESSAGE") {
           if (message.payload && message.payload.message !== undefined) {
             setRoom((v) => ({

@@ -106,18 +106,18 @@ const FindMatesPage = () => {
                                   </p>
                                 )}
                               </div>
-                              <div className="mt-3 flex flex-col justify-start items-start gap-1 ">
-                                <p className="flex text-sm text-white/60 gap-1">
+                              <div className="mt-3 flex flex-col justify-start items-start gap-1 w-full">
+                                <p className="flex w-full overflow-hidden text-sm text-white/60 gap-1">
                                   <MdOutlineWork className="relative top-[1px]" />
                                   {user.job}
                                 </p>
-                                <p className="flex text-sm text-white/60 gap-1">
+                                <p className="flex w-full text-sm text-white/60 gap-1 overflow-hidden">
                                   <IoIosGlobe className="relative top-[1px]" />
                                   {user.languages.map((lang) => (
                                     <p>{lang}</p>
                                   ))}
                                 </p>
-                                <p className="flex text-sm text-white/60 gap-1">
+                                <p className="flex w-full overflow-hidden text-sm text-white/60 gap-1">
                                   <IoLocationSharp className="relative top-[1px]" />
                                   {user.country}
                                 </p>

@@ -13,6 +13,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import UserInteract from "../../pages/find_users/user_interact";
+import { Link } from "react-router-dom";
 
 const Friends = () => {
   const friendRequests = useRecoilValue(userFriendsAtom);
@@ -27,8 +28,10 @@ const Friends = () => {
         style={{ fontFamily: ' "Kode Mono", monospace' }}
         className="h-full w-full flex flex-col gap-2 text-white/40 justify-center items-center"
       >
-        <p>No Incomming Pending Requests for now</p>
-        <p>Come back later</p>
+        <p>No Friends in your list</p>
+        <Link to="/home/globe/find" className="text-white/70 hover:underline">
+          Lets add Some
+        </Link>
       </div>
     );
   }

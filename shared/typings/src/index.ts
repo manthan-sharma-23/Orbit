@@ -58,7 +58,7 @@ export const FRIEND_REQUEST_STATUS = {
   rejected: "rejected",
 };
 
-export type MESSAGE_TYPE = "INFO" | "JOIN" | "MESSAGE";
+export type MESSAGE_TYPE = "INFO" | "JOIN" | "MESSAGE" | "SPACE";
 
 export type ROOM = {
   id: string;
@@ -83,7 +83,6 @@ export type MESSAGE = {
     roomId?: string;
     message?: TEXT;
     announcement?: string;
-    threadMessage?: THREAD_MESSAGE_SCHEMA;
   };
   timeStamp: Date;
 };

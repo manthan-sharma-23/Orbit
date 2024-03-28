@@ -7,8 +7,6 @@ import Home from "./pages/home";
 import ApplicationLayout from "./components/layouts/ApplicationLayout";
 import RootLayout from "./components/layouts/RootLayout";
 import Spaces from "./pages/spaces/spaces";
-import { Thread } from "./pages/threads/thread";
-import SpacePannel from "./pages/spaces/spacePannel";
 import Global from "./pages/global/global";
 import GlobalPannel from "./pages/global/pages/globalPannel";
 import ForumsPage from "./pages/global/pages/forum/forumsPage";
@@ -58,14 +56,7 @@ function App() {
                 />
                 <Route path="/home/globe/:path" element={<GlobalPannel />} />
               </Route>
-              <Route path="/home/spaces/" element={<Spaces />}>
-                <Route path="/home/spaces/:spaceId" element={<SpacePannel />}>
-                  <Route
-                    path="/home/spaces/:spaceId/threads/:threadId"
-                    element={<Thread />}
-                  />
-                </Route>
-              </Route>
+              <Route path="/home/spaces/" element={<Spaces />}></Route>
               <Route path="/home/:path" element={<Home />} />
             </Route>
             <Route path="/auth" element={<AuthenticationLayout />}>
