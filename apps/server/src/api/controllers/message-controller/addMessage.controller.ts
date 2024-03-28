@@ -7,6 +7,7 @@ import {
   RESOURCE_CONFLICT,
 } from "../../../utils/static/codes.err";
 import { db } from "../../../utils/db";
+import redis from "../../../services/redis/redis.client";
 
 export const sendMessageToDB = async (req: ProtectedRequest, res: Response) => {
   try {
@@ -34,6 +35,8 @@ export const sendMessageToDB = async (req: ProtectedRequest, res: Response) => {
     });
 
     if (!response) return res.sendStatus(RESOURCE_CONFLICT.code);
+
+    await redis.del("chat_" + roomId);
 
     return res
       .status(MESSAGE_SENT_SUCCESSFULLY.code)

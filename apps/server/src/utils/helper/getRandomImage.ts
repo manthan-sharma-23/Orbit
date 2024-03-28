@@ -125,6 +125,10 @@ const colors = [
   "#9400D3", // DarkViolet
 ];
 
+function generateRandomAngle(): number {
+  return Math.floor(Math.random() * 361);
+}
+
 function generateRandomHexCode(): string {
   const randomIndex = Math.floor(Math.random() * colors.length);
   return colors[randomIndex] as string;
@@ -136,8 +140,9 @@ export const getProfilePicture = (): string => {
   // Get the name at the random index
   const ImageName = imgIcons[randomIndex];
   const hexCode = generateRandomHexCode().slice(1);
+  const rotate = generateRandomAngle();
   // Construct the URL using the selected ImageName
-  const url = `https://api.dicebear.com/8.x/identicon/svg?seed=${ImageName}&rowColor=${hexCode}&backgroundColor[]`;
+  const url = `https://api.dicebear.com/8.x/identicon/svg?seed=${ImageName}&rowColor=${hexCode}&rotate=${rotate}`;
 
   return url;
 };

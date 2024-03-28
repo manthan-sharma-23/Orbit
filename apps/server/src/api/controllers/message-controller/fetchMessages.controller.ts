@@ -2,14 +2,23 @@ import { Response } from "express";
 import { ProtectedRequest } from "../../../utils/types";
 import { INTERNAL_SERVER_ERROR } from "../../../utils/static/codes.err";
 import { db } from "../../../utils/db";
-import { TEXT } from "typings";
+import { ROOM, TEXT } from "typings";
+import  redis  from "../../../services/redis/redis.client";
 
 export const fetchMessages = async (req: ProtectedRequest, res: Response) => {
   try {
     const { userId } = req.params;
     const { roomId } = req.params;
-    console.log(roomId);
-    const messages = await db.room.findUniqueOrThrow({
+    let room: ROOM;
+
+    const cache = await redis.get("chat_" + roomId);
+
+    if (cache) {
+      room = JSON.parse(cache);
+      return res.status(200).json(room);
+    }
+
+    room = await db.room.findUniqueOrThrow({
       where: {
         id: roomId,
       },
@@ -19,9 +28,11 @@ export const fetchMessages = async (req: ProtectedRequest, res: Response) => {
       },
     });
 
-    if (!messages || messages.length === 0) return res.sendStatus(304);
+    await redis.set("chat_" + roomId, JSON.stringify(room));
 
-    return res.status(200).json(messages);
+    if (!room || room.messages.length === 0) return res.sendStatus(304);
+
+    return res.status(200).json(room);
   } catch (error) {
     console.error("Error fetching messages:", error);
     return res

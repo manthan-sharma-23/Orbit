@@ -127,11 +127,7 @@ const ApplicationLayout = () => {
                             <Tooltip key={index} delayDuration={0}>
                               <TooltipTrigger asChild>
                                 <Link
-                                  to={
-                                    link.href === "spaces"
-                                      ? "/home/spaces/" + spaceId.id
-                                      : "/home/" + link.href
-                                  }
+                                  to={"/home/" + link.href}
                                   className={`text-white h-[2.6rem] w-[2.6rem] rounded-md flex justify-center items-center dark:bg-muted ${pathname.startsWith("/home/" + link.href) ? "bg-[#1C1C1C] text-white" : "hover:bg-black/10"} dark:text-muted-foreground dark:hover:bg-muted hover:bg-white/20`}
                                 >
                                   <link.icon className="h-[1.3rem] w-[1.3rem]" />

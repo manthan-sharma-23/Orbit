@@ -10,7 +10,7 @@ const Spaces = () => {
       style={{ fontFamily: ' "Kode Mono", monospace' }}
     >
       <div className=" h-[8vh] w-full flex justify-between items-center overflow-hidden px-3 m-0">
-        <div className="text-xl font-bold text-white/80">
+        <div className="text-lg font-bold text-white/80">
           <p>/// SPACES</p>
         </div>
       </div>
