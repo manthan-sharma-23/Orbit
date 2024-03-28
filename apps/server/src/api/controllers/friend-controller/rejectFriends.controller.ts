@@ -19,7 +19,14 @@ const rejectFriend = async (req: ProtectedRequest, res: Response) => {
         .status(RESOURCE_NOT_FOUND.code)
         .json(RESOURCE_NOT_FOUND.action);
 
-    const response = await db.friend.update({
+    await db.friend.findFirstOrThrow({
+      where: {
+        receiverId: userId,
+        id: requestId,
+      },
+    });
+
+    const debg = await db.friend.update({
       where: {
         id: requestId,
       },
@@ -27,13 +34,18 @@ const rejectFriend = async (req: ProtectedRequest, res: Response) => {
         status: FRIEND_REQUEST_STATUS.rejected,
       },
     });
+    console.log(debg);
+
+    const response = await db.friend.findMany({
+      where: {
+        OR: [{ senderId: userId }, { receiverId: userId }],
+      },
+    });
 
     if (!response)
       return res.status(RESOURCE_CONFLICT.code).json(RESOURCE_CONFLICT.action);
 
-    return res
-      .status(RESOURCE_UPDATED_SUCCESSFULLY.code)
-      .json(RESOURCE_UPDATED_SUCCESSFULLY.action);
+    return res.status(RESOURCE_UPDATED_SUCCESSFULLY.code).json(response);
   } catch (error) {
     return res
       .status(INTERNAL_SERVER_ERROR.code)

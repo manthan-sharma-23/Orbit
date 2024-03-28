@@ -33,8 +33,12 @@ import { cn } from "@/lib/utils";
 import { ChevronDown } from "lucide-react";
 import { selectedSpaceAtom } from "@/features/store/atoms/spaces/spaceId.atom";
 import { navoption } from "@/lib/static/app/bar.icons";
+import { useGetUserFriends } from "@/features/hooks/friends/useGetUserFriends";
+import { useGetUsers } from "@/features/hooks/users/useGetUsers";
 
 const ApplicationLayout = () => {
+  useGetUserFriends();
+  useGetUsers();
   const { pathname } = useLocation();
   const user = useRecoilValue(userAtom);
   const [barCollapse, setBarCollapse] = useState(true);

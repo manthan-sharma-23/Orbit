@@ -4,7 +4,6 @@ export enum AuthPageParams {
   signout = "/signout",
 }
 
-export type InboxMailType = "all" | "read" | "unread" | "invites";
 
 export enum FORUM_TYPE {
   DISCUSSIONS = "discussions",
@@ -20,3 +19,10 @@ export enum FORUM_INTERACTION_OPTIONS {
   bookmark_undo = "bookmark_undo",
   bookmark = "bookmark",
 }
+
+export const FRIEND_REQUEST_STATUS = {
+  none: "none",
+  pending: "pending",
+  accepted: "accepted",
+  rejected: "rejected",
+};

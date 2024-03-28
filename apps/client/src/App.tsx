@@ -8,7 +8,6 @@ import ApplicationLayout from "./components/layouts/ApplicationLayout";
 import RootLayout from "./components/layouts/RootLayout";
 import Spaces from "./pages/spaces/spaces";
 import { Thread } from "./pages/threads/thread";
-import Inbox from "./pages/inbox/inbox";
 import SpacePannel from "./pages/spaces/spacePannel";
 import Global from "./pages/global/global";
 import GlobalPannel from "./pages/global/pages/globalPannel";
@@ -20,6 +19,8 @@ import ProfilePage from "./pages/global/pages/profile/profilePage";
 import EditProfile from "./pages/global/pages/profile/editProfile";
 import ChatPage from "./pages/chat/chatPage";
 import ChatMessages from "./pages/chat/chatMessages";
+import InvitesPage from "./pages/global/invites/invitesPage";
+import InviteRedirect from "./pages/global/invites/pages/inviteRedirect";
 
 function App() {
   return (
@@ -45,6 +46,12 @@ function App() {
                 </Route>
                 <Route path="/home/globe/find" element={<FindMatesPage />} />
                 <Route path="/home/globe/profile" element={<ProfilePage />} />
+                <Route path="/home/globe/invites" element={<InvitesPage />}>
+                  <Route
+                    path="/home/globe/invites/:path"
+                    element={<InviteRedirect />}
+                  />
+                </Route>
                 <Route
                   path="/home/globe/profile/edit"
                   element={<EditProfile />}
@@ -58,9 +65,6 @@ function App() {
                     element={<Thread />}
                   />
                 </Route>
-              </Route>
-              <Route path="/home/inbox" element={<Inbox />}>
-                <Route path="/home/inbox/:mailId" element={<Inbox />} />
               </Route>
               <Route path="/home/:path" element={<Home />} />
             </Route>

@@ -11,7 +11,7 @@ const router: Router = Router();
 router.get("/friends", authUser, getFriends);
 router.get("/pending", authUser, getPendingRequests);
 router.post("/addfriend", authUser, addFriend);
-router.post("/accept/:requestId", authUser, acceptFriend);
-router.post("/reject/:requestId", authUser, rejectFriend);
+router.put("/accept/:requestId", authUser, acceptFriend);
+router.put("/reject/:requestId", authUser, rejectFriend);
 
 export default router;

@@ -2,7 +2,10 @@ import Loading from "@/components/ui/Loading";
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import { sendAddFriendRequest } from "@/features/funcs/friends/addFriend";
 import { getARoom } from "@/features/funcs/rooms/messages/getARoom";
+import { userFriendsAtom } from "@/features/store/atoms/friends/friends.atom";
+import { FRIEND_REQUEST_STATUS } from "@/lib/types/type";
 import _ from "lodash";
 import React, { useState } from "react";
 import { FaGithub, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
@@ -10,11 +13,18 @@ import { IoLocationSharp } from "react-icons/io5";
 import { MdOutlineWork } from "react-icons/md";
 import { SlGlobe } from "react-icons/sl";
 import { Link, useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
 import { USER } from "typings";
 
 const UserInteract = ({ user }: { user: USER }) => {
   const navigate = useNavigate();
+
   const [loading, setLoading] = useState(false);
+  const [friends, setFriends] = useRecoilState(userFriendsAtom);
+  const userStatus = friends.find(
+    (friend) => friend.receiverId === user.id || friend.senderId === user.id
+  );
+  const canAccept = userStatus?.senderId === user.id;
 
   const handleMessageTab = () => {
     if (user.id) {
@@ -28,6 +38,22 @@ const UserInteract = ({ user }: { user: USER }) => {
           console.log(err);
           setLoading(false);
         });
+    }
+  };
+
+  const handleAddFriend = () => {
+    if (canAccept) {
+      navigate("/home/globe/invites/pending");
+      return;
+    }
+    if (user && user.id) {
+      console.log("adding");
+      sendAddFriendRequest({ friendId: user.id }).then((data) => {
+        if (data) {
+          setFriends((v) => [...v, data]);
+        }
+      });
+      return;
     }
   };
 
@@ -65,8 +91,25 @@ const UserInteract = ({ user }: { user: USER }) => {
         >
           {loading ? <Loading /> : "MESSAGE"}
         </Button>
-        <Button className="hover:text-white/90 hover:bg-transparent bg-white/80 w-1/2 text-[1.2rem] text-black flex justify-center items-center">
-          ADD FRIEND
+        <Button
+          disabled={
+            canAccept
+              ? !canAccept
+              : userStatus?.status === FRIEND_REQUEST_STATUS.pending ||
+                userStatus?.status === FRIEND_REQUEST_STATUS.accepted
+          }
+          onClick={handleAddFriend}
+          className="hover:text-white/90 hover:bg-transparent bg-white/80 w-1/2 text-[1.2rem] text-black flex justify-center items-center"
+        >
+          {canAccept
+            ? "VIEW REQUEST"
+            : userStatus?.status === FRIEND_REQUEST_STATUS.none
+              ? "ADD FRIEND"
+              : userStatus?.status === FRIEND_REQUEST_STATUS.accepted
+                ? "FRIENDS"
+                : userStatus?.status === FRIEND_REQUEST_STATUS.pending
+                  ? "PENDING"
+                  : "ADD FRIEND"}
         </Button>
       </div>
       <Separator className="my-1 bg-white/10" />
@@ -122,7 +165,7 @@ const UserInteract = ({ user }: { user: USER }) => {
                 I am a <p className="underline">{user.stage}</p>
               </p>
               <p>Work Experience : {user.workEx} years</p>
-              <p className="flex justify-start items-center gap-2">
+              <p className="flex w-full h-auto flex-wrap justify-start items-center gap-2">
                 Communicating Languages:{" "}
                 {user.languages.map((lang) => (
                   <p>{lang}</p>

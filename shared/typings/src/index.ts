@@ -43,7 +43,6 @@ export type FRIEND = {
   name?: string;
   email?: string;
   image?: string;
-  roomId?: string;
 };
 
 export type OUTPUT_GET_USER = {
@@ -53,14 +52,10 @@ export type OUTPUT_GET_USER = {
 
 //
 export const FRIEND_REQUEST_STATUS = {
+  none: "none",
   pending: "pending",
   accepted: "accepted",
   rejected: "rejected",
-};
-
-export const ROOM_TYPE = {
-  group: "group",
-  person: "person",
 };
 
 export type MESSAGE_TYPE = "INFO" | "JOIN" | "MESSAGE";
@@ -78,16 +73,7 @@ export type FRIEND_REQUEST = {
   status: string;
   senderId: string;
   receiverId: string;
-  roomId: string;
 };
-
-// Web Socket types
-export enum ChatEvent {
-  SendMessage = "send_message",
-  RequestAllMessages = "request_all_messages",
-  SendAllMessages = "send_all_messages",
-  RecieveMessages = "recieve_message",
-}
 
 export type MESSAGE = {
   type: MESSAGE_TYPE;

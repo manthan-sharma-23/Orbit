@@ -68,7 +68,6 @@ model Friend {
   sender     User     @relation(fields: [senderId], references: [id])
   senderId   String
   receiverId String
-  roomId     String?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 }

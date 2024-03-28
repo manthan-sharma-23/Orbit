@@ -24,13 +24,6 @@ export const navoption = {
       href: "globe",
     },
     {
-      title: "Inbox",
-      label: "128",
-      icon: Inbox,
-      variant: "default",
-      href: "inbox",
-    },
-    {
       title: "Tasks",
       label: "",
       icon: CheckCircle,
