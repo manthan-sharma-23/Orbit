@@ -56,7 +56,9 @@ function App() {
                 />
                 <Route path="/home/globe/:path" element={<GlobalPannel />} />
               </Route>
-              <Route path="/home/spaces/" element={<Spaces />}></Route>
+              <Route path="/home/spaces/" element={<Spaces />}>
+                <Route path="/home/spaces/:path" element={<Spaces />} />
+              </Route>
               <Route path="/home/:path" element={<Home />} />
             </Route>
             <Route path="/auth" element={<AuthenticationLayout />}>

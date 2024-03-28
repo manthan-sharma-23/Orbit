@@ -25,7 +25,7 @@ export const sideIcons = [
   {
     name: "Invites",
     icon: MessageSquareDot,
-    href: "invites",
+    href: "invites/friends",
   },
   {
     name: "Profile",

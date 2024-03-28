@@ -1,9 +1,11 @@
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { useParams } from "react-router-dom";
+import { forumsList } from "@/lib/static/global/forum/forum.list";
+import { sideIcons } from "@/lib/static/global/options/side.nav";
+import { Link, useLocation } from "react-router-dom";
+import SpaceSideBar from "./components/SideBar";
 
 const Spaces = () => {
-  const { spaceId } = useParams();
-
   return (
     <div
       className="h-full w-full p-0 bg-[#0F0F0F] text-white"
@@ -15,7 +17,12 @@ const Spaces = () => {
         </div>
       </div>
       <Separator className="bg-white/10 m-0 p-0" />
-      <div className="h-[92vh] w-full "></div>
+      <div className="h-[92vh] w-full p-0 flex">
+        <div className="w-[25vw] h-full font-sans">
+          <SpaceSideBar />
+        </div>
+        <div className="w-[80%] h-full "></div>
+      </div>
     </div>
   );
 };
