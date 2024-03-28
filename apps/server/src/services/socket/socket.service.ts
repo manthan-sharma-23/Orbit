@@ -23,16 +23,9 @@ export default class SocketService {
     wss.on("connection", (socket) => {
       const socketId = this._counter++;
       socket.on("message", (msg) => {
-        publisher.publish(MESSAGE_CHANNEL, msg.toString());
+        const message: MESSAGE = JSON.parse(msg.toString());
 
-        subscriber.on("message", (MESSAGE_CHANNEL, msg) => {
-          if (msg !== this._prev_message) {
-            const message: MESSAGE = JSON.parse(msg);
-
-            this._ManageMessageEvent({ socketId, socket, message });
-            this._prev_message = msg;
-          }
-        });
+        this._ManageMessageEvent({ socketId, socket, message });
       });
 
       socket.on("close", () => {
@@ -41,6 +34,16 @@ export default class SocketService {
     });
     wss.on("close", () => {
       this._users.clear();
+    });
+
+    subscriber.on("message", (_MESSAGE_CHANNEL, msg) => {
+      const message: MESSAGE = JSON.parse(msg);
+      this._users.forEach((user) => {
+        if (user.roomId === message.payload.roomId) {
+          // console.log(message);
+          user.socket.send(JSON.stringify(message));
+        }
+      });
     });
   }
 
@@ -70,12 +73,7 @@ export default class SocketService {
     }
 
     if (message.type === "MESSAGE" && message.payload.roomId) {
-      this._users.forEach((user) => {
-        if (user.roomId === message.payload.roomId) {
-          // console.log(message);
-          user.socket.send(JSON.stringify(message));
-        }
-      });
+      publisher.publish(MESSAGE_CHANNEL, JSON.stringify(message));
     }
 
     if (message.type === "SPACE") {
