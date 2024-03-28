@@ -73,6 +73,8 @@ export type FRIEND_REQUEST = {
   status: string;
   senderId: string;
   receiverId: string;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export type MESSAGE = {

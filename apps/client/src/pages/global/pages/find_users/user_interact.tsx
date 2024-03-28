@@ -11,7 +11,6 @@ import React, { useState } from "react";
 import { FaGithub, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
 import { IoLocationSharp } from "react-icons/io5";
 import { MdOutlineWork } from "react-icons/md";
-import { SlGlobe } from "react-icons/sl";
 import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { USER } from "typings";
@@ -24,7 +23,9 @@ const UserInteract = ({ user }: { user: USER }) => {
   const userStatus = friends.find(
     (friend) => friend.receiverId === user.id || friend.senderId === user.id
   );
-  const canAccept = userStatus?.senderId === user.id;
+  const canAccept =
+    userStatus?.status !== FRIEND_REQUEST_STATUS.accepted &&
+    userStatus?.senderId === user.id;
 
   const handleMessageTab = () => {
     if (user.id) {

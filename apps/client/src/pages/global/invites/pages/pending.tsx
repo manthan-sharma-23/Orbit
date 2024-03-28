@@ -60,22 +60,24 @@ const Pending = () => {
       className="h-full w-full  py-3 px-2"
       style={{ fontFamily: ' "Kode Mono", monospace' }}
     >
-      <ScrollArea>
-        {canAcceptRequests.map((request) => (
-          <div className="text-white h-[4rem] p-2 px-4 rounded-md bg-white/5 flex justify-between items-center">
-            <User id={request.senderId} />
-            <div className="flex gap-3 text-[1.7rem]">
-              <RxCross2
-                className="border-2 rounded-md p-1 ring-1 ring-red-400 text-red-600/60 border-red-600/60 cursor-pointer"
-                onClick={() => handleClick("reject", request.id)}
-              />
-              <MdDone
-                className="border-2 rounded-md p-1 ring-1 ring-green-400 text-green-600/60 border-green-600/60 cursor-pointer"
-                onClick={() => handleClick("accept", request.id)}
-              />
+      <ScrollArea className="h-full w-full">
+        <div className="h-full w-full flex flex-col gap-2">
+          {canAcceptRequests.map((request) => (
+            <div className="text-white h-[4rem] p-2 px-4 rounded-md bg-white/5 flex justify-between items-center">
+              <User id={request.senderId} />
+              <div className="flex gap-3 text-[1.7rem]">
+                <RxCross2
+                  className="border-2 rounded-md p-1 text-red-600/60 border-red-600/60 cursor-pointer"
+                  onClick={() => handleClick("reject", request.id)}
+                />
+                <MdDone
+                  className="border-2 rounded-md p-1  text-green-600/60 border-green-600/60 cursor-pointer"
+                  onClick={() => handleClick("accept", request.id)}
+                />
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </ScrollArea>
     </div>
   );
@@ -87,14 +89,14 @@ const User = ({ id }: { id: string }) => {
   const user = users.find((user) => user.id === id);
   return (
     <Dialog>
-      <DialogTrigger className="w-[70%] h-full">
+      <DialogTrigger className="w-[80%] h-full">
         <div className="flex gap-2 justify-start items-center cursor-pointer w-full">
           <Avatar>
             <AvatarImage src={user?.image} className="bg-black" />
           </Avatar>
-          <div className="flex flex-col items-start justify-center text-white/50">
-            <p className="text-white/80">{user?.name}</p>
-            <p>{user?.username}</p>
+          <div className="flex items-center justify-start text-white/50 mx-3 gap-3">
+            <p className="text-white/80 text-lg font-semibold">{user?.name}</p>
+            <p className="hover:underline">@{user?.username}</p>
           </div>
         </div>
       </DialogTrigger>

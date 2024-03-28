@@ -4,17 +4,12 @@ import { IoIosGlobe, IoIosOptions } from "react-icons/io";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useGetUsers } from "@/features/hooks/users/useGetUsers";
 import Loading from "@/components/ui/Loading";
-import { Button } from "@/components/ui/button";
 import { MdOutlineWork } from "react-icons/md";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { useState } from "react";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import UserInteract from "./user_interact";
