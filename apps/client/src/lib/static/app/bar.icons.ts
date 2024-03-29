@@ -21,7 +21,7 @@ export const navoption = {
       label: "",
       icon: LucideEarth,
       variant: "default",
-      href: "globe",
+      href: "globe/forum/general",
     },
     {
       title: "Tasks",

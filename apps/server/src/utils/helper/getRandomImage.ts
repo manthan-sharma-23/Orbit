@@ -21,9 +21,36 @@ const imgIcons = [
   "Mittens",
 ];
 
+const botEyes = [
+  "bulging",
+  "dizzy",
+  "eva",
+  "frame1",
+  "frame2",
+  "glow",
+  "happy",
+  "hearts",
+  "robocop",
+  "round",
+  "roundFrame01",
+  "roundFrame02",
+  "sensor",
+  "shade01",
+];
+
+const botMouth = [
+  "bite",
+  "diagram",
+  "grill01",
+  "grill02",
+  "grill03",
+  "smile01",
+  "smile02",
+  "square01",
+  "square02",
+];
+
 const colors = [
-  "#FFFFFF", // White
-  "#FFFF00", // Yellow
   "#00FFFF", // Cyan
   "#FF00FF", // Magenta
   "#00FF00", // Lime Green
@@ -125,8 +152,15 @@ const colors = [
   "#9400D3", // DarkViolet
 ];
 
-function generateRandomAngle(): number {
-  return Math.floor(Math.random() * 361);
+function generateRandomAngle() {
+  // Array containing possible angles
+  const angles = [0, 45, 90, 135, 180, 225, 270, 315];
+
+  // Generate a random index within the range of angles array
+  const randomIndex = Math.floor(Math.random() * angles.length);
+
+  // Retrieve the random angle from the angles array
+  return angles[randomIndex];
 }
 
 function generateRandomHexCode(): string {
@@ -134,15 +168,28 @@ function generateRandomHexCode(): string {
   return colors[randomIndex] as string;
 }
 
-export const getProfilePicture = (): string => {
+export const getSpacePicture = (): string => {
   // Generate a random index within the range of the array length
   const randomIndex = Math.floor(Math.random() * imgIcons.length);
   // Get the name at the random index
   const ImageName = imgIcons[randomIndex];
   const hexCode = generateRandomHexCode().slice(1);
+
+  // to roate image but was not looking good
   const rotate = generateRandomAngle();
+
   // Construct the URL using the selected ImageName
   const url = `https://api.dicebear.com/8.x/identicon/svg?seed=${ImageName}&rowColor=${hexCode}&rotate=${rotate}`;
 
+  return url;
+};
+
+export const getProfilePicture = (): string => {
+  const randomEyes = botEyes[Math.floor(Math.random() * botEyes.length)];
+
+  const randomMouth = botMouth[Math.floor(Math.random() * botMouth.length)];
+  const backgroundColor = generateRandomHexCode().slice(1);
+
+  const url = `https://api.dicebear.com/8.x/bottts-neutral/svg?eyes=${randomEyes}&mouth=${randomMouth}&backgroundColor=${backgroundColor}`;
   return url;
 };

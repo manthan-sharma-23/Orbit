@@ -35,10 +35,12 @@ import { selectedSpaceAtom } from "@/features/store/atoms/spaces/spaceId.atom";
 import { navoption } from "@/lib/static/app/bar.icons";
 import { useGetUserFriends } from "@/features/hooks/friends/useGetUserFriends";
 import { useGetUsers } from "@/features/hooks/users/useGetUsers";
+import { useSelectSpace } from "@/features/hooks/spaces/useSelectSpace";
 
 const ApplicationLayout = () => {
   useGetUserFriends();
   useGetUsers();
+  useSelectSpace();
   const { pathname } = useLocation();
   const user = useRecoilValue(userAtom);
   const [barCollapse, setBarCollapse] = useState(true);
@@ -127,7 +129,11 @@ const ApplicationLayout = () => {
                             <Tooltip key={index} delayDuration={0}>
                               <TooltipTrigger asChild>
                                 <Link
-                                  to={"/home/" + link.href}
+                                  to={
+                                    link.href === "spaces"
+                                      ? "/home/spaces/" + spaceId.id
+                                      : "/home/" + link.href
+                                  }
                                   className={`text-white h-[2.6rem] w-[2.6rem] rounded-md flex justify-center items-center dark:bg-muted ${pathname.startsWith("/home/" + link.href) ? "bg-[#1C1C1C] text-white" : "hover:bg-black/10"} dark:text-muted-foreground dark:hover:bg-muted hover:bg-white/20`}
                                 >
                                   <link.icon className="h-[1.3rem] w-[1.3rem]" />

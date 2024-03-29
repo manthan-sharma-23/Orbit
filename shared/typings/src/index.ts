@@ -105,6 +105,7 @@ export type TEAM = {
   description?: string;
   spaceId: string;
   type: TEAM_TYPE;
+  color: string;
   threads: THREAD_SCHEMA[];
 };
 
@@ -120,6 +121,7 @@ export interface USER_SPACE_SCHEMA {
   userId: string;
   spaceId: string;
   space: SPACE_SCHEMA;
+  user: USER;
 }
 
 export interface SPACE_SCHEMA {
@@ -128,6 +130,9 @@ export interface SPACE_SCHEMA {
   description: string;
   image: string;
   createdBy: string;
+  teams: TEAM[];
+  UserSpace: USER_SPACE_SCHEMA[];
+  invites: INVITE[];
 }
 
 export const THREADS_BASE = {

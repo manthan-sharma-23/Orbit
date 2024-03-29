@@ -82,6 +82,7 @@ model Team {
   members     UserTeam[]
   threads     Thread[]
   Invites     Invite[]
+  color       String?
 }
 
 model UserTeam {

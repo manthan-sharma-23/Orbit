@@ -6,7 +6,13 @@ import {
   RESOURCE_CREATED_SUCCESSFULLY,
 } from "../../../utils/static/codes.err";
 import { db } from "../../../utils/db";
-import { TEAM, TEAM_ROLE, TEAM_TYPE, THREADS_BASE } from "typings";
+import {
+  SPACE_SCHEMA,
+  TEAM,
+  TEAM_ROLE,
+  TEAM_TYPE,
+  THREADS_BASE,
+} from "typings";
 
 export const createTeam = async (req: ProtectedRequest, res: Response) => {
   try {
@@ -27,7 +33,6 @@ export const createTeam = async (req: ProtectedRequest, res: Response) => {
         },
       });
 
-    console.log(checkIfUserIsAdminInChannelQuery);
     if (
       checkIfUserIsAdminInChannelQuery &&
       checkIfUserIsAdminInChannelQuery.role === TEAM_ROLE.admin
@@ -74,15 +79,39 @@ export const createTeam = async (req: ProtectedRequest, res: Response) => {
         }),
       ]);
 
-      return res
-        .status(RESOURCE_CREATED_SUCCESSFULLY.code)
-        .json(createTeamQuery);
+      const space: SPACE_SCHEMA = await db.space.findFirstOrThrow({
+        where: {
+          id: spaceId,
+        },
+        include: {
+          teams: {
+            include: {
+              members: {
+                select: {
+                  user: {
+                    select: {
+                      id: true,
+                      image: true,
+                      name: true,
+                      username: true,
+                    },
+                  },
+                  role: true,
+                },
+              },
+            },
+          },
+          Invites: true,
+          UserSpace: true,
+        },
+      });
+
+      return res.json(space);
     } else {
-      return res
-        .status(402)
-        .json({ message: "User not found or not permitted" });
+      return res.sendStatus(402);
     }
   } catch (error) {
+    console.log(error);
     return res.sendStatus(INTERNAL_SERVER_ERROR.code);
   }
 };

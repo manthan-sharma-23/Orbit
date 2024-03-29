@@ -19,6 +19,9 @@ import ChatPage from "./pages/chat/chatPage";
 import ChatMessages from "./pages/chat/chatMessages";
 import InvitesPage from "./pages/global/invites/invitesPage";
 import InviteRedirect from "./pages/global/invites/pages/inviteRedirect";
+import SpaceId from "./pages/spaces/pages/spaceId";
+import SpaceInfo from "./pages/spaces/pages/Info";
+import TeamPage from "./pages/spaces/pages/teams/teamPage";
 
 function App() {
   return (
@@ -57,7 +60,20 @@ function App() {
                 <Route path="/home/globe/:path" element={<GlobalPannel />} />
               </Route>
               <Route path="/home/spaces/" element={<Spaces />}>
-                <Route path="/home/spaces/:path" element={<Spaces />} />
+                <Route path="/home/spaces/:spaceId" element={<SpaceId />}>
+                  <Route
+                    path="/home/spaces/:spaceId/info"
+                    element={<SpaceInfo />}
+                  />
+                  <Route
+                    path="/home/spaces/:spaceId/team/:teamId"
+                    element={<TeamPage />}
+                  />
+                  <Route
+                    path="/home/spaces/:spaceId/:path"
+                    element={<Spaces />}
+                  />
+                </Route>
               </Route>
               <Route path="/home/:path" element={<Home />} />
             </Route>

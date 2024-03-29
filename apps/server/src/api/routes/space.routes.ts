@@ -5,12 +5,14 @@ import { getSpaceInfo } from "../controllers/space-controller/getSpaceInfo.contr
 import { removeSpaceMember } from "../controllers/space-controller/removeChannelMember";
 import { getUserSpaces } from "../controllers/space-controller/getUserSpace";
 import { getSpaceThreads } from "../controllers/space-controller/getSpaceThread.controller";
+import { getSpaceDetails } from "../controllers/space-controller/getSpaceDetails";
 
 const router: Router = Router();
 
 router
-  .post("/create/channel", authUser, createSpace) // add rate limiter in prod
+  .post("/create", authUser, createSpace) // add rate limiter in prod
   .get("/info/:spaceId", authUser, getSpaceInfo)
+  .get("/details/:spaceId", authUser, getSpaceDetails)
   .get("/threads/:spaceId", authUser, getSpaceThreads)
   .get("/user", authUser, getUserSpaces)
   .delete("/channel/member/remove", authUser, removeSpaceMember);

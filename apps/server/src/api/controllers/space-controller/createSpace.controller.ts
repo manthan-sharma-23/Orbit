@@ -6,20 +6,26 @@ import {
 } from "../../../utils/static/codes.err";
 import { ProtectedRequest } from "../../../utils/types";
 import { db } from "../../../utils/db";
-import { TEAM_ROLE } from "typings";
+import { TEAM_ROLE, TEAM_TYPE } from "typings";
+import { getSpacePicture } from "../../../utils/helper/getRandomImage";
+import { createTeam } from "../team-controller/createTeam.controller";
 
 export const createSpace = async (req: ProtectedRequest, res: Response) => {
   try {
     const userId = req.user;
-    const { space_name, space_description, image } = req.body;
 
-    if (!userId) res.sendStatus(FORBIDDEN_RESOURCE.code);
+    console.log("create", userId);
+    const { name, description, image } = req.body;
+
+    if (!userId || !name) return res.sendStatus(FORBIDDEN_RESOURCE.code);
+
+    const img = getSpacePicture();
 
     const space = await db.space.create({
       data: {
-        name: space_name,
-        description: space_description,
-        image: image || null,
+        name,
+        description,
+        image: image || img,
         createdBy: userId,
       },
       select: {
@@ -27,9 +33,7 @@ export const createSpace = async (req: ProtectedRequest, res: Response) => {
       },
     });
 
-    if (!space.id) return res.sendStatus(RESOURCE_NOT_MODIFIED.code);
-
-    const generalTeam = await db.$transaction([
+    const userROLE = await db.$transaction([
       db.userSpace.create({
         data: {
           userId: userId!,
@@ -37,25 +41,19 @@ export const createSpace = async (req: ProtectedRequest, res: Response) => {
           role: TEAM_ROLE.admin,
         },
       }),
-      db.team.create({
-        data: {
-          name: "general",
-          description: "General Team",
-          space: {
-            connect: {
-              id: space.id,
-            },
-          },
-          members: {
-            create: {
-              userId: userId!,
-              role: TEAM_ROLE.admin,
-            },
-          },
-        },
-      }),
     ]);
-    return res.status(200).json({ space, team: generalTeam });
+
+    if (!space.id) return res.sendStatus(RESOURCE_NOT_MODIFIED.code);
+    req.body = {
+      name: "Townhall",
+      description: "The great Townhall discussion",
+      spaceId: space.id,
+      type: TEAM_TYPE.public,
+    };
+
+    const response = await createTeam(req, res);
+
+    if (response) return;
   } catch (error) {
     return res
       .status(INTERNAL_SERVER_ERROR.code)

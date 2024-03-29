@@ -1,5 +1,7 @@
-import { SiProgress } from "react-icons/si";
+import { SiBandsintown, SiProgress } from "react-icons/si";
 import { CgGoogleTasks } from "react-icons/cg";
+import { CiSearch } from "react-icons/ci";
+import { FaRegCircle } from "react-icons/fa6";
 
 export const SpacesSideIcons = [
   {
@@ -11,5 +13,15 @@ export const SpacesSideIcons = [
     href: "assignments",
     icon: CgGoogleTasks,
     name: "Assignments",
+  },
+  {
+    href: "info",
+    icon: FaRegCircle,
+    name: "Space Info",
+  },
+  {
+    href: "townhall",
+    icon: SiBandsintown,
+    name: "Town Hall",
   },
 ];
