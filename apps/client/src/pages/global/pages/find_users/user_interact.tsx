@@ -4,6 +4,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { sendAddFriendRequest } from "@/features/funcs/friends/addFriend";
 import { getARoom } from "@/features/funcs/rooms/messages/getARoom";
+import { useGetUserById } from "@/features/hooks/users/useGetUserById";
 import { userFriendsAtom } from "@/features/store/atoms/friends/friends.atom";
 import { FRIEND_REQUEST_STATUS } from "@/lib/types/type";
 import _ from "lodash";
@@ -15,22 +16,31 @@ import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { USER } from "typings";
 
-const UserInteract = ({ user }: { user: USER }) => {
+const UserInteract = ({ userId }: { userId: string }) => {
   const navigate = useNavigate();
-
+  const { userLoading, user } = useGetUserById({ userId });
   const [loading, setLoading] = useState(false);
   const [friends, setFriends] = useRecoilState(userFriendsAtom);
   const userStatus = friends.find(
-    (friend) => friend.receiverId === user.id || friend.senderId === user.id
+    (friend) => friend.receiverId === userId || friend.senderId === userId
   );
+
   const canAccept =
     userStatus?.status !== FRIEND_REQUEST_STATUS.accepted &&
-    userStatus?.senderId === user.id;
+    userStatus?.senderId === userId;
+
+  if (user === null || userLoading) {
+    return (
+      <div className="w-full h-full">
+        <Loading />
+      </div>
+    );
+  }
 
   const handleMessageTab = () => {
-    if (user.id) {
+    if (userId) {
       setLoading(true);
-      getARoom({ friendId: user.id })
+      getARoom({ friendId: userId })
         .then((data) => {
           navigate(`/home/chat/${data?.id}`);
           setLoading(false);
@@ -48,7 +58,6 @@ const UserInteract = ({ user }: { user: USER }) => {
       return;
     }
     if (user && user.id) {
-      console.log("adding");
       sendAddFriendRequest({ friendId: user.id }).then((data) => {
         if (data) {
           setFriends((v) => [...v, data]);
@@ -115,7 +124,7 @@ const UserInteract = ({ user }: { user: USER }) => {
       </div>
       <Separator className="my-1 bg-white/10" />
       <div className="h-[75%] w-full py-2 pt-5">
-        <ScrollArea className="h-full w-full text-sm">
+        <ScrollArea className="h-full w-full text-sm" type="hover">
           <ScrollBar className="w-[1px]" />
           <div className="mb-3">
             <p className="mb-1">&#62; ABOUT ME</p>
@@ -125,36 +134,38 @@ const UserInteract = ({ user }: { user: USER }) => {
               </div>
             </div>
           </div>
-          {user.skills.length > 0 && (
+          {user.skills && user.skills.length > 0 && (
             <div className="mb-3">
               <p className="mb-1">&#62; SKILLSET</p>
               <div className="min-h-[8rem] px-1 border-blue-600/45 bg-[#161925] rounded-sm w-full border flex justify-center items-center">
                 <div className="min-h-[7.5rem] p-3 gap-3 flex flex-wrap w-full bg-transparent border border-white/10 rounded-sm font-sans text-[1rem] overflow-hidden">
-                  {user.skills.map((skill, index) => (
-                    <p
-                      key={index}
-                      className="cursor-pointer px-2 py-1 text-white/80 border-blue-400/80 border-[1px] h-[2rem]  tracking-wide w-auto rounded-md"
-                    >
-                      {skill}
-                    </p>
-                  ))}
+                  {user.skills &&
+                    user.skills.map((skill, index) => (
+                      <p
+                        key={index}
+                        className="cursor-pointer px-2 py-1 text-white/80 border-blue-400/80 border-[1px] h-[2rem]  tracking-wide w-auto rounded-md"
+                      >
+                        {skill}
+                      </p>
+                    ))}
                 </div>
               </div>
             </div>
           )}
-          {user.roles.length > 0 && (
+          {user.roles && user.roles.length > 0 && (
             <div className="mb-3">
               <p className="mb-1">&#62; ROLES INTERESTED IN</p>
               <div className="min-h-[7rem] px-1 border-white/30  rounded-sm w-full border flex justify-center items-center">
                 <div className="min-h-[6.5rem] p-3 gap-3 flex flex-wrap w-full bg-transparent border border-white/10 rounded-sm font-sans text-[1rem] overflow-hidden">
-                  {user.roles.map((role, index) => (
-                    <p
-                      key={index}
-                      className="cursor-pointer px-2 py-1 text-white/80 border-white/40 border-[1px] h-[2rem]  tracking-wide w-auto rounded-md"
-                    >
-                      {role}
-                    </p>
-                  ))}
+                  {user.roles &&
+                    user.roles.map((role, index) => (
+                      <p
+                        key={index}
+                        className="cursor-pointer px-2 py-1 text-white/80 border-white/40 border-[1px] h-[2rem]  tracking-wide w-auto rounded-md"
+                      >
+                        {role}
+                      </p>
+                    ))}
                 </div>
               </div>
             </div>
@@ -168,9 +179,7 @@ const UserInteract = ({ user }: { user: USER }) => {
               <p>Work Experience : {user.workEx} years</p>
               <p className="flex w-full h-auto flex-wrap justify-start items-center gap-2">
                 Communicating Languages:{" "}
-                {user.languages.map((lang) => (
-                  <p>{lang}</p>
-                ))}
+                {user.languages && user.languages.map((lang) => <p>{lang}</p>)}
               </p>
             </div>
           </div>

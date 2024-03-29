@@ -19,8 +19,10 @@ import {
 import UserInteract from "../../pages/find_users/user_interact";
 import { acceptFriend } from "@/features/funcs/friends/acceptFriend";
 import { rejectFriend } from "@/features/funcs/friends/rejectFriend";
+import { useGetUserFriends } from "@/features/hooks/friends/useGetUserFriends";
 
 const Pending = () => {
+  useGetUserFriends();
   const { user } = useRecoilValue(userAtom);
 
   const [friendRequests, setFriendRequests] = useRecoilState(userFriendsAtom);
@@ -107,7 +109,7 @@ const User = ({ id }: { id: string }) => {
         }}
         className="bg-[#0F0F0F] text-white border-none p-0 border-white/50"
       >
-        <UserInteract user={user!} />
+        <UserInteract userId={user!.id!} />
         <DialogHeader className="h-0 w-0"></DialogHeader>
         <DialogDescription className="h-0 w-0"></DialogDescription>
       </DialogContent>

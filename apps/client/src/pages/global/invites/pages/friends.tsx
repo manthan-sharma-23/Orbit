@@ -14,8 +14,11 @@ import {
 } from "@/components/ui/dialog";
 import UserInteract from "../../pages/find_users/user_interact";
 import { Link } from "react-router-dom";
+import { useGetUserFriends } from "@/features/hooks/friends/useGetUserFriends";
 
 const Friends = () => {
+  useGetUserFriends();
+  const { user } = useRecoilValue(userAtom);
   const friendRequests = useRecoilValue(userFriendsAtom);
 
   const friends = friendRequests.filter(
@@ -42,12 +45,20 @@ const Friends = () => {
     >
       <ScrollArea className="h-full w-full">
         <div className="h-full w-full gap-2 flex flex-col ">
-          {friends.map((request) => (
-            <div className="text-white h-[4rem] p-2 px-4 rounded-md bg-white/5 flex justify-between items-center">
-              <User id={request.senderId} />
-              <div className="flex gap-3 text-[1.7rem]"></div>
-            </div>
-          ))}
+          {user &&
+            friends &&
+            friends.map((request) => (
+              <div className="text-white h-[4rem] p-2 px-4 rounded-md bg-white/5 flex justify-between items-center">
+                <User
+                  id={
+                    request.senderId === user?.id
+                      ? request.receiverId
+                      : request.senderId
+                  }
+                />
+                <div className="flex gap-3 text-[1.7rem]"></div>
+              </div>
+            ))}
         </div>
       </ScrollArea>
     </div>
@@ -78,7 +89,7 @@ const User = ({ id }: { id: string }) => {
         }}
         className="bg-[#0F0F0F] text-white border-none p-0 border-white/50"
       >
-        <UserInteract user={user!} />
+        <UserInteract userId={user!.id!} />
         <DialogHeader className="h-0 w-0"></DialogHeader>
         <DialogDescription className="h-0 w-0"></DialogDescription>
       </DialogContent>

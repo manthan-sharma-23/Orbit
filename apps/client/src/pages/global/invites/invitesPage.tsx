@@ -1,10 +1,21 @@
+import Loading from "@/components/ui/Loading";
 import { Separator } from "@/components/ui/separator";
+import { useGetUsers } from "@/features/hooks/users/useGetUsers";
 import { InvitesNav } from "@/lib/static/global/static/invitesNav";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 
 const InvitesPage = () => {
   const navigate = useNavigate();
   const { path } = useParams();
+  const { loading } = useGetUsers();
+
+  if (loading) {
+    return (
+      <div className="h-full w-full">
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <div className="h-full w-full px-5">

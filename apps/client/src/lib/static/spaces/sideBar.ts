@@ -1,18 +1,14 @@
 import { SiBandsintown, SiProgress } from "react-icons/si";
 import { CgGoogleTasks } from "react-icons/cg";
-import { CiSearch } from "react-icons/ci";
 import { FaRegCircle } from "react-icons/fa6";
+import { MdManageAccounts } from "react-icons/md";
+import { BiSolidCubeAlt } from "react-icons/bi";
 
 export const SpacesSideIcons = [
   {
-    href: "progress",
-    icon: SiProgress,
-    name: "Progress",
-  },
-  {
-    href: "assignments",
-    icon: CgGoogleTasks,
-    name: "Assignments",
+    href: "townhall",
+    icon: SiBandsintown,
+    name: "Town Hall",
   },
   {
     href: "info",
@@ -20,8 +16,25 @@ export const SpacesSideIcons = [
     name: "Space Info",
   },
   {
-    href: "townhall",
-    icon: SiBandsintown,
-    name: "Town Hall",
+    href: "progress",
+    icon: SiProgress,
+    name: "Progress",
+  },
+];
+export const TeamsSideIcons = [
+  {
+    href: "manage",
+    icon: MdManageAccounts,
+    name: "Manage Team",
+  },
+  {
+    href: "assignments",
+    icon: CgGoogleTasks,
+    name: "Assignments",
+  },
+  {
+    href: "schedule",
+    icon: BiSolidCubeAlt,
+    name: "Schedule",
   },
 ];

@@ -15,7 +15,7 @@ const SpaceId = () => {
       </div>
       <Separator className="bg-white/10 m-0 p-0" />
       <div className="h-[92vh] w-full p-0 flex">
-        <div className="w-[25vw] h-full font-sans">
+        <div className="w-[20vw] h-full font-sans">
           <SpaceSideBar />
         </div>
         <div className="w-[80%] h-full">

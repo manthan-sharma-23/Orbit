@@ -1,5 +1,4 @@
 import { Outlet, useNavigate, useParams } from "react-router-dom";
-import { useGetUserSpaces } from "@/features/hooks/spaces/useGetUserSpaces";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useSetRecoilState } from "recoil";
 import { useState } from "react";
@@ -9,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import CreateSpace from "./components/createSpace";
+import { useGetSpaceInfo } from "@/features/hooks/spaces/useGetSpaceInfo";
+import { useGetUserSpaces } from "@/features/hooks/spaces/useGetUserSpaces";
 
 const Spaces = () => {
   const { spaceId } = useParams();

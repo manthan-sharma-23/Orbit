@@ -22,6 +22,8 @@ import InviteRedirect from "./pages/global/invites/pages/inviteRedirect";
 import SpaceId from "./pages/spaces/pages/spaceId";
 import SpaceInfo from "./pages/spaces/pages/Info";
 import TeamPage from "./pages/spaces/pages/teams/teamPage";
+import ThreadPage from "./pages/spaces/pages/threads/threadPage";
+import TeamsPannel from "./pages/spaces/pages/teams/teamsPannel";
 
 function App() {
   return (
@@ -68,7 +70,16 @@ function App() {
                   <Route
                     path="/home/spaces/:spaceId/team/:teamId"
                     element={<TeamPage />}
-                  />
+                  >
+                    <Route
+                      path="/home/spaces/:spaceId/team/:teamId/:path"
+                      element={<TeamsPannel />}
+                    />
+                    <Route
+                      path="/home/spaces/:spaceId/team/:teamId/thread/:threadId"
+                      element={<ThreadPage />}
+                    />
+                  </Route>
                   <Route
                     path="/home/spaces/:spaceId/:path"
                     element={<Spaces />}
