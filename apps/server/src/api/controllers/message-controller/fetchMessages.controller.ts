@@ -3,7 +3,7 @@ import { ProtectedRequest } from "../../../utils/types";
 import { INTERNAL_SERVER_ERROR } from "../../../utils/static/codes.err";
 import { db } from "../../../utils/db";
 import { ROOM, TEXT } from "typings";
-import  redis  from "../../../services/redis/redis.client";
+import redis from "../../../services/redis/redis.client";
 
 export const fetchMessages = async (req: ProtectedRequest, res: Response) => {
   try {
@@ -14,7 +14,7 @@ export const fetchMessages = async (req: ProtectedRequest, res: Response) => {
     const cache = await redis.get("chat_" + roomId);
 
     if (cache) {
-      room = JSON.parse(cache);
+      room = JSON.parse(cache.toString());
       return res.status(200).json(room);
     }
 
@@ -28,7 +28,12 @@ export const fetchMessages = async (req: ProtectedRequest, res: Response) => {
       },
     });
 
-    await redis.set("chat_" + roomId, JSON.stringify(room));
+    await redis.set(
+      "chat_" + roomId,
+      Buffer.from(JSON.stringify(room), "utf-8"),
+      "EX",
+      60 * 60 * 4
+    );
 
     if (!room || room.messages.length === 0) return res.sendStatus(304);
 

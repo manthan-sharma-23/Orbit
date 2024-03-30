@@ -14,7 +14,6 @@ export const getUserById = async (req: ProtectedRequest, res: Response) => {
       where: { id: userId },
     });
 
-    console.log(user);
     if (!user)
       return res
         .status(RESOURCE_NOT_FOUND.code)

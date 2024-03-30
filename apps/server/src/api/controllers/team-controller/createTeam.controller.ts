@@ -13,12 +13,13 @@ import {
   TEAM_TYPE,
   THREADS_BASE,
 } from "typings";
+import { generateRandomHexCode } from "../../../utils/helper/getRandomImage";
 
 export const createTeam = async (req: ProtectedRequest, res: Response) => {
   try {
     const userId = req.user;
 
-    const { name, type, spaceId, description } = req.body;
+    const { name, type, spaceId, description, color } = req.body;
 
     if (!spaceId) return res.sendStatus(RESOURCE_CONFLICT.code);
 
@@ -37,9 +38,11 @@ export const createTeam = async (req: ProtectedRequest, res: Response) => {
       checkIfUserIsAdminInChannelQuery &&
       checkIfUserIsAdminInChannelQuery.role === TEAM_ROLE.admin
     ) {
+      const hexCode = (color as string) || generateRandomHexCode();
       const createTeamQuery: [TEAM] = await db.$transaction([
         db.team.create({
           data: {
+            color: hexCode,
             name: name,
             type: type || TEAM_TYPE.inviteOnly,
             description: description || "Another team in Channel",

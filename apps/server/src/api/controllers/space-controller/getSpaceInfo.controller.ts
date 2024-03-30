@@ -8,7 +8,6 @@ import {
   RESOURCE_NOT_FOUND,
 } from "../../../utils/static/codes.err";
 import { db } from "../../../utils/db";
-
 export const getSpaceInfo = async (req: ProtectedRequest, res: Response) => {
   try {
     const userId = req.user;
@@ -16,19 +15,35 @@ export const getSpaceInfo = async (req: ProtectedRequest, res: Response) => {
 
     const { spaceId } = req.params;
 
+    console.log(spaceId);
     if (!spaceId) return res.sendStatus(INVALID_CREDENTIALS.code);
 
-    //fetch channel info
-    const channel = await db.space.findUnique({
+    // fetch space info including only teams where the user is a member
+    const space = await db.space.findUniqueOrThrow({
       where: {
         id: spaceId!,
       },
       include: {
         teams: {
-          include: {
+          where: {
             members: {
-              where: {
-                role: "admin",
+              some: {
+                userId: userId,
+              },
+            },
+          },
+          include: {
+            threads: true,
+            members: {
+              include: {
+                user: {
+                  select: {
+                    name: true,
+                    email: true,
+                    image: true,
+                    id: true,
+                  },
+                },
               },
             },
           },
@@ -36,12 +51,9 @@ export const getSpaceInfo = async (req: ProtectedRequest, res: Response) => {
       },
     });
 
-    if (!channel) {
-      return res.sendStatus(RESOURCE_NOT_FOUND.code);
-    }
-
-    return res.status(RESOURCE_FOUND_SUCCESSFULLY.code).json(channel);
+    return res.status(RESOURCE_FOUND_SUCCESSFULLY.code).json(space);
   } catch (error) {
+    console.log(error);
     return res.sendStatus(INTERNAL_SERVER_ERROR.code);
   }
 };

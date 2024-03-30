@@ -17,6 +17,24 @@ import {
   MdKeyboardDoubleArrowUp,
 } from "react-icons/md";
 import { FaUserPlus } from "react-icons/fa6";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Label } from "@/components/ui/label";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import CreateTeam from "./teams/createTeam";
 
 const SpaceInfo = () => {
   const { loading } = useGetSpaceDetails();
@@ -56,19 +74,29 @@ const SpaceInfo = () => {
         <Separator className="my-4 bg-white/10" />
         <div className="h-[90%] w-full  pb-2">
           <ScrollArea type="hover" className="h-full w-full">
-            <div
-              onClick={() => setExpandTeams((v) => !v)}
-              className={`w-full  ${expandTeams ? "h-auto" : "h-[20vh]"} relative transition-all overflow-hidden`}
-            >
-              <div className="transition-all absolute right-0 flex justify-center items-center bottom-0 h-[1.5rem] cursor-pointer w-[1.5rem] text-white/55 border  rounded-md border-white/55  text-lg">
-                {!expandTeams ? (
-                  <MdKeyboardDoubleArrowDown />
-                ) : (
-                  <MdKeyboardDoubleArrowUp />
-                )}
-              </div>
-            </div>
-            <Separator className="my-2 bg-white/10" />
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value={"hey"} className="border-0">
+                <AccordionTrigger className=" flex gap-0 text-[1rem] tracking-wide text-white/65">
+                  <div className="flex gap-3 justify-center items-center text-lg">
+                    TEAMS
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className=" h-auto">
+                  <div className="h-auto w-full flex justify-end items-center">
+                    <Sheet>
+                      <SheetTrigger asChild>
+                        <Button className="bg-white rounded-md text-black hover:bg-transparent hover:text-white/85 font-medium ">
+                          CREATE TEAM
+                        </Button>
+                      </SheetTrigger>
+                      <SheetContent className="bg-[#0F0F0F] text-white border-white/25 border-0 ">
+                        <CreateTeam />
+                      </SheetContent>
+                    </Sheet>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           </ScrollArea>
         </div>
       </div>

@@ -163,7 +163,7 @@ function generateRandomAngle() {
   return angles[randomIndex];
 }
 
-function generateRandomHexCode(): string {
+export function generateRandomHexCode(): string {
   const randomIndex = Math.floor(Math.random() * colors.length);
   return colors[randomIndex] as string;
 }

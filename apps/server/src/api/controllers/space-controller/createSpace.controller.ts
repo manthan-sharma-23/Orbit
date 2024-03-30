@@ -49,6 +49,7 @@ export const createSpace = async (req: ProtectedRequest, res: Response) => {
       description: "The great Townhall discussion",
       spaceId: space.id,
       type: TEAM_TYPE.public,
+      color: "#C8AE7D",
     };
 
     const response = await createTeam(req, res);
