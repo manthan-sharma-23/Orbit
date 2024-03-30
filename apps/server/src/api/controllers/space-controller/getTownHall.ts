@@ -20,7 +20,20 @@ export const getTownHall = async (req: ProtectedRequest, res: Response) => {
       },
       include: {
         threads: true,
-        members: true,
+        members: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+                image: true,
+                username: true,
+                job: true,
+              },
+            },
+          },
+        },
         Invites: true,
       },
     });

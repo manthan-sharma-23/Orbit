@@ -106,7 +106,9 @@ export type TEAM = {
   spaceId: string;
   type: TEAM_TYPE;
   color: string;
+  members: USER_TEAM_SCHEMA[];
   threads: THREAD_SCHEMA[];
+  Invites: INVITE[];
 };
 
 export enum TEAM_ROLE {
@@ -116,6 +118,16 @@ export enum TEAM_ROLE {
 }
 
 export interface USER_SPACE_SCHEMA {
+  id: string;
+  role: TEAM_ROLE;
+  userId: string;
+  teamId: string;
+  team: TEAM;
+  user: USER;
+  createdAt: Date;
+  updatedAt: Date;
+}
+export interface USER_TEAM_SCHEMA {
   id: string;
   role: TEAM_ROLE;
   userId: string;

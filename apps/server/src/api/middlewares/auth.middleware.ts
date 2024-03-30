@@ -15,23 +15,20 @@ export const authUser = (
 ) => {
   try {
     let token = req.header("Authorization");
-    if (!token) return res.status(DONT_EXISTS.code).json(DONT_EXISTS.action);
+    if (!token) return res.sendStatus(401);
 
     if (token.startsWith("Bearer ")) token = token.split(" ")[1];
 
     const payload = jwt.verify(token!, SECRET_KEY) as UserJwtPayload;
 
-    if (!payload.userId)
-      return res
-        .status(RESOURCE_NOT_FOUND.code)
-        .json(RESOURCE_NOT_FOUND.action);
+    if (!payload.userId) {
+      return res.sendStatus(401);
+    }
 
     req.user = payload.userId;
 
     next();
   } catch (error) {
-    return res
-      .status(INTERNAL_SERVER_ERROR.code)
-      .json(INTERNAL_SERVER_ERROR.action);
+    return res.sendStatus(INTERNAL_SERVER_ERROR.code);
   }
 };
