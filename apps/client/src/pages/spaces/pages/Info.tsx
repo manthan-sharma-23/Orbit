@@ -83,16 +83,16 @@ const SpaceInfo = () => {
                 </AccordionTrigger>
                 <AccordionContent className=" h-auto">
                   <div className="h-auto w-full flex justify-end items-center">
-                    <Sheet>
-                      <SheetTrigger asChild>
+                    <Dialog>
+                      <DialogTrigger asChild>
                         <Button className="bg-white rounded-md text-black hover:bg-transparent hover:text-white/85 font-medium ">
                           CREATE TEAM
                         </Button>
-                      </SheetTrigger>
-                      <SheetContent className="bg-[#0F0F0F] text-white border-white/25 border-0 ">
+                      </DialogTrigger>
+                      <DialogContent className="bg-[#0F0F0F] text-white border-white/25 border-0 h-[60vh] w-full">
                         <CreateTeam />
-                      </SheetContent>
-                    </Sheet>
+                      </DialogContent>
+                    </Dialog>
                   </div>
                 </AccordionContent>
               </AccordionItem>
