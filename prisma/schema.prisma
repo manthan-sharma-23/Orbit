@@ -108,12 +108,14 @@ model Space {
 }
 
 model UserSpace {
-  id      String @id @default(uuid())
-  user    User   @relation(fields: [userId], references: [id])
-  userId  String
-  space   Space  @relation(fields: [spaceId], references: [id])
-  spaceId String
-  role    String @default("member")
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  space     Space    @relation(fields: [spaceId], references: [id])
+  spaceId   String
+  role      String   @default("member")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Thread {
@@ -148,18 +150,18 @@ model UserTask {
 }
 
 model Invite {
-  id        String   @id @default(uuid())
-  type      String   @default("space")
-  status    Boolean  @default(false)
-  Space     Space?   @relation(fields: [spaceId], references: [id])
-  spaceId   String?
-  mails     Mail[]
-  from      String
-  Team      Team?    @relation(fields: [teamId], references: [id])
-  teamId    String?
-  User      User?    @relation(fields: [userId], references: [id])
-  userId    String?
-  createdAt DateTime @default(now())
+  id         String   @id @default(uuid())
+  status     Boolean  @default(false)
+  mails      Mail[]
+  from       String
+  Team       Team     @relation(fields: [teamId], references: [id])
+  teamId     String
+  User       User     @relation(fields: [to], references: [id])
+  to         String
+  createdAt  DateTime @default(now())
+  Space      Space    @relation(fields: [spaceId], references: [id])
+  spaceId    String
+  isRejected Boolean  @default(false)
 }
 
 model Task {

@@ -4,7 +4,6 @@ export enum AuthPageParams {
   signout = "/signout",
 }
 
-
 export enum FORUM_TYPE {
   DISCUSSIONS = "discussions",
   PUBLIC_DISCUSSIONS = "public_discussions",
@@ -26,3 +25,9 @@ export const FRIEND_REQUEST_STATUS = {
   accepted: "accepted",
   rejected: "rejected",
 };
+
+export enum TEAM_TYPE {
+  inviteOnly = "invite_only",
+  public = "public",
+  private = "private",
+}

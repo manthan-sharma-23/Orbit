@@ -107,7 +107,7 @@ const ApplicationLayout = () => {
                         <DrawerFooter>
                           <Button
                             onClick={() => {
-                              window.localStorage.removeItem("token");
+                              window.localStorage.clear();
                               window.location.assign("/auth/signin");
                             }}
                           >

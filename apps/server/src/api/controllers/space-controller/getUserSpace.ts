@@ -20,6 +20,7 @@ export const getUserSpaces = async (req: ProtectedRequest, res: Response) => {
       },
       include: {
         space: true,
+        
       },
     });
 

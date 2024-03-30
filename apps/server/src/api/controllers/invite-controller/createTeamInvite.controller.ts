@@ -6,7 +6,7 @@ import {
   RESOURCE_NOT_FOUND,
 } from "../../../utils/static/codes.err";
 import { db } from "../../../utils/db";
-import { INVITE, INVITE_TYPE } from "typings";
+import { INVITE } from "typings";
 
 export const createTeamInvite = async (
   req: ProtectedRequest,
@@ -14,19 +14,22 @@ export const createTeamInvite = async (
 ) => {
   try {
     const userId = req.user;
-    const { teamId, to } = req.body;
+    const { teamId, to, spaceId } = req.body;
 
-    if (!userId) return res.sendStatus(RESOURCE_NOT_FOUND.code);
+    if (!userId || !spaceId || !teamId || !to)
+      return res.sendStatus(RESOURCE_NOT_FOUND.code);
 
     const teamInviteQuery: INVITE = await db.invite.create({
       data: {
-        type: INVITE_TYPE.space,
         from: userId,
-        userId: to,
+        to,
         teamId,
+        spaceId,
       },
       include: {
         Space: true,
+        User: true,
+        Team: true,
       },
     });
 

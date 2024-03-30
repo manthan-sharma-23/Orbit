@@ -1,13 +1,21 @@
 import { Router } from "express";
 import { authUser } from "../middlewares/auth.middleware";
-import { ValidateUserSpace } from "../middlewares/validate.Space";
 import { ValidateUserTeam } from "../middlewares/validate.Team";
-import { createSpaceInvite } from "../controllers/invite-controller/createSpaceInvite.controller";
 import { createTeamInvite } from "../controllers/invite-controller/createTeamInvite.controller";
+import { getUserInvites } from "../controllers/invite-controller/getUserInvites";
+import { rejectTeamInvite } from "../controllers/invite-controller/rejectTeamInvite";
+import { acceptTeamInvite } from "../controllers/invite-controller/acceptTeamInvite";
 
 const router: Router = Router();
-router
-  .post("/create_invite_space", authUser, ValidateUserSpace, createSpaceInvite)
-  .post("/create_invite_team", authUser, ValidateUserTeam, createTeamInvite);
+router.post(
+  "/create_invite_team",
+  authUser,
+  ValidateUserTeam,
+  createTeamInvite
+);
+
+router.get("/", authUser, getUserInvites);
+router.put("/accept/:inviteId", authUser, acceptTeamInvite);
+router.put("/reject/:inviteId", authUser, rejectTeamInvite);
 
 export default router;

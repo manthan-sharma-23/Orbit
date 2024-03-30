@@ -24,6 +24,7 @@ import SpaceInfo from "./pages/spaces/pages/Info";
 import TeamPage from "./pages/spaces/pages/teams/teamPage";
 import ThreadPage from "./pages/spaces/pages/threads/threadPage";
 import TeamsPannel from "./pages/spaces/pages/teams/teamsPannel";
+import Townhall from "./pages/spaces/pages/TownHall/Townhall";
 
 function App() {
   return (
@@ -66,6 +67,10 @@ function App() {
                   <Route
                     path="/home/spaces/:spaceId/info"
                     element={<SpaceInfo />}
+                  />
+                  <Route
+                    path="/home/spaces/:spaceId/townhall"
+                    element={<Townhall />}
                   />
                   <Route
                     path="/home/spaces/:spaceId/team/:teamId"

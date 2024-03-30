@@ -120,6 +120,7 @@ const Forum = ({ forum }: { forum: FORUM }) => {
   const navigateToForum = () => {
     navigate(`/home/globe/forum/${forum.forum_type}/${forum.id}`);
   };
+
   return (
     <>
       <div
@@ -148,7 +149,7 @@ const Forum = ({ forum }: { forum: FORUM }) => {
           style={{ fontFamily: ' "Kode Mono", monospace' }}
           onClick={navigateToForum}
         >
-          &#47;&#47;&#47; {forum.title}
+          &#47;&#47;&#47;&#32;{forum.title}
         </p>
         <div className="text-[.8rem] flex justify-between items-center text-white/80 tracking-wide">
           <div className="flex justify-center items-center gap-2">

@@ -6,6 +6,7 @@ import { removeSpaceMember } from "../controllers/space-controller/removeChannel
 import { getUserSpaces } from "../controllers/space-controller/getUserSpace";
 import { getSpaceThreads } from "../controllers/space-controller/getSpaceThread.controller";
 import { getSpaceDetails } from "../controllers/space-controller/getSpaceDetails";
+import { getTownHall } from "../controllers/space-controller/getTownHall";
 
 const router: Router = Router();
 
@@ -15,6 +16,7 @@ router
   .get("/details/:spaceId", authUser, getSpaceDetails)
   .get("/threads/:spaceId", authUser, getSpaceThreads)
   .get("/user", authUser, getUserSpaces)
+  .get("/townhall/:spaceId", authUser, getTownHall)
   .delete("/channel/member/remove", authUser, removeSpaceMember);
 
 export default router;

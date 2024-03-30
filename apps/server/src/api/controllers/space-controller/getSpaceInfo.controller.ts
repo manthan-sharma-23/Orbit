@@ -24,6 +24,11 @@ export const getSpaceInfo = async (req: ProtectedRequest, res: Response) => {
         id: spaceId!,
       },
       include: {
+        UserSpace: {
+          include: {
+            user: true,
+          },
+        },
         teams: {
           where: {
             members: {

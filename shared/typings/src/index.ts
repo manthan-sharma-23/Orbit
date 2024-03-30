@@ -185,16 +185,17 @@ export interface MAIL {
 }
 
 export interface INVITE {
-  id?: string;
+  id: string;
   type: INVITE_TYPE;
-  spaceId?: string;
+  spaceId: string;
   Space?: SPACE_SCHEMA;
-  teamId?: string;
+  teamId: string;
   Team?: TEAM;
   mails: MAIL[];
   from?: string;
-  userId?: string;
+  to: string;
   createdAt: Date;
+  isRejected: boolean;
 }
 
 export enum INVITE_TYPE {

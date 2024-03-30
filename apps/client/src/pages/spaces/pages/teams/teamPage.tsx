@@ -29,7 +29,7 @@ const TeamPage = () => {
   }
   const typeOfThreads: string[] = [];
 
-  team.threads.forEach((thread) => {
+  team.threads?.forEach((thread) => {
     if (!typeOfThreads.includes(thread.type)) {
       typeOfThreads.push(thread.type);
     }
