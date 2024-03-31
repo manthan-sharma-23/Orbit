@@ -8,6 +8,7 @@ import { spaceNavAtom } from "@/features/store/atoms/navbar/spaces/space.nav.ato
 import { FaRegSquare } from "react-icons/fa6";
 import { GiSewingString } from "react-icons/gi";
 import { IoSearchOutline } from "react-icons/io5";
+import { MdGroup } from "react-icons/md";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 
@@ -45,15 +46,15 @@ export const TeamNavbar = () => {
           </NavigationMenuItem>
           <NavigationMenuItem className="h-full">
             <Link
-              to={`/home/spaces/${spaceId}/team/${teamId}/invite`}
+              to={`/home/spaces/${spaceId}/team/${teamId}/members`}
               className="h-full"
             >
               <NavigationMenuLink className="h-full w-auto justify-between bg-transparent hover:bg-yellow-300 text-[1rem] font-sans">
                 <div
-                  className={`flex pb-2 mx-2  ${pathname.startsWith(`/home/spaces/${spaceId}/team/${teamId}/invite`) && "border-pink-400 px-3 border-b-2 text-white"} h-[3rem] px-3 gap-1 justify-start items-center pr-[4rem] hover:opacity-70`}
+                  className={`flex pb-2 mx-2  ${pathname.startsWith(`/home/spaces/${spaceId}/team/${teamId}/members`) && "border-pink-400 px-3 border-b-2 text-white"} h-[3rem] px-3 gap-1 justify-start items-center pr-[4rem] hover:opacity-70`}
                 >
-                  <IoSearchOutline />
-                  <p>Find Teammates</p>
+                  <MdGroup />
+                  <p>Members</p>
                 </div>
               </NavigationMenuLink>
             </Link>

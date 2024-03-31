@@ -216,6 +216,7 @@ export interface INVITE {
   from?: string;
   to: string;
   createdAt: Date;
+  status: boolean;
   isRejected: boolean;
 }
 

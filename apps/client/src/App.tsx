@@ -28,6 +28,8 @@ import Townhall from "./pages/spaces/pages/TownHall/Townhall";
 import TownhallPannel from "./pages/spaces/pages/TownHall/TownhallPannel";
 import Threads from "./pages/spaces/pages/TownHall/pannel/Threads";
 import TeamThreads from "./pages/spaces/pages/teams/pannel/Thread";
+import Members from "./pages/spaces/pages/teams/pannel/Members";
+import Find from "./pages/spaces/pages/teams/pannel/Find";
 
 function App() {
   return (
@@ -95,7 +97,16 @@ function App() {
                   >
                     <Route
                       path="/home/spaces/:spaceId/team/:teamId/:path"
-                      element={<TeamsPannel />}
+                      element={<Members />}
+                    >
+                      <Route
+                        path="/home/spaces/:spaceId/team/:teamId/:path/find"
+                        element={<Find />}
+                      />
+                    </Route>
+                    <Route
+                      path="/home/spaces/:spaceId/team/:teamId/members"
+                      element={<Members />}
                     />
                     <Route
                       path="/home/spaces/:spaceId/team/:teamId/threads"

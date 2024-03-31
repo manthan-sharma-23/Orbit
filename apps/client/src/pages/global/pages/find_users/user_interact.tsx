@@ -14,7 +14,6 @@ import { IoLocationSharp } from "react-icons/io5";
 import { MdOutlineWork } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { USER } from "typings";
 
 const UserInteract = ({ userId }: { userId: string }) => {
   const navigate = useNavigate();
