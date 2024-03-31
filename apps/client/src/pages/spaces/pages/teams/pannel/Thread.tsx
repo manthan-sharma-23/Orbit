@@ -28,45 +28,53 @@ import { IoChatbox } from "react-icons/io5";
 import { BsPersonVideo } from "react-icons/bs";
 import { MdHeadphones } from "react-icons/md";
 import CreateThread from "../../threads/createThread";
+import { useRecoilValue } from "recoil";
+import { teamAtom } from "@/features/store/atoms/team/team.atom";
+import { userTeamForTeam } from "@/features/store/selectors/space/userTeam.team.selector";
 
-const Threads = () => {
-  const { loading, Townhall } = useGetTownHall();
-  const { spaceId, threadId } = useParams();
+const TeamThreads = () => {
+  const { spaceId, teamId, threadId } = useParams();
+  const team = useRecoilValue(teamAtom);
+  const userTeam = useRecoilValue(userTeamForTeam);
 
-  if (loading || Townhall === null) {
+  const typeOfThreads: THREAD_TYPE[] = [];
+
+  if (team === null) {
     return (
-      <div className="h-full w-full flex justify-center items-center text-white/60">
-        <Loading />
+      <div className="h-full w-full flex justify-center items-center">
+        TEAM DOESN'T EXISTS
       </div>
     );
   }
 
-  const typeOfThreads: THREAD_TYPE[] = [];
-
-  Townhall.threads?.forEach((thread) => {
+  team.threads?.forEach((thread) => {
     if (!typeOfThreads.includes(thread.type)) {
       typeOfThreads.push(thread.type);
     }
   });
 
+  console.log(userTeam)
+
   return (
     <div className="h-full w-full p-2 flex justify-between items-center">
       <div className=" h-full w-[22%] rounded-lg flex flex-col">
-        <div className="w-full flex gap-2 my-1">
-          <Dialog>
-            <DialogTrigger className="w-1/2">
-              <Button className="w-full h-full bg-white/85 text-black font-medium hover:bg-transparent hover:text-white/85">
-                Create Thread
-              </Button>
-            </DialogTrigger>
-            <DialogContent className=" bg-[#0F0F0F] p-0 border-0 text-white/85 rounded-xl overflow-hidden">
-              <CreateThread teamId={Townhall.id} />
-            </DialogContent>
-          </Dialog>
-          <Button className="w-1/2 h-full bg-white/85 text-black font-medium hover:bg-transparent hover:text-white/85">
-            Some Button
-          </Button>
-        </div>
+        {userTeam?.role === "admin" && (
+          <div className="w-full flex gap-2 my-1">
+            <Dialog>
+              <DialogTrigger className="w-1/2">
+                <Button className="w-full h-full bg-white/85 text-black font-medium hover:bg-transparent hover:text-white/85">
+                  Create Thread
+                </Button>
+              </DialogTrigger>
+              <DialogContent className=" bg-[#0F0F0F] p-0 border-0 text-white/85 rounded-xl overflow-hidden">
+                <CreateThread teamId={team.id} />
+              </DialogContent>
+            </Dialog>
+            <Button className="w-1/2 h-full bg-white/85 text-black font-medium hover:bg-transparent hover:text-white/85">
+              Some Button
+            </Button>
+          </div>
+        )}
         <ScrollArea className="h-full w-full p-3 px-5">
           <Accordion type="single" collapsible className="w-full">
             {typeOfThreads &&
@@ -93,14 +101,14 @@ const Threads = () => {
                     </div>
                   </AccordionTrigger>
                   <AccordionContent className="pl-5 w-full  flex flex-col justify-start items-start">
-                    {Townhall.threads &&
-                      Townhall.threads.map(
+                    {team.threads &&
+                      team.threads.map(
                         (thread) =>
                           thread.type === type && (
                             <div className="flex items-center gap-2 mb-2">
                               &#62;
                               <Link
-                                to={`/home/spaces/${spaceId}/townhall/threads/${thread.id}`}
+                                to={`/home/spaces/${spaceId}/team/${teamId}/threads/${thread.id}`}
                                 className={` text-white/55 hover:bg-white/10 w-[95%] min-h-[1.7rem] flex flex-wrap justify-start items-center px-2 rounded-md ${thread.id === threadId && "bg-white/10  text-white "}`}
                               >
                                 {thread.name}
@@ -122,4 +130,4 @@ const Threads = () => {
   );
 };
 
-export default Threads;
+export default TeamThreads;

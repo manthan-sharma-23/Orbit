@@ -6,7 +6,7 @@ import { createTeam } from "../controllers/team-controller/createTeam.controller
 const router: Router = Router();
 
 router
-  .get("/get/team/:teamId", authUser, getTeamInfo)
+  .get("/:teamId", authUser, getTeamInfo)
   .post("/member/add", authUser, addTeamMemberController)
   .post("/create/team", authUser, createTeam);
 

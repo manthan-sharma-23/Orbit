@@ -8,6 +8,7 @@ import {
   RESOURCE_NOT_FOUND,
 } from "../../../utils/static/codes.err";
 import { db } from "../../../utils/db";
+import { TEAM } from "typings";
 
 export const getTeamInfo = async (req: ProtectedRequest, res: Response) => {
   try {
@@ -17,17 +18,21 @@ export const getTeamInfo = async (req: ProtectedRequest, res: Response) => {
       return res.sendStatus(FORBIDDEN_RESOURCE.code);
     }
 
+
     const { teamId } = req.params;
     if (!teamId) {
       return res.sendStatus(INVALID_INPUTS.code);
     }
 
-    const team = await db.team.findUnique({
+    console.log(teamId,userId)
+    const team: TEAM = await db.team.findUniqueOrThrow({
       where: {
         id: teamId,
       },
       include: {
         members: true,
+        threads: true,
+        space: true,
       },
     });
 
