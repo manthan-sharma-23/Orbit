@@ -1,22 +1,22 @@
 import Loading from "@/components/ui/Loading";
+
+import { useSetRecoilState } from "recoil";
+import { spaceNavAtom } from "@/features/store/atoms/navbar/spaces/space.nav.atom";
 import { useGetTownHall } from "@/features/hooks/spaces/useGetTownHall";
-import React from "react";
-import { useParams } from "react-router-dom";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuIndicator,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  NavigationMenuViewport,
-} from "@/components/ui/navigation-menu";
-import { NavigationMenuDemo } from "./Navbar";
+import { Outlet } from "react-router-dom";
+import { useEffect } from "react";
 
 const Townhall = () => {
-  const { spaceId } = useParams();
   const { Townhall, loading } = useGetTownHall();
+  const setNavItem = useSetRecoilState(spaceNavAtom);
+
+  useEffect(() => {
+    setNavItem("townhall");
+
+    return () => {
+      setNavItem("");
+    };
+  }, []);
 
   if (loading) {
     return (
@@ -35,9 +35,7 @@ const Townhall = () => {
 
   return (
     <div className="h-full w-full flex flex-col justify-start items-center">
-      <nav className="h-[6vh] w-full border">
-        <NavigationMenuDemo />
-      </nav>
+      <Outlet />
     </div>
   );
 };

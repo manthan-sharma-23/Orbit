@@ -1,0 +1,76 @@
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+} from "@/components/ui/navigation-menu";
+import { spaceNavAtom } from "@/features/store/atoms/navbar/spaces/space.nav.atom";
+import { FaRegSquare } from "react-icons/fa6";
+import { GiSewingString } from "react-icons/gi";
+import { IoSearchOutline } from "react-icons/io5";
+import { Link, useLocation, useParams } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+
+const NavbarRedirect = () => {
+  const nav = useRecoilValue(spaceNavAtom);
+
+  if (nav === "townhall") {
+    return <TownHallNavbar />;
+  }
+  return <div></div>;
+};
+
+export const TownHallNavbar = () => {
+  const { spaceId } = useParams();
+  const { pathname } = useLocation();
+
+  return (
+    <div className="h-full w-full">
+      <NavigationMenu className="h-full items-end gap-3 flex w-auto">
+        <NavigationMenuList className="w-full h-full bg-transparent p-0 text-white/85">
+          <NavigationMenuItem className="">
+            <Link to={`/home/spaces/${spaceId}/townhall/threads`}>
+              <NavigationMenuLink className=" w-auto justify-between bg-transparent hover:bg-yellow-300 text-[1rem] font-sans">
+                <div
+                  className={`flex  pb-2 gap-1 ${pathname.startsWith(`/home/spaces/${spaceId}/townhall/threads`) && "border-yellow-500 border-b-2 text-white"} h-[3rem] px-3 justify-start items-center pr-[4rem] hover:opacity-70`}
+                >
+                  <GiSewingString />
+                  <p>Threads</p>
+                </div>
+              </NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>
+          <NavigationMenuItem className="h-full">
+            <Link
+              to={`/home/spaces/${spaceId}/townhall/invite`}
+              className="h-full"
+            >
+              <NavigationMenuLink className="h-full w-auto justify-between bg-transparent hover:bg-yellow-300 text-[1rem] font-sans">
+                <div
+                  className={`flex pb-2 mx-2  ${pathname.startsWith(`/home/spaces/${spaceId}/townhall/invite`) && "border-pink-400 px-3 border-b-2 text-white"} h-[3rem] px-3 gap-1 justify-start items-center pr-[4rem] hover:opacity-70`}
+                >
+                  <IoSearchOutline />
+                  <p>Find Teammates</p>
+                </div>
+              </NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>
+          <NavigationMenuItem className="">
+            <Link to={`/home/spaces/${spaceId}/townhall/canvas`}>
+              <NavigationMenuLink className=" w-auto justify-between bg-transparent hover:bg-yellow-300 text-[1rem] font-sans">
+                <div
+                  className={`flex  pb-2 ${pathname.startsWith(`/home/spaces/${spaceId}/townhall/canvas`) && "border-cyan-400  border-b-2 text-white"} h-[3rem] px-3 gap-1 justify-start items-center pr-[4rem] hover:opacity-70`}
+                >
+                  <FaRegSquare />
+                  <p>Canvas</p>
+                </div>
+              </NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>
+    </div>
+  );
+};
+
+export default NavbarRedirect;

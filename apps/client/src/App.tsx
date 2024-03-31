@@ -25,6 +25,8 @@ import TeamPage from "./pages/spaces/pages/teams/teamPage";
 import ThreadPage from "./pages/spaces/pages/threads/threadPage";
 import TeamsPannel from "./pages/spaces/pages/teams/teamsPannel";
 import Townhall from "./pages/spaces/pages/TownHall/Townhall";
+import TownhallPannel from "./pages/spaces/pages/TownHall/TownhallPannel";
+import Threads from "./pages/spaces/pages/TownHall/pannel/Threads";
 
 function App() {
   return (
@@ -71,7 +73,21 @@ function App() {
                   <Route
                     path="/home/spaces/:spaceId/townhall"
                     element={<Townhall />}
-                  />
+                  >
+                    <Route
+                      path="/home/spaces/:spaceId/townhall/threads"
+                      element={<Threads />}
+                    >
+                      <Route
+                        path="/home/spaces/:spaceId/townhall/threads/:threadId"
+                        element={<ThreadPage />}
+                      />
+                    </Route>
+                    <Route
+                      path="/home/spaces/:spaceId/townhall/:path"
+                      element={<TownhallPannel />}
+                    />
+                  </Route>
                   <Route
                     path="/home/spaces/:spaceId/team/:teamId"
                     element={<TeamPage />}

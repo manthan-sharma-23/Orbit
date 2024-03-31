@@ -126,7 +126,9 @@ export interface USER_SPACE_SCHEMA {
   user: USER;
   createdAt: Date;
   updatedAt: Date;
+  space: SPACE_SCHEMA;
 }
+
 export interface USER_TEAM_SCHEMA {
   id: string;
   role: TEAM_ROLE;
@@ -161,14 +163,13 @@ export const THREADS_BASE = {
 export interface THREAD_SCHEMA {
   id: string;
   name: string;
-  type: string;
+  type: THREAD_TYPE;
   teamId: string;
   messages: THREAD_MESSAGE_SCHEMA[];
 }
 
 export interface THREAD_MESSAGE_SCHEMA {
   id?: number;
-  type: THREAD_MESSAGE_TYPE;
   isActive: boolean;
   threadId: string;
   data: string;
@@ -177,7 +178,15 @@ export interface THREAD_MESSAGE_SCHEMA {
   User?: Partial<USER>;
 }
 
-export type THREAD_MESSAGE_TYPE = "chat" | "announcement";
+export type THREAD_TYPE = "chat" | "announcement" | "audio" | "jam" | "video";
+
+export enum THREAD_TYPES {
+  CHAT = "chat",
+  ANNOUNCEMENT = "announcement",
+  AUDIO = "audio",
+  JAM = "jam",
+  VIDEO = "video",
+}
 
 export interface MAIL {
   id?: string;

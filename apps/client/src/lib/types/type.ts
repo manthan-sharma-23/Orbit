@@ -31,3 +31,13 @@ export enum TEAM_TYPE {
   public = "public",
   private = "private",
 }
+
+export type THREAD_TYPE = "chat" | "announcement" | "audio" | "jam" | "video";
+
+export enum THREAD_TYPES {
+  CHAT = "chat",
+  ANNOUNCEMENT = "announcement",
+  AUDIO = "audio",
+  JAM = "jam",
+  VIDEO = "video",
+}

@@ -17,6 +17,9 @@ export const getUserInvites = async (req: ProtectedRequest, res: Response) => {
         Space: true,
         Team: true,
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
 
     return res.status(200).json(fetchInvites);

@@ -3,7 +3,8 @@ import { useParams } from "react-router-dom";
 
 const ThreadPage = () => {
   const { threadId } = useParams();
-  return <div>{threadId}</div>;
+
+  return <div></div>;
 };
 
 export default ThreadPage;

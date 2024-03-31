@@ -140,7 +140,7 @@ const ChatMessages = () => {
             }}
             className="bg-[#0F0F0F] text-white border-none p-0 border-white/50"
           >
-            <UserInteract user={friend} />
+            <UserInteract userId={friend.id!} />
             <DialogHeader className="h-0 w-0"></DialogHeader>
             <DialogDescription className="h-0 w-0"></DialogDescription>
           </DialogContent>
