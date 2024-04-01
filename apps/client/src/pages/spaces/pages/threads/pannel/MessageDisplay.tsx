@@ -6,6 +6,7 @@ import Loading from "@/components/ui/Loading";
 import { THREAD_MESSAGE_SCHEMA } from "typings";
 import moment from "moment";
 import { useEffect, useLayoutEffect, useRef } from "react";
+import { extractBackgroundColor } from "@/lib/utils/rnad";
 
 const MessageDisplay = () => {
   const user = useRecoilValue(userAtom);
@@ -32,7 +33,7 @@ const MessageDisplay = () => {
   }
 
   return (
-    <div className="h-full w-full border-0 p-2 px-12">
+    <div className="h-full w-full border-0 p-2 px-[2rem]">
       <div
         className="h-full w-full px-2 overflow-y-scroll scroll_container"
         ref={scrollRef}
@@ -55,6 +56,8 @@ const MessageBundleTile = ({
     image: messages[0].User?.image,
     from: messages[0].userId,
   };
+
+  const color = extractBackgroundColor(bundleInfo.image);
   const { user } = useRecoilValue(userAtom);
 
   const isMe = user?.id === bundleInfo.from;
@@ -63,7 +66,7 @@ const MessageBundleTile = ({
     <div
       className={`h-auto w-full  mb-2 p-2 flex items-start justify-start ${isMe && "flex-row-reverse "} border-0`}
     >
-      <div className="flex flex-col justify-start  h-full w-auto mx-2">
+      <div className="flex flex-col justify-start  h-full w-auto mx-2 ">
         {bundleInfo.image ? (
           <img
             src={bundleInfo.image}
@@ -78,9 +81,10 @@ const MessageBundleTile = ({
           </div>
         )}
       </div>
-      <div className="flex flex-col w-auto ">
+      <div className="flex flex-col w-auto  ">
         <span
-          className={`font-medium text-black/40  ${isMe ? "text-right" : "text-left"} `}
+          style={{ color: color || "#000000" }}
+          className={`font-medium mb-1 text-[.9rem] tracking-wide  ${isMe ? "text-right mr-1" : "text-left ml-1 "} `}
         >
           {isMe ? "You" : bundleInfo.username}
         </span>
@@ -101,14 +105,16 @@ const MessageTile = ({
 }) => {
   const time = moment(message.timeStamp).format("LT");
   return (
-    <div
-      className={`h-auto w-full ${isMe ? "bg-[#f0f0f1] text-black" : "bg-black text-white"} font-medium  px-3 py-1 rounded mb-[1px]`}
-    >
-      <div className="min-w-[7rem] h-auto flex flex-col">
-        <p className="h-auto w-auto mr-5">{message.data}</p>
-        <p className="h-[2rem] w-auto text-xs flex justify-end items-end ">
-          {time}
-        </p>
+    <div className={`flex flex-col ${isMe ? "items-end" : "items-start"} mb-1`}>
+      <div
+        className={`${
+          isMe
+            ? "bg-[#f0f0f1] text-black rounded-tl-lg rounded-br-lg rounded-bl-lg"
+            : "bg-black text-white rounded-tr-lg rounded-bl-lg rounded-br-lg border border-white/20"
+        } font-medium px-2 py-1`}
+      >
+        <p className="mb-1 pr-3">{message.data}</p>
+        <p className={`text-xs   flex ${isMe?"justify-end text-black/45":"justify-start text-white/45"}`}>{time}</p>
       </div>
     </div>
   );

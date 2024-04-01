@@ -9,3 +9,13 @@ export function getRandomNumberWithLeadingZeros(n: number) {
 export function timeAgo(date: Date): string {
   return moment(date).fromNow();
 }
+
+
+export function extractBackgroundColor(url: string): string | null {
+  const regex = /backgroundColor=([^&]*)/;
+  const match = url.match(regex);
+  if (match && match[1]) {
+      return "#"+match[1];
+  }
+  return null;
+}
