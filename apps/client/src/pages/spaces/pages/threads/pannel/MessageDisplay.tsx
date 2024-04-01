@@ -81,10 +81,10 @@ const MessageBundleTile = ({
           </div>
         )}
       </div>
-      <div className="flex flex-col w-auto  ">
+      <div className="flex flex-col w-auto font-sans ">
         <span
-          style={{ color: color || "#000000" }}
-          className={`font-medium mb-1 text-[.9rem] tracking-wide  ${isMe ? "text-right mr-1" : "text-left ml-1 "} `}
+          style={{ color: isMe ? "white" : color || "white" }}
+          className={`font-normal mb-1 text-[.9rem] tracking-wide  ${isMe ? "text-right mr-1 " : "text-left ml-1 hover:underline cursor-pointer"} `}
         >
           {isMe ? "You" : bundleInfo.username}
         </span>
@@ -109,12 +109,16 @@ const MessageTile = ({
       <div
         className={`${
           isMe
-            ? "bg-[#f0f0f1] text-black rounded-tl-lg rounded-br-lg rounded-bl-lg"
+            ? "bg-[#f0f0f1] text-black rounded-tl-lg rounded-br-lg rounded-bl-lg "
             : "bg-black text-white rounded-tr-lg rounded-bl-lg rounded-br-lg border border-white/20"
         } font-medium px-2 py-1`}
       >
         <p className="mb-1 pr-3">{message.data}</p>
-        <p className={`text-xs   flex ${isMe?"justify-end text-black/45":"justify-start text-white/45"}`}>{time}</p>
+        <p
+          className={`text-xs   flex ${isMe ? "justify-end text-black/45" : "justify-start text-white/45"}`}
+        >
+          {time}
+        </p>
       </div>
     </div>
   );
