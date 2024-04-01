@@ -83,6 +83,7 @@ export type MESSAGE = {
     roomId?: string;
     message?: TEXT;
     announcement?: string;
+    threadMessage?: THREAD_MESSAGE_SCHEMA;
   };
   timeStamp: Date;
 };

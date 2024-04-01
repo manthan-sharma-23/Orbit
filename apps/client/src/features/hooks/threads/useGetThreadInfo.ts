@@ -1,8 +1,9 @@
 import { getThreadInfo } from "@/features/funcs/threads/getThreadInfo";
-import { threadAtom } from "@/features/store/atoms/thread.tsx/thread.atom";
+import { threadAtom } from "@/features/store/atoms/thread/thread.atom";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
+import { THREAD_SCHEMA } from "typings";
 
 export const useGetThreadInfo = () => {
   const { threadId } = useParams();
@@ -22,6 +23,10 @@ export const useGetThreadInfo = () => {
         console.log(e);
         setLoading(false);
       });
+
+    return () => {
+      setThread({} as THREAD_SCHEMA);
+    };
   }, [threadId]);
 
   return { thread, loading };

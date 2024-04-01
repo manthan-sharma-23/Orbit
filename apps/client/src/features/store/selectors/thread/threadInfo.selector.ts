@@ -1,5 +1,5 @@
 import { selector } from "recoil";
-import { threadAtom } from "../../atoms/thread.tsx/thread.atom";
+import { threadAtom } from "../../atoms/thread/thread.atom";
 
 export const threadBaseInfoSelector = selector({
   key: "thread/base/info/selector",

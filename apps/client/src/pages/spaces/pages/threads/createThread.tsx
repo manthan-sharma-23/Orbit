@@ -53,7 +53,7 @@ const CreateThread = ({ teamId }: { teamId: string }) => {
       <p className="text-xl font-semibold">&#47;&#47;&#32;CREATE&#32;THREAD</p>
       <div className=" h-full w-full  mt-7 flex flex-col gap-4 justify-start items-center">
         <div className="w-full flex flex-col gap-2">
-          <Label className="font-sans text-white/70">Team Name</Label>
+          <Label className="font-sans text-white/70">Thread Name</Label>
           <Input
             disabled={loading}
             className="font-sans border-[.6px] border-white/60 focus-visible:ring-[2.5px]  focus-within:border-blue-400/80 focus-visible:ring-blue-600/40 bg-white/5  rounded-xs "
@@ -72,7 +72,7 @@ const CreateThread = ({ teamId }: { teamId: string }) => {
           />
         </div>
         <div className="w-full flex flex-col gap-2">
-          <Label className="font-sans text-white/70">Team Description</Label>
+          <Label className="font-sans text-white/70">Thread Type</Label>
 
           <Select
             onValueChange={(value) => {

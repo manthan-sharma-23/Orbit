@@ -8,9 +8,18 @@ import { spaceNavAtom } from "@/features/store/atoms/navbar/spaces/space.nav.ato
 import { FaRegSquare } from "react-icons/fa6";
 import { GiSewingString } from "react-icons/gi";
 import { IoSearchOutline } from "react-icons/io5";
-import { MdGroup } from "react-icons/md";
+import { MdGroup, MdTaskAlt } from "react-icons/md";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 
 const NavbarRedirect = () => {
   const nav = useRecoilValue(spaceNavAtom);
@@ -29,7 +38,7 @@ export const TeamNavbar = () => {
   const { pathname } = useLocation();
 
   return (
-    <div className="h-full w-full">
+    <div className="h-full w-full flex justify-between items-center">
       <NavigationMenu className="h-full items-end gap-3 flex w-auto">
         <NavigationMenuList className="w-full h-full bg-transparent p-0 text-white/85">
           <NavigationMenuItem className="">
@@ -60,6 +69,18 @@ export const TeamNavbar = () => {
             </Link>
           </NavigationMenuItem>
           <NavigationMenuItem className="">
+            <Link to={`/home/spaces/${spaceId}/team/${teamId}/tasks`}>
+              <NavigationMenuLink className=" w-auto justify-between bg-transparent hover:bg-yellow-300 text-[1rem] font-sans">
+                <div
+                  className={`flex  pb-2 ${pathname.startsWith(`/home/spaces/${spaceId}/team/${teamId}/tasks`) && "border-purple-400  border-b-2 text-white"} h-[3rem] px-3 gap-1 justify-start items-center pr-[4rem] hover:opacity-70`}
+                >
+                  <MdTaskAlt />
+                  <p>Tasks</p>
+                </div>
+              </NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>
+          <NavigationMenuItem className="">
             <Link to={`/home/spaces/${spaceId}/team/${teamId}/canvas`}>
               <NavigationMenuLink className=" w-auto justify-between bg-transparent hover:bg-yellow-300 text-[1rem] font-sans">
                 <div
@@ -73,6 +94,23 @@ export const TeamNavbar = () => {
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
+      <div className="w-auto h-full flex justify-center items-center pr-5">
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Button>
+              <img src={""} />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>Profile</DropdownMenuItem>
+            <DropdownMenuItem>Billing</DropdownMenuItem>
+            <DropdownMenuItem>Team</DropdownMenuItem>
+            <DropdownMenuItem>Subscription</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
     </div>
   );
 };

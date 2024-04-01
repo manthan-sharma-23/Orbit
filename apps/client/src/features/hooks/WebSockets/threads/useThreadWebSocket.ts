@@ -1,16 +1,15 @@
-import { RoomDetailsAtom } from "@/features/store/atoms/room/room.atom";
 import { threadAtom } from "@/features/store/atoms/thread/thread.atom";
 import { WebSocketAtom } from "@/features/store/atoms/websockets/ws.atom";
 import { WEBSOCKET_URL } from "@/lib/config/config";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { MESSAGE, TEXT } from "typings";
+import { useRecoilState } from "recoil";
+import { MESSAGE } from "typings";
 
-export const useChatWebSocket = () => {
-  const { roomId } = useParams();
+export const useThreadWebSocket = () => {
+  const { threadId } = useParams();
   const [_ws, setWs] = useRecoilState(WebSocketAtom);
-  const [room, setRoom] = useRecoilState(RoomDetailsAtom);
+  const [thread, setThread] = useRecoilState(threadAtom);
 
   useEffect(() => {
     const wsInstance = new WebSocket(WEBSOCKET_URL);
@@ -19,7 +18,7 @@ export const useChatWebSocket = () => {
       const joinRequest: MESSAGE = {
         type: "JOIN",
         payload: {
-          roomId,
+          roomId: threadId,
         },
         timeStamp: new Date(),
       };
@@ -29,25 +28,26 @@ export const useChatWebSocket = () => {
 
       wsInstance.addEventListener("message", (msg) => {
         const message: MESSAGE = JSON.parse(msg.data);
-        console.log(message);
         if (message.type === "MESSAGE") {
-          if (message.payload && message.payload.message !== undefined) {
-            setRoom((v) => ({
-              ...v,
-              messages: [
-                ...(v.messages.filter(Boolean) as TEXT[]),
-                message.payload.message as TEXT,
-              ],
+          // console.log(message);
+          if (
+            message.payload.threadMessage ||
+            message.payload.threadMessage !== undefined
+          ) {
+            setThread((value) => ({
+              ...value,
+              messages: [...value.messages, message.payload.threadMessage!],
             }));
           }
         }
       });
     };
+
     return () => {
       setWs(null);
       wsInstance.close();
     };
-  }, [roomId]);
+  }, [threadId]);
 
   return _ws;
 };

@@ -44,13 +44,13 @@ const SpaceSideBar = () => {
                 team.name !== "Townhall" && (
                   <Link
                     to={`/home/spaces/${spaceId}/team/${team.id}`}
-                    className={` mb-1 flex justify-start h-8 rounded-lg items-center cursor-pointer border-0 w-full gap-2 pl-5 hover:bg-[#1C1C1C] text-white/60 hover:text-white/90 ${pathname.startsWith(`/home/spaces/${spaceId}/team/${team.id}`) && "bg-[#1C1C1C] text-white/90"}`}
+                    className={` mb-3 flex justify-start min-h-8 py-1 rounded-lg items-center cursor-pointer w-full gap-2 pl-5 hover:bg-[#1C1C1C] text-white/60 hover:text-white/90 ${pathname.startsWith(`/home/spaces/${spaceId}/team/${team.id}`) && "bg-[#1C1C1C] text-white/90"}`}
                   >
                     <div
                       className="h-2 w-2 p-1 rounded-full"
                       style={{ backgroundColor: team.color }}
                     />
-                    <p className="font-sans hover:underline">{team.name}</p>
+                    <p className="font-sans hover:underline flex flex-wrap ">{team.name}</p>
                   </Link>
                 )
             )}
