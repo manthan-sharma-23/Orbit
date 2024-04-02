@@ -1,10 +1,7 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { useGetSpaceDetails } from "@/features/hooks/spaces/useGetSpaceDetails";
 import { useGetSpaceInfo } from "@/features/hooks/spaces/useGetSpaceInfo";
 import { spaceDetailsAtom } from "@/features/store/atoms/spaces/space.atom";
-import { SpacesInfoAtom } from "@/features/store/atoms/spaces/userSpace.atom";
-import { sideIcons } from "@/lib/static/global/options/side.nav";
 import { SpacesSideIcons } from "@/lib/static/spaces/sideBar";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
@@ -15,13 +12,19 @@ const SpaceSideBar = () => {
   useGetSpaceInfo();
   const space = useRecoilValue(spaceDetailsAtom);
 
+  const townhall = space?.teams?.find((team) => team.name === "Townhall");
+
   return (
     <div className="h-full w-full flex flex-col justify-start items-center">
       <div className="my-7 w-full px-2 gap-2 flex flex-col text-white/70">
         {SpacesSideIcons.map((ico) => {
           return (
             <Link
-              to={`/home/spaces/${spaceId}/${ico.href}`}
+              to={
+                ico.href === "townhall"
+                  ? `/home/spaces/${spaceId}/team/${townhall?.id}`
+                  : `/home/spaces/${spaceId}/${ico.href}`
+              }
               className={`flex justify-start h-8 rounded-lg items-center cursor-pointer border-0 w-full gap-2 pl-5 hover:bg-[#1C1C1C] hover:text-white/90 ${pathname.startsWith(`/home/spaces/${spaceId}/${ico.href}`) && "bg-[#1C1C1C] text-white/90"}`}
             >
               <ico.icon className="text-[1rem]" />
@@ -50,7 +53,9 @@ const SpaceSideBar = () => {
                       className="h-2 w-2 p-1 rounded-full"
                       style={{ backgroundColor: team.color }}
                     />
-                    <p className="font-sans hover:underline flex flex-wrap ">{team.name}</p>
+                    <p className="font-sans hover:underline flex flex-wrap ">
+                      {team.name}
+                    </p>
                   </Link>
                 )
             )}

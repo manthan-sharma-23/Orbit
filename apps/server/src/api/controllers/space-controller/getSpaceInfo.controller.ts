@@ -39,6 +39,7 @@ export const getSpaceInfo = async (req: ProtectedRequest, res: Response) => {
           },
           include: {
             threads: true,
+            space:true,
             members: {
               include: {
                 user: {

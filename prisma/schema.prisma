@@ -43,6 +43,7 @@ model User {
   forums         Forum[]
   useForums      UserForum[]
   comments       Comment[]
+  Announcement   Announcement[]
 }
 
 model Room {
@@ -119,12 +120,37 @@ model UserSpace {
 }
 
 model Thread {
-  id       String          @id @default(uuid())
-  name     String
-  type     String          @default("chat")
-  Team     Team?           @relation(fields: [teamId], references: [id])
-  teamId   String?
-  messages ThreadMessage[]
+  id            String          @id @default(uuid())
+  name          String
+  type          String          @default("chat")
+  Team          Team?           @relation(fields: [teamId], references: [id])
+  teamId        String?
+  messages      ThreadMessage[] // Assuming ThreadMessage is defined elsewhere
+  announcements Announcement[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+model Announcement {
+  id          String                   @id @default(uuid())
+  title       String
+  description String?
+  userId      String
+  User        User                     @relation(fields: [userId], references: [id])
+  Thread      Thread?                  @relation(fields: [threadId], references: [id])
+  threadId    String?
+  discussions AnnouncementDiscussion[]
+  createdAt   DateTime                 @default(now())
+  updatedAt   DateTime                 @updatedAt
+}
+
+model AnnouncementDiscussion {
+  id             String        @id @default(uuid())
+  announcement   Announcement? @relation(fields: [announcementId], references: [id])
+  announcementId String?
+  message        String
+  postedBy       String
+  postedAt       DateTime      @default(now())
 }
 
 model ThreadMessage {
