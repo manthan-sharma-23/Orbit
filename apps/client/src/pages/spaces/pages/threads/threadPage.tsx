@@ -1,9 +1,9 @@
 import Loading from "@/components/ui/Loading";
 import { useGetThreadInfo } from "@/features/hooks/threads/useGetThreadInfo";
-import React from "react";
-import { useParams } from "react-router-dom";
+
 import Chat from "./pannel/chat";
 import Announcements from "./pannel/announcement";
+import Video from "./pannel/video-call/video";
 
 const ThreadPage = () => {
   const { thread, loading } = useGetThreadInfo();
@@ -21,6 +21,9 @@ const ThreadPage = () => {
   }
   if (thread.type === "announcement") {
     return <Announcements />;
+  }
+  if (thread.type === "video") {
+    return <Video />;
   }
 
   return <div>{thread.type}</div>;

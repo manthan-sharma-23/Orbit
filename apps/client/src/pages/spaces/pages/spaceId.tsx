@@ -2,20 +2,31 @@ import { Separator } from "@/components/ui/separator";
 import SpaceSideBar from "../components/SideBar";
 import { Outlet } from "react-router-dom";
 import NavbarRedirect from "../components/Navbar.redirect";
-import { useRecoilValue } from "recoil";
 import {
   Select,
   SelectContent,
   SelectGroup,
+  SelectItem,
   SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { SpacesInfoAtom } from "@/features/store/atoms/spaces/userSpace.atom";
+import Loading from "@/components/ui/Loading";
+import { useGetUserSpaces } from "@/features/hooks/spaces/useGetUserSpaces";
+import { useRecoilValue } from "recoil";
+import { spaceDetailsAtom } from "@/features/store/atoms/spaces/space.atom";
 
 const SpaceId = () => {
-  const space = useRecoilValue(SpacesInfoAtom);
-  console.log(space);
+  const { loading, spaces } = useGetUserSpaces();
+  const space = useRecoilValue(spaceDetailsAtom);
+
+  if (loading) {
+    return (
+      <div className="w-full h-full">
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <div
@@ -26,20 +37,20 @@ const SpaceId = () => {
         <div className="text-lg font-bold text-white/80  w-[16%]">
           <div className=" flex  gap-3 items-end">
             <div className="h-[3rem] w-[3rem] flex justify-center items-center border border-white/50 bg-blue-950/40 rounded-lg">
-              <img src={""} className="h-8 w-8 bg-black" />
+              <img src={space.image} className="h-8 w-8 bg-black" />
             </div>
-            <Select>
+            <Select defaultValue={space.id}>
               <SelectTrigger className="w-[180px] border-white/30">
                 <SelectValue placeholder="Select a fruit" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Spaces</SelectLabel>
-                  {/* {space.UserSpace?.map((userspace) => (
-                    <SelectItem value={userspace.space?.id}>
-                      {userspace.space?.name}
+                  {spaces.map((space) => (
+                    <SelectItem value={space?.space.id}>
+                      {space.space.name}
                     </SelectItem>
-                  ))} */}
+                  ))}
                 </SelectGroup>
               </SelectContent>
             </Select>

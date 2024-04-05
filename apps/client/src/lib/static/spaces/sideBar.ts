@@ -1,6 +1,6 @@
 import { SiBandsintown, SiProgress } from "react-icons/si";
 import { CgGoogleTasks } from "react-icons/cg";
-import { FaRegCircle } from "react-icons/fa6";
+import { FaRegCircle, FaVideo } from "react-icons/fa6";
 import { MdManageAccounts } from "react-icons/md";
 import { BiSolidCubeAlt } from "react-icons/bi";
 
@@ -19,6 +19,11 @@ export const SpacesSideIcons = [
     href: "progress",
     icon: SiProgress,
     name: "Progress",
+  },
+  {
+    href: "meetings",
+    icon: FaVideo,
+    name: "Meetings",
   },
 ];
 export const TeamsSideIcons = [

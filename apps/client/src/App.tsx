@@ -23,13 +23,13 @@ import SpaceId from "./pages/spaces/pages/spaceId";
 import SpaceInfo from "./pages/spaces/pages/Info";
 import TeamPage from "./pages/spaces/pages/teams/teamPage";
 import ThreadPage from "./pages/spaces/pages/threads/threadPage";
-import TeamsPannel from "./pages/spaces/pages/teams/teamsPannel";
 import Townhall from "./pages/spaces/pages/TownHall/Townhall";
 import TownhallPannel from "./pages/spaces/pages/TownHall/TownhallPannel";
 import Threads from "./pages/spaces/pages/TownHall/pannel/Threads";
 import TeamThreads from "./pages/spaces/pages/teams/pannel/Thread";
 import Members from "./pages/spaces/pages/teams/pannel/Members";
 import Find from "./pages/spaces/pages/teams/pannel/Find";
+import Meetings from "./pages/spaces/meeting/Meetings";
 
 function App() {
   return (
@@ -72,6 +72,10 @@ function App() {
                   <Route
                     path="/home/spaces/:spaceId/info"
                     element={<SpaceInfo />}
+                  />
+                  <Route
+                    path="/home/spaces/:spaceId/meetings"
+                    element={<Meetings />}
                   />
                   <Route
                     path="/home/spaces/:spaceId/townhall"

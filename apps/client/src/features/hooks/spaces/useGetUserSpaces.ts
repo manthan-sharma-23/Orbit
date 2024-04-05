@@ -1,11 +1,13 @@
 import { SpacesInfoAtom } from "@/features/store/atoms/spaces/userSpace.atom";
 import { SERVER_URL } from "@/lib/config/config";
 import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { USER_SPACE_SCHEMA } from "typings";
 
 export const useGetUserSpaces = () => {
   const [userSpace, setUserSpace] = useRecoilState(SpacesInfoAtom);
+  const {spaceId}=useParams()
 
   useEffect(() => {
     setUserSpace((e) => ({ ...e, loading: true }));
@@ -28,6 +30,6 @@ export const useGetUserSpaces = () => {
         console.log(err);
         setUserSpace((e) => ({ ...e, loading: false }));
       });
-  }, []);
+  }, [spaceId]);
   return { spaces: userSpace.userSpace, loading: userSpace.loading };
 };
